@@ -4,10 +4,10 @@ export const alt = "Giulia Breida — Graphic Designer & Photographer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const PAPER = "#f4f1ea";
-const INK = "#15140f";
+const PAPER = "#FCFAF2";
+const INK = "#121212";
 const DIM = "#6b675c";
-const ACCENT = "#ff2e63";
+const ACCENT = "#FF3E2B";
 
 // Fetch Space Grotesk as TTF (Google serves truetype to unrecognised UAs, which
 // is what Satori needs). Subsetted to the glyphs we render. Wrapped so a failed

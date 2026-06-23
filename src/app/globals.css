@@ -1,53 +1,67 @@
 /*
-  GIULIA BREIDA — art direction: "DUE ANIME" (two souls), a living vertical seam.
+  GIULIA BREIDA — art direction: "DUE ANIME" (two souls).
   ────────────────────────────────────────────────────────────────────────────
+  The approved look (ported from the Google AI Studio exploration, translated
+  into authored CSS — no Tailwind, no Framer Motion). Colour is a PROTAGONIST.
   ONE opinionated system. Mobile-first (base ~380px → enhance at 640 / 1024).
-  Type: SYNE (display shout) · SPACE MONO (technical spec voice) · PERMANENT
-  MARKER (the hand — grapholio's through-line). Colour is a protagonist: a
-  risograph palette floods the grapholio world; the fotofolio world is a quiet
-  darkroom. The two read as distinct worlds, unmistakably one brand.
+
+  Palette: CREAM paper, TOMATO shout, CARBON ink, plus BLUE / LIME / TEAL accents.
+  Type: SYNE (display shout) · ITALIANA (editorial serif, the quiet soul) ·
+  JETBRAINS MONO (technical spec voice) · LA BELLE AURORE (the hand — grapholio's
+  through-line, project titles) · REENIE BEANIE (loose hand2 for glosses).
 
   Theming trick: each route paints a `.section[data-section="X"]` (SSR'd). We
   theme that subtree AND the whole document via `:root:has([data-section="X"])`,
-  so fixed chrome (topbar, footer, cursor) inherits the right palette with NO
-  JS and NO flash — even on the dark fotofolio route.
+  so fixed chrome (topbar, footer, cursor, glow, grain) inherits the right
+  palette with NO JS and NO flash — even on the dark fotofolio route.
 */
 
 /* ============================================================= TOKENS ==== */
 :root {
-  /* ---- type ---- */
+  /* ---- the protagonists ---- */
+  --cream: #fcfaf2;
+  --tomato: #ff3e2b;
+  --carbon: #121212;
+  --blue: #0a369d;
+  --lime: #dfff00;
+  --teal: #0dcd9d;
+
+  /* ---- type stacks (font vars are set on <html> by next/font) ---- */
   --stack-display: var(--font-display), "Syne", system-ui, sans-serif;
-  --stack-text: var(--font-text), "Space Mono", ui-monospace, "SF Mono", Menlo,
+  --stack-serif: var(--font-serif), "Italiana", Georgia, "Times New Roman", serif;
+  --stack-mono: var(--font-mono), "JetBrains Mono", ui-monospace, "SF Mono", Menlo,
     monospace;
-  --stack-mono: var(--stack-text);
-  --stack-hand: var(--font-hand), "Permanent Marker", "Segoe Script", cursive;
-  --stack-sans: var(--stack-text);
+  --stack-hand: var(--font-hand), "La Belle Aurore", "Segoe Script", cursive;
+  --stack-hand2: var(--font-hand2), "Reenie Beanie", "Segoe Script", cursive;
+  /* chrome (header/footer/topbar/locale) was authored against these names */
+  --stack-text: var(--stack-mono);
+  --stack-sans: var(--stack-display);
 
-  /* ---- warm paper canvas (gate / about) ---- */
-  --bg: #f3efe4;
-  --bg-2: #e9e3d3;
-  --ink: #141009;
-  --ink-dim: #6c6453;
-  --ink-ghost: #b6ad97;
-  --line: rgba(20, 16, 9, 0.14);
-  --line-hot: rgba(20, 16, 9, 0.34);
+  /* ---- cream paper canvas (gate frame / about) ---- */
+  --bg: var(--cream);
+  --bg-2: #f1ecdc;
+  --ink: var(--carbon);
+  --ink-dim: #5c574b;
+  --ink-ghost: #b4ab94;
+  --line: rgba(18, 18, 18, 0.14);
+  --line-hot: rgba(18, 18, 18, 0.42);
 
-  /* ---- risograph protagonists ---- */
-  --riso-pink: #ff2d6f;
-  --riso-blue: #1b43ff;
-  --riso-yellow: #ffd400;
-  --riso-cyan: #00d6c2;
-  --accent: var(--riso-pink);
-  --accent-2: var(--riso-blue);
-  /* per-project — overridden inline via style={{ "--card-accent": … }} */
-  --card-accent: var(--accent);
-  --card-accent2: var(--accent-2);
+  /* ---- accents ---- */
+  --accent: var(--tomato);
+  --accent-2: var(--blue);
+  /* per-project — overridden inline via style={{ "--card-bg": …, "--card-fg": … }} */
+  --card-bg: var(--tomato);
+  --card-fg: var(--cream);
+
+  /* ---- colour-adaptive cursor (Claude Design): per-zone via --cursor ---- */
+  --cursor: var(--carbon);
+  --cursor-hot: var(--tomato);
 
   /* ---- ambient + texture ---- */
-  --glow-1: rgba(255, 45, 111, 0.1);
-  --glow-2: rgba(27, 67, 255, 0.08);
-  --grain-blend: overlay;
-  --grain-opacity: 0.06;
+  --glow-1: rgba(255, 62, 43, 0.1);
+  --glow-2: rgba(10, 54, 157, 0.06);
+  --grain-blend: multiply;
+  --grain-opacity: 0.05;
 
   /* ---- motion + metrics ---- */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -56,50 +70,61 @@
   --topbar-h: 3.4rem;
 }
 
-/* gate — warm paper, both signature accents in the wash */
+/* gate — cream frame; the two portals carry tomato / carbon. The cursor flips to
+   mix-blend-difference here so it inverts over both souls (see CHROME). */
 [data-section="gate"],
 :root:has([data-section="gate"]) {
-  --glow-1: rgba(255, 45, 111, 0.1);
-  --glow-2: rgba(27, 67, 255, 0.08);
+  --bg: var(--cream);
+  --ink: var(--carbon);
+  --cursor: #ffffff;
+  --cursor-hot: #ffffff;
+  --glow-1: rgba(255, 62, 43, 0.08);
+  --glow-2: rgba(18, 18, 18, 0.05);
 }
 
-/* about — warm paper, calmer wash */
+/* about — cream paper, calm tomato accent */
 [data-section="about"],
 :root:has([data-section="about"]) {
-  --glow-1: rgba(255, 45, 111, 0.08);
-  --glow-2: rgba(0, 214, 194, 0.06);
+  --cursor: var(--tomato);
+  --cursor-hot: var(--tomato);
+  --glow-1: rgba(255, 62, 43, 0.08);
+  --glow-2: rgba(13, 205, 157, 0.05);
 }
 
-/* grapholio — loud white world, risograph palette, strong type */
+/* grapholio — loud cream world, tomato accent, lime cursor pop */
 [data-section="grapholio"],
 :root:has([data-section="grapholio"]) {
-  --bg: #ffffff;
-  --bg-2: #f4f1e8;
-  --ink: #0a0a0a;
-  --ink-dim: #595650;
-  --ink-ghost: #c9c5bb;
-  --line: rgba(10, 10, 10, 0.14);
-  --line-hot: rgba(10, 10, 10, 0.4);
-  --accent: var(--riso-pink);
-  --accent-2: var(--riso-blue);
-  --glow-1: rgba(255, 45, 111, 0.12);
-  --glow-2: rgba(27, 67, 255, 0.1);
+  --bg: var(--cream);
+  --bg-2: #f1ecdc;
+  --ink: var(--carbon);
+  --ink-dim: #5c574b;
+  --ink-ghost: #c4bca8;
+  --line: rgba(18, 18, 18, 0.16);
+  --line-hot: rgba(18, 18, 18, 0.55);
+  --accent: var(--tomato);
+  --accent-2: var(--blue);
+  --cursor: var(--tomato);
+  --cursor-hot: var(--lime);
+  --glow-1: rgba(255, 62, 43, 0.12);
+  --glow-2: rgba(13, 205, 157, 0.08);
   --grain-blend: multiply;
   --grain-opacity: 0.05;
 }
 
-/* fotofolio — quiet darkroom, monochrome, image-forward */
+/* fotofolio — quiet carbon darkroom, monochrome, image-forward, cream cursor */
 [data-section="fotofolio"],
 :root:has([data-section="fotofolio"]) {
-  --bg: #0c0c0d;
-  --bg-2: #151517;
-  --ink: #e9e6df;
+  --bg: var(--carbon);
+  --bg-2: #1b1b1c;
+  --ink: var(--cream);
   --ink-dim: #8d8a82;
   --ink-ghost: #46453f;
-  --line: rgba(233, 230, 223, 0.14);
-  --line-hot: rgba(233, 230, 223, 0.34);
-  --accent: #e9e6df; /* monochrome: no colour over photographs */
+  --line: rgba(252, 250, 242, 0.16);
+  --line-hot: rgba(252, 250, 242, 0.4);
+  --accent: var(--cream); /* monochrome: no colour over photographs */
   --accent-2: #8d8a82;
+  --cursor: var(--cream);
+  --cursor-hot: var(--cream);
   --glow-1: rgba(255, 255, 255, 0.04);
   --glow-2: rgba(255, 255, 255, 0.02);
   --grain-blend: screen;
@@ -123,7 +148,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-weight: 400;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -136,6 +161,29 @@ body {
   body {
     cursor: auto;
   }
+}
+
+/* custom scrollbar (ported from the AI Studio look) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--tomato);
+  border-radius: 9999px;
+}
+html {
+  scrollbar-color: var(--tomato) var(--bg);
+  scrollbar-width: thin;
+}
+
+/* selection (ported as-is) */
+::selection {
+  background-color: var(--tomato);
+  color: var(--cream);
 }
 
 a {
@@ -164,12 +212,20 @@ p {
 .display {
   font-family: var(--stack-display);
 }
+.serif {
+  font-family: var(--stack-serif);
+  font-weight: 400;
+}
 .hand {
   font-family: var(--stack-hand);
   font-weight: 400;
 }
+.hand2 {
+  font-family: var(--stack-hand2);
+  font-weight: 400;
+}
 .mono {
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
 }
 
 .sr-only {
@@ -194,7 +250,7 @@ p {
   padding: 0.6rem 0.9rem;
   background: var(--ink);
   color: var(--bg);
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.7rem;
   letter-spacing: 0.16em;
   text-transform: lowercase;
@@ -227,7 +283,7 @@ p {
   mix-blend-mode: var(--grain-blend);
 }
 
-/* ---- custom cursor (token-driven; flips light on the dark darkroom) ---- */
+/* ---- custom cursor — colour driven by the active zone's --cursor token ---- */
 .cur-dot,
 .cur-ring {
   position: fixed;
@@ -242,13 +298,14 @@ p {
 .cur-dot {
   width: 6px;
   height: 6px;
-  background: var(--ink);
+  background: var(--cursor);
+  transition: background 0.45s var(--ease);
 }
 .cur-ring {
   width: 30px;
   height: 30px;
-  border: 1.5px solid var(--line-hot);
-  opacity: 0.85;
+  border: 1.5px solid var(--cursor);
+  opacity: 0.8;
   transition:
     width 0.45s var(--ease),
     height 0.45s var(--ease),
@@ -256,10 +313,15 @@ p {
     opacity 0.45s var(--ease);
 }
 .cur-ring.is-hot {
-  width: 60px;
-  height: 60px;
-  border-color: var(--accent);
+  width: 58px;
+  height: 58px;
+  border-color: var(--cursor-hot);
   opacity: 1;
+}
+/* on the gate the cursor inverts over tomato vs carbon (Claude Design) */
+:root:has([data-section="gate"]) .cur-dot,
+:root:has([data-section="gate"]) .cur-ring {
+  mix-blend-mode: difference;
 }
 @media (hover: none) {
   .cur-dot,
@@ -281,7 +343,7 @@ p {
   justify-content: space-between;
   align-items: center;
   padding: 1rem var(--pad);
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.66rem;
   letter-spacing: 0.18em;
   text-transform: lowercase;
@@ -339,7 +401,7 @@ p {
 .topbar nav a:hover,
 .topbar nav a:focus-visible,
 .topbar nav a[aria-current="page"] {
-  color: var(--ink);
+  color: var(--accent);
 }
 .topbar nav a[aria-current="page"]::after,
 .topbar nav a:hover::after {
@@ -398,11 +460,12 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.66rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: var(--accent);
+  font-weight: 700;
 }
 .sect-kicker::before {
   content: "";
@@ -423,11 +486,71 @@ p {
   text-transform: lowercase;
 }
 .sect-intro {
-  max-width: 44ch;
+  max-width: 46ch;
   margin-top: 1.4rem;
   color: var(--ink-dim);
   font-size: clamp(0.95rem, 2.2vw, 1.05rem);
   line-height: 1.7;
+}
+
+/* ====================================================== ROUTE TRANSITION ==
+   App-Router-native: the root template.tsx wraps each page in `.route` and
+   tags it per world. Templates remount on segment change, so the matching
+   keyframe replays — the AI Studio scale (grapholio) / brightness (fotofolio) /
+   slide (about) page changes, with no faked SPA routing. transform resolves to
+   none at rest, so no fixed-positioning containing block lingers. */
+.route {
+  will-change: transform, opacity, filter;
+}
+.route[data-route="gate"] {
+  animation: route-fade 0.6s var(--ease) both;
+}
+.route[data-route="grapholio"] {
+  animation: route-scale 0.6s var(--ease) both;
+}
+.route[data-route="fotofolio"] {
+  animation: route-bright 0.75s var(--ease) both;
+}
+.route[data-route="about"] {
+  animation: route-slide 0.6s var(--ease) both;
+}
+@keyframes route-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes route-scale {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes route-bright {
+  from {
+    opacity: 0;
+    filter: brightness(0.35);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+@keyframes route-slide {
+  from {
+    opacity: 0;
+    transform: translateX(42px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ============================================================== GATE ===== */
@@ -437,19 +560,80 @@ p {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--bg);
+  background: var(--cream);
+  user-select: none;
 }
-.gate-brand {
+
+/* floating brand header — serif name in tomato, mix-blend so it reads on both */
+.gate-head {
   position: absolute;
-  z-index: 6;
-  top: calc(var(--topbar-h) + 0.4rem);
-  left: var(--pad);
-  font-family: var(--stack-text);
-  font-size: 0.62rem;
-  letter-spacing: 0.26em;
-  text-transform: lowercase;
-  color: var(--ink-dim);
+  z-index: 40;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: clamp(1.2rem, 4vw, 2.6rem) var(--pad);
   pointer-events: none;
+}
+.gate-name {
+  font-family: var(--stack-serif);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 6vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--tomato);
+  mix-blend-mode: difference;
+}
+.gate-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  margin-top: 0.55rem;
+  font-family: var(--stack-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tomato);
+  mix-blend-mode: difference;
+}
+.gate-meta .dot {
+  opacity: 0.4;
+}
+.gate-info {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.05rem;
+  border-radius: 999px;
+  background: var(--tomato);
+  color: var(--cream);
+  border: 2px solid var(--carbon);
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition:
+    background 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    color 0.35s var(--ease);
+}
+/* invert on hover so it stays legible over BOTH the tomato and carbon souls */
+.gate-info:hover,
+.gate-info:focus-visible {
+  background: var(--cream);
+  border-color: var(--carbon);
+  color: var(--carbon);
+}
+.gate-info .hand2 {
+  font-size: 1.15rem;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 /* each half is a full "door" into a world */
@@ -459,161 +643,161 @@ p {
   min-height: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
-  transition:
-    flex-grow 0.7s var(--ease),
-    opacity 0.6s var(--ease);
+  text-align: center;
+  transition: flex-grow 0.7s var(--ease);
 }
+.gate-half--graph {
+  background: var(--tomato);
+  color: var(--cream);
+  border-bottom: 1px solid var(--cream);
+}
+.gate-half--foto {
+  background: var(--carbon);
+  color: var(--cream);
+}
+
+/* the massive hanzi watermark behind each portal: 設計 / 攝影 */
+.gate-han {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 0;
+  pointer-events: none;
+  font-family: var(--stack-display);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-size: 25vh;
+  color: var(--cream);
+  transition: transform 0.7s var(--ease);
+}
+.gate-half--graph .gate-han {
+  opacity: 0.1;
+}
+.gate-half--foto .gate-han {
+  opacity: 0.06;
+}
+
 .gate-half-inner {
   position: relative;
   z-index: 3;
-  width: 100%;
-  max-width: var(--container);
-  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
   padding: 2.4rem var(--pad);
 }
-.gate-field {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-/* GRAPHOLIO door — loud risograph field, dark scrim for legibility */
-.gate-half--graph {
-  background: #fff;
-  color: #0a0a0a;
-}
-.gate-half--graph .gate-field {
-  background:
-    radial-gradient(80% 90% at 18% 12%, var(--riso-yellow), transparent 55%),
-    radial-gradient(70% 80% at 88% 30%, var(--riso-cyan), transparent 52%),
-    linear-gradient(135deg, var(--riso-pink), var(--riso-blue));
-  opacity: 0.95;
-}
-.gate-half--graph .gate-field::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.34),
-    rgba(0, 0, 0, 0.05) 60%,
-    transparent
-  );
-}
-.gate-half--graph .gate-half-inner {
-  color: #fff;
-}
-/* FOTOFOLIO door — quiet darkroom */
-.gate-half--foto {
-  background: #0c0c0d;
-  color: #e9e6df;
-}
-.gate-half--foto .gate-field {
-  background:
-    radial-gradient(60% 60% at 70% 40%, rgba(255, 255, 255, 0.06), transparent 60%),
-    radial-gradient(120% 120% at 50% 120%, rgba(0, 0, 0, 0.6), transparent 55%),
-    #0c0c0d;
-}
-
-.gate-world-num {
-  font-family: var(--stack-text);
+.gate-disc {
+  align-self: center;
+  margin-bottom: 0.3rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  font-family: var(--stack-mono);
   font-size: 0.64rem;
-  letter-spacing: 0.3em;
-  opacity: 0.85;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
 }
-.gate-world-name {
+.gate-half--graph .gate-disc {
+  color: var(--lime);
+  border: 1px solid var(--lime);
+}
+.gate-half--foto .gate-disc {
+  color: rgba(252, 250, 242, 0.65);
+  border: 1px solid rgba(252, 250, 242, 0.3);
+}
+.gate-world {
+  margin: 0;
+  line-height: 0.9;
+}
+.gate-half--graph .gate-world {
   font-family: var(--stack-display);
   font-weight: 800;
-  font-size: clamp(2.6rem, 13vw, 7rem);
-  line-height: 0.88;
-  letter-spacing: -0.02em;
-  text-transform: lowercase;
-  margin: 0.5rem 0 0;
+  font-size: clamp(2.8rem, 11vw, 7rem);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
 }
-.gate-world-disc {
-  font-family: var(--stack-text);
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: lowercase;
-  margin-top: 0.8rem;
-  opacity: 0.9;
+.gate-half--foto .gate-world {
+  font-family: var(--stack-serif);
+  font-weight: 400;
+  font-size: clamp(2.8rem, 11vw, 7rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 .gate-enter {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 1.4rem;
-  font-family: var(--stack-text);
-  font-size: 0.7rem;
+  margin-top: 0.9rem;
+  font-family: var(--stack-mono);
+  font-size: 0.66rem;
   letter-spacing: 0.22em;
   text-transform: lowercase;
+  opacity: 0.85;
 }
 .gate-enter .arr {
   transition: transform 0.4s var(--ease);
 }
-.gate-half:hover .gate-enter .arr,
-.gate-half:focus-visible .gate-enter .arr {
-  transform: translateX(0.5rem);
+
+/* hover/focus: the touched world breathes open, the other recedes (flex-grow) */
+@media (hover: hover) {
+  .gate:has(.gate-half--graph:hover) .gate-half--graph,
+  .gate:has(.gate-half--foto:hover) .gate-half--foto {
+    flex-grow: 1.4;
+  }
+  .gate:has(.gate-half--graph:hover) .gate-half--foto,
+  .gate:has(.gate-half--foto:hover) .gate-half--graph {
+    flex-grow: 0.72;
+  }
+  .gate-half:hover .gate-han {
+    transform: scale(1.08);
+  }
+  .gate-half:hover .gate-enter .arr {
+    transform: translateX(0.45rem);
+  }
+}
+.gate:has(.gate-half--graph:focus-visible) .gate-half--graph,
+.gate:has(.gate-half--foto:focus-visible) .gate-half--foto {
+  flex-grow: 1.4;
+}
+.gate:has(.gate-half--graph:focus-visible) .gate-half--foto,
+.gate:has(.gate-half--foto:focus-visible) .gate-half--graph {
+  flex-grow: 0.72;
 }
 
-/* hover/active "breathe": active world grows, the other recedes */
-.gate[data-active="graph"] .gate-half--graph,
-.gate[data-active="foto"] .gate-half--foto {
-  flex-grow: 1.5;
-}
-.gate[data-active="graph"] .gate-half--foto,
-.gate[data-active="foto"] .gate-half--graph {
-  flex-grow: 0.7;
-  opacity: 0.72;
-}
-
-/* the seam pivot — 設計師, the designer standing between her two souls */
+/* the seam pivot — 設計師 + the instruction, mix-blend so they invert on both
+   souls. ONE 設計師 motif. "scegli un'anima" is the Claude Design label. */
 .gate-pivot {
   position: absolute;
-  z-index: 5;
+  z-index: 30;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.5rem;
   pointer-events: none;
+  text-align: center;
 }
 .gate-pivot-mark {
-  display: grid;
-  place-items: center;
-  width: clamp(3.2rem, 12vw, 4.6rem);
-  height: clamp(3.2rem, 12vw, 4.6rem);
-  border-radius: 50%;
-  background: var(--bg);
-  color: var(--ink);
-  border: 1px solid var(--line);
   font-family: var(--stack-display);
-  font-size: clamp(1.2rem, 5vw, 1.7rem);
-  letter-spacing: 0.05em;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
-}
-.gate-pivot-gloss {
-  font-family: var(--stack-text);
-  font-size: 0.56rem;
-  letter-spacing: 0.22em;
-  text-transform: lowercase;
-  color: var(--bg);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  letter-spacing: 0.06em;
+  color: var(--cream);
   mix-blend-mode: difference;
 }
-
-/* info / about link, bottom corner of the gate */
-.gate-info {
-  position: absolute;
-  z-index: 6;
-  bottom: 1.4rem;
-  right: var(--pad);
-  font-family: var(--stack-text);
-  font-size: 0.64rem;
-  letter-spacing: 0.22em;
-  text-transform: lowercase;
-  color: #e9e6df;
+.gate-pivot-cta {
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--cream);
   mix-blend-mode: difference;
 }
 
@@ -625,161 +809,135 @@ p {
   transform: scaleY(0);
   transform-origin: bottom;
   pointer-events: none;
-  background: var(--riso-pink);
+  background: var(--tomato);
 }
 
 /* ========================================================= GRAPHOLIO ===== */
 .g-head {
-  margin-bottom: clamp(1.6rem, 5vw, 3rem);
+  margin-bottom: clamp(1.8rem, 5vw, 3.2rem);
 }
 .g-head .sect-title {
   font-family: var(--stack-hand);
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
-  font-size: clamp(3rem, 16vw, 8rem);
+  font-size: clamp(3.2rem, 17vw, 8.5rem);
   line-height: 0.9;
+  color: var(--tomato);
 }
 
-/* the asymmetric, hand-composed wall */
+/* the asymmetric, hand-composed wall of vivid colour cards */
 .g-wall {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: clamp(1.6rem, 5vw, 2.6rem);
 }
-.g-tile {
+.g-card {
   position: relative;
-  display: block;
-  min-height: 46vh;
-  overflow: hidden;
-  border-radius: 3px;
-  color: #fff;
-  isolation: isolate;
+  transform: rotate(var(--rot, 0deg));
+  transition: transform 0.5s var(--ease);
 }
-.g-tile-link {
-  position: absolute;
-  inset: 0;
-  display: block;
-  color: inherit;
-}
-.g-tile.is-lg {
-  min-height: 62vh;
-}
-.g-tile.is-md {
-  min-height: 50vh;
-}
-.g-tile.is-sm {
-  min-height: 40vh;
-}
-/* hand-placed offsets on mobile for an art-directed rhythm */
-.g-tile:nth-child(even) {
-  margin-left: 9%;
-}
-.g-tile:nth-child(odd) {
-  margin-right: 7%;
-}
-
-.g-tile-field {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(
-      120% 130% at 18% 12%,
-      var(--card-accent2) 0%,
-      transparent 55%
-    ),
-    linear-gradient(
-      145deg,
-      var(--card-accent) 0%,
-      color-mix(in oklab, var(--card-accent) 55%, #000) 100%
-    );
-  transition:
-    transform 0.7s var(--ease),
-    filter 0.7s var(--ease);
-}
-.g-tile-scrim {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.32) 0%,
-    transparent 32%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.5) 100%
-  );
-}
-.g-tile-body {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
+.g-card-link {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: clamp(1.1rem, 3vw, 2rem);
-}
-.g-tile-num {
-  font-family: var(--stack-display);
-  font-weight: 800;
-  font-size: clamp(1rem, 3vw, 1.3rem);
-  letter-spacing: 0.05em;
-  opacity: 0.92;
-}
-.g-tile-title {
-  font-family: var(--stack-hand);
-  font-weight: 400;
-  font-size: clamp(2.6rem, 11vw, 5rem);
-  line-height: 0.92;
-  letter-spacing: 0.01em;
-  transform: rotate(-3deg);
-  transform-origin: left bottom;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.25);
+  gap: 1rem;
+  padding: clamp(0.9rem, 3vw, 1.3rem);
+  background: var(--card-bg);
+  color: var(--card-fg);
+  border: 3px solid var(--carbon);
+  border-radius: 18px;
+  box-shadow: 8px 8px 0 var(--carbon);
+  isolation: isolate;
   transition:
-    transform 0.5s var(--ease),
-    text-shadow 0.4s var(--ease);
+    box-shadow 0.45s var(--ease),
+    transform 0.45s var(--ease);
 }
-.g-tile-foot {
+.g-card-top {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem 1rem;
-  align-items: baseline;
-  font-family: var(--stack-text);
-}
-.g-tile-cat {
-  font-size: 0.62rem;
-  letter-spacing: 0.22em;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid currentColor;
+  font-family: var(--stack-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
-.g-tile-tag {
-  flex: 1 1 100%;
-  font-size: 0.74rem;
+.g-card-cat {
+  font-weight: 700;
+}
+.g-card-year {
+  opacity: 0.7;
+}
+/* cover slot — a local placeholder sized for Giulia's real covers (16:10) */
+.g-card-cover {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 2px solid var(--carbon);
+  border-radius: 10px;
+  background: var(--carbon);
+}
+.g-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s var(--ease);
+}
+.g-card-num {
+  position: absolute;
+  z-index: 2;
+  left: 0.7rem;
+  top: 0.6rem;
+  font-family: var(--stack-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--cream);
+  mix-blend-mode: difference;
+}
+/* handwritten project title — the through-line of this soul */
+.g-card-title {
+  font-family: var(--stack-hand);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 10vw, 4rem);
+  line-height: 0.95;
   letter-spacing: 0.01em;
+  margin: 0;
+}
+.g-card-desc {
+  font-family: var(--stack-mono);
+  font-size: 0.78rem;
+  line-height: 1.55;
   opacity: 0.92;
-  line-height: 1.4;
 }
-.g-tile-year {
-  font-size: 0.62rem;
-  letter-spacing: 0.16em;
-  opacity: 0.8;
+/* hand-placed rhythm on mobile */
+.g-card:nth-child(odd) {
+  margin-right: 6%;
 }
-
-/* hover — the field blooms, the title glitches with an RGB split */
-.g-tile:hover .g-tile-field,
-.g-tile:focus-within .g-tile-field {
-  transform: scale(1.06);
-  filter: saturate(1.25) brightness(1.08);
+.g-card:nth-child(even) {
+  margin-left: 6%;
 }
-.g-tile:hover .g-tile-title,
-.g-tile:focus-within .g-tile-title {
-  transform: rotate(-3deg) translateY(-2px);
-  text-shadow:
-    0.06em 0 0 var(--riso-cyan),
-    -0.06em 0 0 var(--riso-pink),
-    0 2px 18px rgba(0, 0, 0, 0.25);
+@media (hover: hover) {
+  .g-card:hover {
+    transform: rotate(0deg);
+    z-index: 2;
+  }
+  .g-card:hover .g-card-link {
+    box-shadow: 12px 12px 0 var(--carbon);
+    transform: translate(-2px, -2px);
+  }
+  .g-card:hover .g-card-cover img {
+    transform: scale(1.05);
+  }
+}
+.g-card-link:focus-visible {
+  outline: 2px solid var(--carbon);
+  outline-offset: 4px;
 }
 
 /* ===================================================== PROJECT (case) ==== */
@@ -788,43 +946,28 @@ p {
 }
 .project-hero {
   position: relative;
-  min-height: 78vh;
+  min-height: 72vh;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
-  color: #fff;
+  color: var(--card-fg);
   isolation: isolate;
+  background: var(--card-bg);
   padding: calc(var(--topbar-h) + 2rem) var(--pad) clamp(1.8rem, 5vw, 3rem);
 }
-.project-hero-field {
+.project-hero-han {
   position: absolute;
-  inset: 0;
   z-index: 0;
-}
-.project-hero-field .shader-field-fallback {
-  background:
-    radial-gradient(
-      120% 120% at 20% 10%,
-      var(--card-accent2) 0%,
-      transparent 55%
-    ),
-    linear-gradient(
-      150deg,
-      var(--card-accent) 0%,
-      color-mix(in oklab, var(--card-accent) 50%, #000) 100%
-    );
-}
-.project-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.28),
-    transparent 40%,
-    rgba(0, 0, 0, 0.55)
-  );
+  right: -2vw;
+  bottom: -6vh;
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: 48vh;
+  line-height: 1;
+  color: currentColor;
+  opacity: 0.08;
+  pointer-events: none;
+  user-select: none;
 }
 .project-hero-inner {
   position: relative;
@@ -833,11 +976,22 @@ p {
   max-width: var(--container);
   margin-inline: auto;
 }
+.back-link {
+  display: inline-flex;
+  align-self: flex-start;
+  font-family: var(--stack-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  color: currentColor;
+  opacity: 0.92;
+}
 .project-overline {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem 1rem;
-  font-family: var(--stack-text);
+  margin-top: 1.2rem;
+  font-family: var(--stack-mono);
   font-size: 0.66rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -851,10 +1005,7 @@ p {
   font-size: clamp(3rem, 16vw, 9rem);
   line-height: 0.9;
   letter-spacing: 0.01em;
-  transform: rotate(-2deg);
-  transform-origin: left bottom;
-  margin: 0.6rem 0 0;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  margin: 0.4rem 0 0;
 }
 
 .project-body {
@@ -866,15 +1017,14 @@ p {
   gap: clamp(2.4rem, 6vw, 4rem);
 }
 .project-brief {
-  font-family: var(--stack-display);
-  font-weight: 600;
-  font-size: clamp(1.4rem, 4.5vw, 2.4rem);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  max-width: 22ch;
+  font-family: var(--stack-serif);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 4.5vw, 2.3rem);
+  line-height: 1.35;
+  max-width: 30ch;
 }
 .project-meta-head {
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.64rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
@@ -892,7 +1042,7 @@ p {
   gap: 1rem;
   padding-bottom: 0.7rem;
   border-bottom: 1px solid var(--line);
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.82rem;
 }
 .project-spec-row dt {
@@ -906,31 +1056,7 @@ p {
   letter-spacing: 0.02em;
 }
 
-/* palette strip — colour as a deliverable */
-.project-palette {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-.swatch {
-  flex: 1 1 6rem;
-  height: 4.6rem;
-  display: flex;
-  align-items: flex-end;
-  padding: 0.5rem;
-  border-radius: 2px;
-  font-family: var(--stack-text);
-  font-size: 0.58rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #fff;
-  mix-blend-mode: normal;
-}
-.swatch span {
-  mix-blend-mode: difference;
-}
-
-/* generative "plates" — stand-ins; real spreads drop in here */
+/* generative "plates" in the project's own colour — stand-ins for real spreads */
 .project-plates {
   display: grid;
   gap: 0.9rem;
@@ -938,14 +1064,12 @@ p {
 .plate {
   position: relative;
   overflow: hidden;
-  border-radius: 3px;
+  border: 2px solid var(--carbon);
+  border-radius: 8px;
   background:
-    radial-gradient(100% 120% at 80% 0%, var(--card-accent2), transparent 55%),
-    linear-gradient(
-      160deg,
-      var(--card-accent),
-      color-mix(in oklab, var(--card-accent) 45%, #000)
-    );
+    radial-gradient(120% 120% at 80% 0%, color-mix(in oklab, var(--card-bg) 70%, #fff),
+      transparent 60%),
+    var(--card-bg);
 }
 .plate.is-wide {
   aspect-ratio: 16 / 9;
@@ -960,16 +1084,16 @@ p {
   position: absolute;
   left: 0.9rem;
   bottom: 0.7rem;
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.6rem;
   letter-spacing: 0.2em;
-  color: #fff;
+  color: var(--cream);
   mix-blend-mode: difference;
 }
 .project-soon {
   grid-column: 1 / -1;
   margin-top: 0.4rem;
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.62rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -997,7 +1121,7 @@ p {
   text-align: right;
 }
 .project-nav-dir {
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.62rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -1008,19 +1132,10 @@ p {
   font-weight: 400;
   font-size: clamp(1.8rem, 6vw, 3rem);
   line-height: 0.95;
+  color: var(--tomato);
 }
 .project-nav-link:hover {
   background: var(--bg-2);
-}
-.back-link {
-  display: inline-flex;
-  align-self: flex-start;
-  font-family: var(--stack-text);
-  font-size: 0.66rem;
-  letter-spacing: 0.2em;
-  text-transform: lowercase;
-  color: #fff;
-  mix-blend-mode: difference;
 }
 
 /* ========================================================= FOTOFOLIO ===== */
@@ -1028,39 +1143,47 @@ p {
   position: relative;
 }
 .foto-manifesto {
-  max-width: 40ch;
-  margin-bottom: clamp(2.4rem, 7vw, 4.5rem);
+  max-width: 42ch;
+  margin-bottom: clamp(2.6rem, 8vw, 5rem);
 }
-.foto-manifesto .sect-intro {
+.foto-manifesto .sect-kicker {
   color: var(--ink-dim);
+}
+.foto-intro {
+  margin-top: 1.4rem;
+  font-family: var(--stack-serif);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 4.5vw, 2.2rem);
+  line-height: 1.4;
+  color: var(--ink);
 }
 /* the China thread, kept alive quietly — never a caption on the images */
 .foto-thread {
   position: absolute;
-  top: 30%;
-  right: 0.4rem;
+  top: 26%;
+  right: 0.2rem;
   writing-mode: vertical-rl;
   font-family: var(--stack-display);
   font-size: clamp(2rem, 6vw, 3.4rem);
   letter-spacing: 0.4em;
   color: var(--ink);
-  opacity: 0.05;
+  opacity: 0.06;
   pointer-events: none;
   user-select: none;
 }
 
-/* a darkroom wall of empty, "developing" frames — strictly text-free */
+/* asymmetric photo mosaic — strictly text-free */
 .foto-wall {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.9rem;
+  gap: clamp(1.4rem, 5vw, 3rem);
 }
 .foto-frame {
   position: relative;
   overflow: hidden;
+  border-radius: 10px;
   background: var(--bg-2);
   border: 1px solid var(--line);
-  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.6);
 }
 .foto-frame.is-portrait {
   aspect-ratio: 4 / 5;
@@ -1071,61 +1194,31 @@ p {
 .foto-frame.is-sq {
   aspect-ratio: 1 / 1;
 }
-.foto-frame::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    80% 80% at 50% 45%,
-    rgba(255, 255, 255, 0.05),
-    transparent 60%
-  );
-  opacity: 0;
-  animation: develop 6s var(--ease) infinite;
+.foto-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(1) contrast(1.05) brightness(0.95);
+  transition:
+    filter 1.2s var(--ease),
+    transform 1.2s var(--ease);
 }
-.foto-frame:nth-child(2)::before {
-  animation-delay: 1.2s;
-}
-.foto-frame:nth-child(3)::before {
-  animation-delay: 2.4s;
-}
-.foto-frame:nth-child(4)::before {
-  animation-delay: 0.6s;
-}
-.foto-frame:nth-child(5)::before {
-  animation-delay: 3s;
-}
-.foto-frame:nth-child(6)::before {
-  animation-delay: 1.8s;
-}
-@keyframes develop {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
+@media (hover: hover) {
+  .foto-frame:hover img {
+    filter: grayscale(0) contrast(1.05);
+    transform: scale(1.04);
   }
 }
-
-/* a breathing aperture — the photographic eye */
-.foto-aperture {
-  width: clamp(2.6rem, 8vw, 4rem);
-  height: clamp(2.6rem, 8vw, 4rem);
-  margin-top: 0.4rem;
-  color: var(--ink-dim);
-  animation: iris 5s var(--ease) infinite;
+.foto-coda {
+  margin-top: clamp(3rem, 9vw, 6rem);
+  text-align: center;
 }
-@keyframes iris {
-  0%,
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(0.86) rotate(45deg);
-    opacity: 0.9;
-  }
+.foto-coda .rule {
+  width: 3rem;
+  height: 1px;
+  margin: 0 auto;
+  background: var(--line-hot);
 }
 
 /* ============================================================= ABOUT ===== */
@@ -1137,45 +1230,52 @@ p {
 .about-hanzi-col {
   font-family: var(--stack-display);
   font-weight: 800;
-  font-size: clamp(4rem, 22vw, 9rem);
+  font-size: clamp(4rem, 22vw, 10rem);
   line-height: 0.86;
   letter-spacing: 0.04em;
-  color: var(--ink);
-  opacity: 0.08;
+  color: var(--tomato);
+  opacity: 0.12;
   user-select: none;
   pointer-events: none;
 }
 .about-lede {
-  font-family: var(--stack-display);
-  font-weight: 700;
-  font-size: clamp(1.6rem, 6vw, 3rem);
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  font-family: var(--stack-serif);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 6vw, 3.1rem);
+  line-height: 1.22;
   margin: 0;
-  max-width: 18ch;
+  max-width: 22ch;
 }
 .about-bio {
-  font-size: clamp(0.95rem, 2.4vw, 1.05rem);
-  line-height: 1.8;
-  color: var(--ink-dim);
-  max-width: 52ch;
-}
-.about-thread {
-  display: flex;
-  align-items: baseline;
-  gap: 0.7rem;
-  font-family: var(--stack-text);
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  color: var(--ink-dim);
-  max-width: 46ch;
+  font-family: var(--stack-serif);
+  font-size: clamp(1.15rem, 3vw, 1.5rem);
   line-height: 1.6;
+  color: var(--ink);
+  max-width: 46ch;
 }
-.about-thread b {
+.about-motif {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1.3rem;
+  align-self: flex-start;
+  background: var(--tomato);
+  color: var(--cream);
+  border: 2px solid var(--carbon);
+  border-radius: 14px;
+  box-shadow: 6px 6px 0 var(--carbon);
+}
+.about-motif b {
   font-family: var(--stack-display);
   font-weight: 800;
-  font-size: 1.4em;
-  color: var(--accent);
+  font-size: 2rem;
+  color: var(--lime);
+}
+.about-motif span {
+  font-family: var(--stack-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 .about-contact {
   display: flex;
@@ -1194,7 +1294,7 @@ p {
   gap: 1rem;
   padding: 0.85rem 0;
   border-top: 1px solid var(--line);
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.86rem;
 }
 .about-spec-row:last-child {
@@ -1215,7 +1315,7 @@ p {
   color: var(--accent);
 }
 .contact-meta {
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.66rem;
   letter-spacing: 0.18em;
   text-transform: lowercase;
@@ -1234,7 +1334,7 @@ p {
   border-top: 1px solid var(--line);
   background: var(--bg);
   color: var(--ink-dim);
-  font-family: var(--stack-text);
+  font-family: var(--stack-mono);
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: lowercase;
@@ -1248,7 +1348,7 @@ p {
 }
 .foot a:hover,
 .foot a:focus-visible {
-  color: var(--ink);
+  color: var(--accent);
 }
 .foot .spacer {
   flex: 1 1 auto;
@@ -1257,73 +1357,35 @@ p {
   color: var(--ink-ghost);
 }
 
-/* ============================================ SHADER FIELD (R3F accent) === */
-.shader-field {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-.shader-field-fallback {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(120% 120% at 20% 10%, var(--card-accent2), transparent 55%),
-    linear-gradient(
-      150deg,
-      var(--card-accent),
-      color-mix(in oklab, var(--card-accent) 50%, #000)
-    );
-}
-.shader-field canvas {
-  position: absolute !important;
-  inset: 0;
-  z-index: 1;
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-}
-
 /* ====================================================== ENHANCE (≥640) === */
 @media (min-width: 640px) {
   .g-wall {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: 78px;
-    grid-auto-flow: row dense;
-    gap: clamp(0.7rem, 1.6vw, 1.2rem);
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.4rem, 3vw, 2.4rem);
+    align-items: start;
   }
-  .g-tile {
-    min-height: 0;
-    grid-column: span 3;
-    grid-row: span 4;
-    margin: 0;
+  .g-card {
+    margin: 0 !important;
   }
-  .g-tile.is-lg {
-    grid-column: span 4;
-    grid-row: span 5;
+  /* hand-composed vertical offsets */
+  .g-card:nth-child(3n + 2) {
+    margin-top: clamp(2rem, 5vw, 4rem) !important;
   }
-  .g-tile.is-md {
-    grid-column: span 3;
-    grid-row: span 4;
-  }
-  .g-tile.is-sm {
-    grid-column: span 3;
-    grid-row: span 3;
+  .g-card:nth-child(3n) {
+    margin-top: clamp(1rem, 2.5vw, 2rem) !important;
   }
 
   .foto-wall {
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-flow: row dense;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.6rem, 4vw, 3.4rem);
+    align-items: center;
   }
-  .foto-frame {
-    grid-column: span 3;
+  .foto-frame:nth-child(3n + 2) {
+    transform: translateY(clamp(1.4rem, 4vw, 3rem));
   }
   .foto-frame:nth-child(3n) {
-    grid-column: span 2;
-  }
-  .foto-frame:nth-child(5n) {
-    grid-column: span 4;
+    transform: translateY(clamp(-1.4rem, -4vw, -0.6rem));
   }
 
   .project-body {
@@ -1365,52 +1427,54 @@ p {
 
 /* ===================================================== ENHANCE (≥1024) === */
 @media (min-width: 1024px) {
-  .g-wall {
-    grid-template-columns: repeat(12, 1fr);
-    grid-auto-rows: 84px;
-  }
-  .g-tile {
-    grid-column: span 6;
-    grid-row: span 5;
-  }
-  .g-tile.is-lg {
-    grid-column: span 7;
-    grid-row: span 7;
-  }
-  .g-tile.is-md {
-    grid-column: span 5;
-    grid-row: span 5;
-  }
-  .g-tile.is-sm {
-    grid-column: span 4;
-    grid-row: span 4;
-  }
-
   /* the split gate becomes a true vertical seam, side by side */
   .gate {
     flex-direction: row;
   }
-  .gate-half-inner {
-    padding-inline: clamp(2rem, 5vw, 5rem);
+  .gate-half--graph {
+    border-bottom: 0;
+    border-right: 1px solid var(--cream);
+    justify-content: flex-start;
   }
-  .gate-pivot {
-    flex-direction: row;
+  .gate-half--foto {
+    justify-content: flex-end;
   }
-  .gate-pivot-gloss {
-    writing-mode: vertical-rl;
+  /* anchor each soul's name toward its OUTER edge so the growing half never
+     slides its name across the centre — the 設計師 + "scegli un'anima" pivot
+     stays clean and fixed at viewport centre on hover. */
+  .gate-half--graph .gate-half-inner {
+    align-items: flex-start;
+    text-align: left;
+    padding-inline: clamp(1.6rem, 4vw, 4rem);
+  }
+  .gate-half--foto .gate-half-inner {
+    align-items: flex-end;
+    text-align: right;
+    padding-inline: clamp(1.6rem, 4vw, 4rem);
+  }
+  .gate-han {
+    font-size: 50vh;
   }
 
-  .foto-frame {
-    grid-column: span 4;
+  .g-wall {
+    grid-template-columns: repeat(3, 1fr);
   }
-  .foto-frame:nth-child(3n) {
-    grid-column: span 3;
+  .g-card:nth-child(3n + 2) {
+    margin-top: clamp(2.4rem, 6vw, 5rem) !important;
+  }
+  .g-card:nth-child(3n) {
+    margin-top: clamp(4rem, 10vw, 8rem) !important;
+  }
+
+  .foto-wall {
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
   }
   .foto-frame:nth-child(4n) {
-    grid-column: span 5;
+    transform: translateY(clamp(2rem, 6vw, 4rem));
   }
-  .foto-frame:nth-child(7n) {
-    grid-column: span 4;
+  .foto-frame:nth-child(4n + 1) {
+    transform: translateY(clamp(-2rem, -6vw, -1rem));
   }
 }
 
@@ -1441,7 +1505,8 @@ html.entering .glow {
     scroll-behavior: auto !important;
   }
   .cur-dot,
-  .cur-ring {
+  .cur-ring,
+  .grain {
     display: none;
   }
   body {
@@ -1451,12 +1516,15 @@ html.entering .glow {
     opacity: 1;
   }
   /* the gate halves never grow/shrink under reduced motion */
-  .gate[data-active] .gate-half {
+  .gate:has(.gate-half:hover) .gate-half,
+  .gate:has(.gate-half:focus-visible) .gate-half {
     flex-grow: 1 !important;
-    opacity: 1 !important;
   }
-  .foto-frame::before,
-  .foto-aperture {
-    animation: none;
+  /* art-directed offsets collapse to a clean stack */
+  .g-card,
+  .foto-frame {
+    transform: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 }

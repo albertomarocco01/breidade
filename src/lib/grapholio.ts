@@ -1,180 +1,166 @@
-// Grapholio — Giulia Breida's graphic-design soul. Bold, colourful, Gen-Z.
-// Each project carries a handwritten title (--font-hand) and a vivid per-project
-// accent that floods the loud grapholio world. The mosaic uses `size` to compose
-// an asymmetric, hand-placed wall; the case-study page uses year / role / tagline.
+// Grapholio — Giulia Breida's graphic-design soul. Bold, colourful, hand-composed.
+// Each project is a VIVID card painted in its own protagonist colour (bg/fg) and
+// carries a HANDWRITTEN title (--font-hand, La Belle Aurore — the through-line of
+// this soul). Per-project colour assignments are fixed by the art direction.
 //
-// This file is the content source. Discipline labels (category, role) are kept as
-// international design jargon, as in any Italian studio. Narrative copy that must
-// read Italian-first lives bilingually in `tagline` ({ it, en }).
+// CONTENT RULE: title, category and description are Giulia's scraped copy, verbatim
+// (English; reused for both locales until an Italian translation exists). No
+// invented taglines, tags, chinese titles or marketing manifesto.
 
-import type { Locale } from "@/lib/i18n";
-
-/** Mosaic footprint hint — drives the asymmetric grapholio wall. */
-export type ProjectSize = "sm" | "md" | "lg";
+// Local placeholder covers (src/assets) sized 16:10 — Giulia's real covers drop
+// in by swapping the import (or the file on disk). Typed `any` by Next's *.svg
+// module declaration; rendered through next/image.
+import boemCover from "@/assets/grapholio/boem.svg";
+import anconaCover from "@/assets/grapholio/ancona.svg";
+import flashbackCover from "@/assets/grapholio/flashback.svg";
+import notalaCover from "@/assets/grapholio/notala.svg";
+import durexCover from "@/assets/grapholio/durex.svg";
+import sanbaudiaCover from "@/assets/grapholio/sanbaudia.svg";
+import kombatCover from "@/assets/grapholio/kombat-xxv.svg";
+import kappaFuturCover from "@/assets/grapholio/kappa-futur.svg";
+import kappa433Cover from "@/assets/grapholio/kappa-433.svg";
 
 export interface Project {
-  /** stable key, also used for the accent + i18n lookups */
+  /** stable key, also used for i18n lookups */
   id: string;
   /** URL segment under /grapholio/<slug> */
   slug: string;
   /** handwritten display title (rendered in --font-hand) */
   title: string;
-  /** design discipline label (headline) */
+  /** design discipline label (scraped) */
   category: string;
-  /** finer discipline tags for the case-study spec line */
-  role: string;
-  /** year of the work */
-  year: number;
-  /** vivid accent hex — the protagonist colour for this project */
-  accent: string;
-  /** a second hex, used to build the generative gradient field / stand-in cover */
-  accent2: string;
-  /** one-line story, Italian-first + English (case study + mosaic) */
-  tagline: { it: string; en: string };
-  /** mosaic footprint */
-  size: ProjectSize;
-  /** cover image path (supplied later; the gradient field is the stand-in) */
-  cover?: string;
-  /** gallery image paths (supplied later; gradient plates are the stand-ins) */
-  gallery?: string[];
+  /** the project's protagonist background colour (hex) */
+  bg: string;
+  /** contrasting foreground colour (hex) */
+  fg: string;
+  /** scraped description, verbatim (EN; reused for both locales) */
+  description: string;
+  /** hand-placed card rotation in degrees */
+  rot: number;
+  /** local placeholder cover; real cover drops in here */
+  cover: unknown;
+  /** gallery image paths (supplied later; plates stand in) */
+  gallery?: unknown[];
 }
 
-// Display order matches the brief (1 → 9).
+const TOMATO = "#FF3E2B";
+const CARBON = "#121212";
+const BLUE = "#0A369D";
+const LIME = "#DFFF00";
+const TEAL = "#0DCD9D";
+const CREAM = "#FCFAF2";
+
+// Display order matches the brief (1 → 9). Colours per the art direction:
+// boem tomato · ancona blue · flashback teal · notala lime · durex tomato ·
+// sanbaudia cream · kombat carbon · kappa-futur tomato · kappa-433 teal.
 export const PROJECTS: Project[] = [
   {
     id: "boem",
     slug: "boem",
     title: "Boem",
-    category: "Pack Design",
-    role: "identity · packaging · art direction",
-    year: 2024,
-    accent: "#ff2d6f",
-    accent2: "#ffd400",
-    size: "lg",
-    tagline: {
-      it: "Packaging che urla — colore, energia e attitudine Gen-Z.",
-      en: "Packaging that shouts — colour, energy and Gen-Z attitude.",
-    },
+    category: "Pack design",
+    bg: TOMATO,
+    fg: CREAM,
+    description:
+      "The BOEM packaging design challenge: talking from the shelves to the toughest generation of all: Gen Z. Its packaging doesn't whisper—it demands attention, exploding with color, energy, and attitude.",
+    rot: -2,
+    cover: boemCover,
   },
   {
     id: "ancona",
     slug: "ancona",
     title: "Ancora, Ancona",
-    category: "City Brand",
-    role: "identity · city brand",
-    year: 2023,
-    accent: "#1ca7ec",
-    accent2: "#1b43ff",
-    size: "md",
-    tagline: {
-      it: "Un'identità legata al mare e alla vita lenta del lungomare.",
-      en: "An identity tied to the sea and slow waterfront life.",
-    },
+    category: "City Brand Design",
+    bg: BLUE,
+    fg: CREAM,
+    description:
+      "The Ancona City Branding project redefines the city's identity, highlighting its deep connection to the sea. It celebrates the slow rhythm of life along the waterfront, creating a memorable and immersive brand experience.",
+    rot: 1.5,
+    cover: anconaCover,
   },
   {
     id: "flashback",
     slug: "flashback",
     title: "Flashback",
-    category: "Wayfinding",
-    role: "signage · wayfinding system",
-    year: 2023,
-    accent: "#ffb400",
-    accent2: "#ff2d6f",
-    size: "sm",
-    tagline: {
-      it: "Un ex orfanotrofio rinato come spazio culturale: segni e segnali.",
-      en: "An ex-orphanage reborn as a cultural space: signs and signals.",
-    },
+    category: "Signal System Design",
+    bg: TEAL,
+    fg: CARBON,
+    description:
+      "From an orphanage to a multipurpose cultural space, from which a brand identity and a visual system are born that will guide the visitor in a new way of conceiving art.",
+    rot: -1,
+    cover: flashbackCover,
   },
   {
     id: "notala",
     slug: "notala",
     title: "NotaLa",
     category: "Brand Design",
-    role: "identity · brand",
-    year: 2024,
-    accent: "#7c4dff",
-    accent2: "#00d6c2",
-    size: "md",
-    tagline: {
-      it: "Cabine telefoniche abbandonate trasformate in micro spazi d'arte.",
-      en: "Abandoned phone booths turned into micro art spaces.",
-    },
+    bg: LIME,
+    fg: CARBON,
+    description:
+      "A project transforming abandoned phone booths into small artistic spaces. An urban regeneration initiative bringing installations, sound, and visual art into daily life.",
+    rot: 2,
+    cover: notalaCover,
   },
   {
     id: "durex",
     slug: "durex",
     title: "Durex",
-    category: "ADV",
-    role: "art direction · print adv",
-    year: 2022,
-    accent: "#2d5bff",
-    accent2: "#ff2d6f",
-    size: "sm",
-    tagline: {
-      it: "Advertising stampato, ironico e diretto.",
-      en: "Print advertising — ironic and direct.",
-    },
+    category: "ADV Design",
+    bg: TOMATO,
+    fg: CREAM,
+    description:
+      "Advertising idea following Durex' ironic TOV for print advertising.",
+    rot: -1.5,
+    cover: durexCover,
   },
   {
     id: "sanbaudia",
     slug: "sanbaudia",
     title: "Sanbaudia",
-    category: "Editorial",
-    role: "editorial · art direction",
-    year: 2024,
-    accent: "#e84393",
-    accent2: "#ffd400",
-    size: "lg",
-    tagline: {
-      it: "Un editoriale pop sulle chiese e i luoghi sacri di Torino.",
-      en: "A pop editorial on Torino's churches and holy places.",
-    },
+    category: "Editorial Design",
+    bg: CREAM,
+    fg: CARBON,
+    description:
+      "Editorial Design with a pop style for a new local magazine showing around the churches and holy places of Torino and surroundings, explaining the history of catholicism from a different perspective.",
+    rot: 1,
+    cover: sanbaudiaCover,
   },
   {
     id: "kombat-xxv",
     slug: "kombat-xxv",
     title: "Kombat XXV",
-    category: "Graphics",
-    role: "graphics · art direction",
-    year: 2023,
-    accent: "#ff6b00",
-    accent2: "#0a0a0a",
-    size: "md",
-    tagline: {
-      it: "Il 25° anniversario di Kombat, firmato Kappa.",
-      en: "Kombat's 25th anniversary, by Kappa.",
-    },
+    category: "Graphic Design",
+    bg: CARBON,
+    fg: CREAM,
+    description:
+      "Celebrating XXVth anniversary of Kombat with a special project signed by Kappa.",
+    rot: -2,
+    cover: kombatCover,
   },
   {
     id: "kappa-futur",
     slug: "kappa-futur",
     title: "Kappa Futur",
-    category: "Graphics",
-    role: "graphics · festival identity",
-    year: 2025,
-    accent: "#00e5ff",
-    accent2: "#1b43ff",
-    size: "sm",
-    tagline: {
-      it: "Festival techno: «il futuro è a Torino».",
-      en: "A techno festival — 'the futur is in Torino'.",
-    },
+    category: "Graphic Design",
+    bg: TOMATO,
+    fg: CREAM,
+    description:
+      "The futur is in Torino: Save the date for the most iconic techno festival in Europe.",
+    rot: 1.5,
+    cover: kappaFuturCover,
   },
   {
     id: "kappa-433",
     slug: "kappa-433",
     title: "Kappa x 433",
     category: "Pack Design",
-    role: "packaging · graphics",
-    year: 2024,
-    accent: "#00c853",
-    accent2: "#0a0a0a",
-    size: "md",
-    tagline: {
-      it: "La collab calcistica Kappa × 433.",
-      en: "The Kappa × 433 football collab.",
-    },
+    bg: TEAL,
+    fg: CARBON,
+    description:
+      "Together for the beautiful game: what happens when omini brand Kappa meets 433.",
+    rot: -1,
+    cover: kappa433Cover,
   },
 ];
 
@@ -201,9 +187,4 @@ export function projectNeighbours(slug: string): { prev: Project; next: Project 
     prev: PROJECTS[(i - 1 + len) % len],
     next: PROJECTS[(i + 1) % len],
   };
-}
-
-/** Pick the locale-appropriate tagline. */
-export function tagline(project: Project, locale: Locale): string {
-  return project.tagline[locale];
 }

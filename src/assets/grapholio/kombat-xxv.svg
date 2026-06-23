@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img">
+  <rect width="1600" height="1000" fill="#121212"/>
+  <circle cx="1280" cy="230" r="540" fill="#FCFAF2" opacity="0.10"/>
+  <circle cx="240" cy="900" r="360" fill="#FCFAF2" opacity="0.06"/>
+  <text x="800" y="690" text-anchor="middle" font-family="Syne, system-ui, sans-serif" font-weight="800" font-size="560" fill="#FCFAF2" opacity="0.12">設計</text>
+  <text x="70" y="930" font-family="ui-monospace, monospace" font-size="34" letter-spacing="9" fill="#FCFAF2" opacity="0.55">GIULIA BREIDA · 07 · COVER PLACEHOLDER</text>
+</svg>

@@ -8,5 +8,5 @@ import { Gallery } from "@/components/grapholio/Gallery";
 export default async function GrapholioPage() {
   const locale = await getLocale();
   const dict = getDictionary(locale);
-  return <Gallery projects={PROJECTS} dict={dict} locale={locale} />;
+  return <Gallery projects={PROJECTS} dict={dict} />;
 }

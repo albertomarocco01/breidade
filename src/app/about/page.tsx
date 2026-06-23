@@ -1,8 +1,9 @@
 import { CONTACT, getDictionary, getLocale, HANZI } from "@/lib/i18n";
 
-// ABOUT (/about) — warm-paper world. The China / eastern-cultures thread is
-// foregrounded here: an oversized 設計師 column and a one-line gloss. Contacts
-// read as a technical spec sheet (Space Mono). Fully themed; quiet CSS reveal.
+// ABOUT (/about) — warm-paper world. Giulia's verbatim bio (the China / eastern-
+// cultures thread is foregrounded by an oversized 設計師 column and the motif
+// stamp). Contacts read as a technical spec sheet (JetBrains Mono). The only body
+// copy is the scraped bio; everything else is structural chrome.
 export default async function AboutPage() {
   const locale = await getLocale();
   const dict = getDictionary(locale);
@@ -12,14 +13,13 @@ export default async function AboutPage() {
       <section className="container about" aria-label={dict.about.label}>
         <div className="about-intro">
           <span className="sect-kicker">{dict.about.label}</span>
-          <p className="about-lede display">{dict.about.lede}</p>
           <p className="about-bio">{dict.about.bio}</p>
-          <p className="about-thread">
+          <p className="about-motif">
             <b lang="zh" aria-hidden="true">
               {HANZI}
             </b>
             <span>
-              {dict.about.thread} {dict.about.designer}
+              {HANZI} · {dict.about.designer}
             </span>
           </p>
         </div>

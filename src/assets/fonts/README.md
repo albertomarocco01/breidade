@@ -6,14 +6,15 @@ This is the home for **`breida-hand.woff2`** — Giulia Breida's own handwriting
 to be digitised with [Calligraphr](https://www.calligraphr.com/) and dropped in
 here.
 
-Until that file exists, `--font-hand` is served by the **Caveat** Google font as
-a graceful placeholder (see `src/app/layout.tsx`).
+Until that file exists, `--font-hand` is served by the **La Belle Aurore** Google
+font as a graceful placeholder (see `src/app/layout.tsx`). The secondary hand,
+`--font-hand2`, is **Reenie Beanie**. (Caveat is intentionally NOT used.)
 
-### Wiring it up (Prompt 2)
+### Wiring it up
 
 `next/font/local` reads the font file at **build time**, so the real font must
 be present before you enable it or the build will fail. Once
-`breida-hand.woff2` is in this folder, replace the Caveat placeholder in
+`breida-hand.woff2` is in this folder, replace the La Belle Aurore placeholder in
 `src/app/layout.tsx` with the commented `localFont({ … })` block already prepared
 there:
 
@@ -25,7 +26,7 @@ const hand = localFont({
   variable: "--font-hand",
   display: "swap",
   weight: "400",
-  fallback: ["Caveat", "cursive"],
+  fallback: ["La Belle Aurore", "cursive"],
   adjustFontFallback: "Arial", // 'Arial' | 'Times New Roman' | false
 });
 ```

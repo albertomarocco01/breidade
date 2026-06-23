@@ -1,27 +1,27 @@
 "use client";
 
-// THE GATE — "due anime". A living vertical seam (horizontal on mobile) splits
-// the screen into Giulia's two souls: GRAPHOLIO (a loud risograph field) and
-// FOTOFOLIO (a quiet darkroom). On the seam stands 設計師 — "the designer" —
-// the pivot between them. Hovering a half makes that world breathe open; choosing
-// one wipes across in its colour and enters. The whole half is the door, so the
-// gate IS the navigation (the topbar nav is hidden here).
+// THE GATE — "due anime". Two full-height portals split the screen into Giulia's
+// two souls: GRAPHOLIO (tomato, loud, 設計) and FOTOFOLIO (carbon, quiet, 攝影).
+// On the seam stands 設計師 — "the designer" — with the instruction "scegli
+// un'anima". Hovering a portal makes that world breathe open (CSS flex-grow);
+// clicking it is a REAL route navigation, wiped across in the world's colour.
+// The whole half is the door, so the gate IS the navigation (topbar nav hidden).
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useApp } from "@/components/providers/AppProvider";
 import { registerGsap, FIELD_EASE } from "@/lib/motion";
-import type { Dictionary } from "@/lib/i18n";
+import type { Contact, Dictionary } from "@/lib/i18n";
 
-type Side = "graph" | "foto" | null;
+const TOMATO = "#FF3E2B";
+const CARBON = "#121212";
 
-export function Gate({ dict }: { dict: Dictionary }) {
+export function Gate({ dict, contact }: { dict: Dictionary; contact: Contact }) {
   const { entered, reducedMotion } = useApp();
   const router = useRouter();
-  const [active, setActive] = useState<Side>(null);
 
   const gateRef = useRef<HTMLDivElement>(null);
   const graphRef = useRef<HTMLAnchorElement>(null);
@@ -29,8 +29,8 @@ export function Gate({ dict }: { dict: Dictionary }) {
   const pivotRef = useRef<HTMLDivElement>(null);
   const wipeRef = useRef<HTMLDivElement>(null);
 
-  // Entrance — the seam opens: the two halves slide apart, the pivot scales in,
-  // the world labels rise. Skipped under reduced motion (everything is at rest).
+  // Entrance — the two portals fade/slide in, the pivot scales in, the labels
+  // rise. Skipped under reduced motion (everything is at rest, fully visible).
   useGSAP(
     () => {
       if (!entered || reducedMotion) return;
@@ -94,81 +94,70 @@ export function Gate({ dict }: { dict: Dictionary }) {
   };
 
   return (
-    <div
-      className="section gate"
-      data-section="gate"
-      data-active={active ?? undefined}
-      ref={gateRef}
-    >
-      <p className="gate-brand">{dict.gate.eyebrow}</p>
+    <div className="section gate" data-section="gate" ref={gateRef}>
+      {/* floating brand header — serif name + meta, mix-blend over both souls */}
+      <header className="gate-head">
+        <div>
+          <p className="gate-name serif">{contact.name}</p>
+          <p className="gate-meta">
+            <span>Torino, IT</span>
+            <span className="dot">•</span>
+            <span>Born {contact.born}</span>
+          </p>
+        </div>
+        <Link href="/about" className="gate-info">
+          <span>{dict.about.label}</span>
+          <span className="hand2">{dict.gate.info}</span>
+        </Link>
+      </header>
 
-      {/* GRAPHOLIO — the loud half */}
+      {/* GRAPHOLIO — the loud half (設計) */}
       <Link
         ref={graphRef}
         href="/grapholio"
         className="gate-half gate-half--graph"
         aria-label={dict.grapholio.aria}
-        onMouseEnter={() => setActive("graph")}
-        onMouseLeave={() => setActive(null)}
-        onClick={(e) => enter(e, "/grapholio", "#ff2d6f")}
+        onClick={(e) => enter(e, "/grapholio", TOMATO)}
       >
-        <span className="gate-field" aria-hidden="true" />
+        <span className="gate-han" aria-hidden="true" lang="zh">
+          設計
+        </span>
         <span className="gate-half-inner">
-          <span className="gate-world-num gate-reveal">
-            01 —{" "}
-            <span lang="zh" aria-hidden="true">
-              設計
-            </span>
-          </span>
-          <span className="gate-world-name display gate-reveal">Grapholio</span>
-          <span className="gate-world-disc gate-reveal">
-            {dict.grapholio.label}
-          </span>
+          <span className="gate-disc gate-reveal">{dict.grapholio.label}</span>
+          <span className="gate-world gate-reveal">Grapholio</span>
           <span className="gate-enter gate-reveal">
             {dict.gate.enter} <span className="arr">→</span>
           </span>
         </span>
       </Link>
 
-      {/* FOTOFOLIO — the quiet half */}
+      {/* FOTOFOLIO — the quiet half (攝影) */}
       <Link
         ref={fotoRef}
         href="/fotofolio"
         className="gate-half gate-half--foto"
         aria-label={dict.fotofolio.aria}
-        onMouseEnter={() => setActive("foto")}
-        onMouseLeave={() => setActive(null)}
-        onClick={(e) => enter(e, "/fotofolio", "#0c0c0d")}
+        onClick={(e) => enter(e, "/fotofolio", CARBON)}
       >
-        <span className="gate-field" aria-hidden="true" />
+        <span className="gate-han" aria-hidden="true" lang="zh">
+          攝影
+        </span>
         <span className="gate-half-inner">
-          <span className="gate-world-num gate-reveal">
-            02 —{" "}
-            <span lang="zh" aria-hidden="true">
-              攝影
-            </span>
-          </span>
-          <span className="gate-world-name display gate-reveal">Fotofolio</span>
-          <span className="gate-world-disc gate-reveal">
-            {dict.fotofolio.label}
-          </span>
+          <span className="gate-disc gate-reveal">{dict.fotofolio.label}</span>
+          <span className="gate-world serif gate-reveal">Fotofolio</span>
           <span className="gate-enter gate-reveal">
             {dict.gate.enter} <span className="arr">→</span>
           </span>
         </span>
       </Link>
 
-      {/* the seam pivot — 設計師, the designer between her two souls */}
+      {/* the seam pivot — ONE 設計師 motif + the "scegli un'anima" instruction */}
       <div className="gate-pivot" ref={pivotRef} aria-hidden="true">
         <span className="gate-pivot-mark" lang="zh">
           設計師
         </span>
-        <span className="gate-pivot-gloss">{dict.gate.pivot}</span>
+        <span className="gate-pivot-cta">{dict.gate.choose}</span>
       </div>
-
-      <Link href="/about" className="gate-info">
-        {dict.gate.info} ↗
-      </Link>
 
       <div className="gate-wipe" ref={wipeRef} aria-hidden="true" />
     </div>

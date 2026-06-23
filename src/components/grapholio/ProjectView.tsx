@@ -1,11 +1,11 @@
 "use client";
 
 // GRAPHOLIO case study — a real treatment for one project. A full-bleed hero
-// where the WebGL risograph field (lazy, with a CSS fallback) is flooded by the
-// project's accent and the handwritten title sits oversized on top; then a
-// technical spec, a palette strip (colour as a deliverable), generative "plates"
-// standing in for the real spreads, and prev/next. Motion is a flash-free GSAP
-// entrance, fully disabled under reduced motion.
+// flooded by the project's OWN colour (CSS-driven — no WebGL), with a faded 設計
+// watermark and the handwritten title oversized on top; then the scraped brief, a
+// compact spec, generative "plates" in the project's colour standing in for the
+// real spreads, and prev/next. Motion is a flash-free GSAP entrance, fully
+// disabled under reduced motion.
 
 import { useRef } from "react";
 import Link from "next/link";
@@ -13,11 +13,11 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useApp } from "@/components/providers/AppProvider";
 import { registerGsap, FIELD_EASE } from "@/lib/motion";
-import { ShaderField } from "@/components/canvas/ShaderField";
-import type { Project } from "@/lib/grapholio";
-import type { Dictionary, Locale } from "@/lib/i18n";
+import { PROJECTS, type Project } from "@/lib/grapholio";
+import type { Dictionary } from "@/lib/i18n";
 
 const PLATES = ["is-wide", "is-tall", "is-sq", "is-sq", "is-wide"] as const;
+const TOTAL = String(PROJECTS.length).padStart(2, "0");
 
 export function ProjectView({
   project,
@@ -25,14 +25,12 @@ export function ProjectView({
   next,
   number,
   dict,
-  locale,
 }: {
   project: Project;
   prev: Project;
   next: Project;
   number: number;
   dict: Dictionary;
-  locale: Locale;
 }) {
   const { entered, reducedMotion } = useApp();
   const rootRef = useRef<HTMLElement>(null);
@@ -81,79 +79,46 @@ export function ProjectView({
       ref={rootRef}
       style={
         {
-          "--card-accent": project.accent,
-          "--card-accent2": project.accent2,
+          "--card-bg": project.bg,
+          "--card-fg": project.fg,
         } as React.CSSProperties
       }
     >
       <header className="project-hero">
-        <div className="project-hero-field">
-          <ShaderField
-            accent={project.accent}
-            accent2={project.accent2}
-            accent3="#ffd400"
-          />
-        </div>
+        <span className="project-hero-han" aria-hidden="true" lang="zh">
+          設計
+        </span>
         <div className="project-hero-inner">
           <Link href="/grapholio" className="back-link">
             ← {dict.project.back}
           </Link>
           <p className="project-overline">
-            <span className="project-num">{num}</span>
+            <span className="project-num">
+              {num} / {TOTAL}
+            </span>
             <span>{project.category}</span>
-            <span>{project.year}</span>
           </p>
           <h1 className="project-title hand">{project.title}</h1>
         </div>
       </header>
 
       <div className="project-body">
-        <p className="project-brief">{project.tagline[locale]}</p>
+        <p className="project-brief">{project.description}</p>
 
         <div>
-          <p className="project-meta-head">{dict.project.role}</p>
+          <p className="project-meta-head">{dict.project.brief}</p>
           <dl className="project-spec">
-            <div className="project-spec-row">
-              <dt>{dict.project.year}</dt>
-              <dd>{project.year}</dd>
-            </div>
-            <div className="project-spec-row">
-              <dt>{dict.project.role}</dt>
-              <dd>{project.role}</dd>
-            </div>
             <div className="project-spec-row">
               <dt>{dict.grapholio.label}</dt>
               <dd>{project.category}</dd>
             </div>
+            <div className="project-spec-row">
+              <dt>nº</dt>
+              <dd>
+                {num} / {TOTAL}
+              </dd>
+            </div>
           </dl>
-        </div>
-
-        <div>
-          <p className="project-meta-head">{dict.project.palette}</p>
-          <div className="project-palette">
-            <span className="swatch" style={{ background: project.accent }}>
-              <span>{project.accent}</span>
-            </span>
-            <span className="swatch" style={{ background: project.accent2 }}>
-              <span>{project.accent2}</span>
-            </span>
-            <span
-              className="swatch"
-              style={{
-                background: `color-mix(in oklab, ${project.accent} 60%, #fff)`,
-              }}
-            >
-              <span>tint</span>
-            </span>
-            <span
-              className="swatch"
-              style={{
-                background: `color-mix(in oklab, ${project.accent} 55%, #000)`,
-              }}
-            >
-              <span>shadow</span>
-            </span>
-          </div>
         </div>
 
         <div className="project-plates">

@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Syne, Space_Mono, Permanent_Marker } from "next/font/google";
+import {
+  Syne,
+  Italiana,
+  JetBrains_Mono,
+  La_Belle_Aurore,
+  Reenie_Beanie,
+} from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -12,38 +18,53 @@ import { Shell } from "@/components/chrome/Shell";
 import { FieldMount } from "@/components/canvas/FieldMount";
 import { CONTACT, getDictionary, getLocale } from "@/lib/i18n";
 
-// --font-display — Syne: the quirky, expanded display grotesk that reads as
-// "contemporary art portfolio". Drives oversized headlines, the wordmark, the
-// world names on the gate. Variable family (400–800).
+// The approved type system (ported from the Google AI Studio look).
+// --font-display — Syne: the expanded display grotesk. The shout: world names on
+// the gate, the wordmark, oversized headlines. Variable family (400–800).
 const display = Syne({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-display",
 });
 
-// --font-text — Space Mono: the technical, zine-spec voice for meta, labels,
-// nav, numbers and body. The cold counterweight to Syne's shout and the hand's
-// warmth. Not a variable font, so weights are explicit.
-const text = Space_Mono({
+// --font-serif — Italiana: the high-contrast editorial serif. The quiet,
+// art-direction voice — the photographic (fotofolio) soul and bios.
+const serif = Italiana({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: "400",
   display: "swap",
-  variable: "--font-text",
+  variable: "--font-serif",
 });
 
-// --font-hand — handwriting, the through-line of the grapholio world. PLACEHOLDER:
-// Permanent Marker — a loud, characterful marker hand (deliberately NOT Caveat).
-// It stands in for Giulia's own digitised handwriting, dropped in later via the
-// commented localFont seam below.
-const hand = Permanent_Marker({
+// --font-mono — JetBrains Mono: the technical, zine-spec voice for meta, labels,
+// nav, numbers and small print. Variable family.
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+});
+
+// --font-hand — La Belle Aurore: the primary handwriting, the through-line of the
+// grapholio world (project titles). PLACEHOLDER for Giulia's own digitised hand,
+// dropped in later via the commented localFont seam below. (Caveat is explicitly
+// NOT used.)
+const hand = La_Belle_Aurore({
   subsets: ["latin"],
   weight: "400",
   display: "swap",
   variable: "--font-hand",
 });
 
+// --font-hand2 — Reenie Beanie: the secondary hand for looser annotations / glosses.
+const hand2 = Reenie_Beanie({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-hand2",
+});
+
 /* SEAM — once src/assets/fonts/breida-hand.woff2 (Giulia's real hand) is supplied,
-   replace the Permanent Marker placeholder above with the local font. next/font/local
+   replace the La Belle Aurore placeholder above with the local font. next/font/local
    reads the file at BUILD time, so keep this commented until the woff2 exists or the
    build will fail.
 
@@ -53,7 +74,7 @@ const hand = Permanent_Marker({
      variable: "--font-hand",
      display: "swap",
      weight: "400",
-     fallback: ["Permanent Marker", "cursive"],
+     fallback: ["La Belle Aurore", "cursive"],
      adjustFontFallback: "Arial", // 'Arial' | 'Times New Roman' | false
    });
 */
@@ -107,7 +128,7 @@ export const metadata: Metadata = {
 
 // Next 16: themeColor / colorScheme / scaling live on `viewport`, NOT `metadata`.
 export const viewport: Viewport = {
-  themeColor: "#f3efe4",
+  themeColor: "#FCFAF2",
   colorScheme: "light",
   width: "device-width",
   initialScale: 1,
@@ -121,7 +142,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${display.variable} ${text.variable} ${hand.variable}`}
+      className={`${display.variable} ${serif.variable} ${mono.variable} ${hand.variable} ${hand2.variable}`}
     >
       <body>
         <AppProvider>

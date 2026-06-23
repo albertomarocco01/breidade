@@ -49,3 +49,6 @@ next-env.d.ts
 
 # local scratch
 .devlog*
+
+# read-only design references (look/content source of truth; never built or shipped)
+/reference/

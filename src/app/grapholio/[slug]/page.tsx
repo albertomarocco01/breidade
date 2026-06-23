@@ -48,7 +48,6 @@ export default async function ProjectPage({ params }: Props) {
       next={next}
       number={number}
       dict={dict}
-      locale={locale}
     />
   );
 }

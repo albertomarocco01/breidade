@@ -1,10 +1,16 @@
-// Hand-rolled IT/EN localization — ported from the reference architecture.
-// No i18n library, no [lang] routing, no middleware: the active locale is read
-// from a `locale` cookie on the server (defaulting to Italian, the canonical
-// language for this brand) and the matching dictionary is threaded to components
-// as a prop. Proper nouns and brand tokens (the names Grapholio / Fotofolio, the
-// project titles, "Instagram", "LinkedIn", the email, the phone number, 設計師)
-// stay untranslated on purpose.
+// Hand-rolled IT/EN localization. No i18n library, no [lang] routing, no
+// middleware: the active locale is read from a `locale` cookie on the server
+// (defaulting to Italian, the canonical language for this brand) and the matching
+// dictionary is threaded to components as a prop.
+//
+// HARD CONTENT RULE: the only narrative copy on this site is Giulia's own scraped
+// text. It is stored in ENGLISH (the form it was supplied in). Italian falls back
+// to the English copy for content that has not been translated yet — we never
+// invent Italian. Chrome / navigation / UI affordances stay IT-first.
+//
+// Proper nouns and brand tokens (Grapholio / Fotofolio, project titles, the email,
+// the phone number, "Instagram", "LinkedIn", 設計師, "scegli un'anima") stay
+// untranslated on purpose.
 
 import { cookies } from "next/headers";
 
@@ -26,34 +32,32 @@ export interface Dictionary {
     it: string;
   };
   gate: {
-    eyebrow: string;
-    tagline: string;
+    /** the fixed instruction label on the seam (Claude Design) — a signature */
+    choose: string;
     enter: string;
     /** aria-label for the two "doors" into the two souls */
     doors: string;
-    /** small "info / about" link inside the gate */
+    /** small "info / about" affordance inside the gate */
     info: string;
-    /** accessible name + gloss for the 設計師 pivot on the seam */
+    /** accessible name for the 設計師 pivot on the seam */
     pivot: string;
   };
   grapholio: {
     /** section landmark label */
     aria: string;
+    /** discipline label (also the gate portal sublabel) */
     label: string;
-    intro: string;
   };
   fotofolio: {
     aria: string;
     label: string;
+    /** the scraped series description — the ONLY fotofolio copy (EN in both) */
     intro: string;
   };
   /** grapholio case-study chrome */
   project: {
     back: string;
-    year: string;
-    role: string;
     brief: string;
-    palette: string;
     /** stand-in note where real spreads will go */
     soon: string;
     next: string;
@@ -61,13 +65,11 @@ export interface Dictionary {
   };
   about: {
     label: string;
-    lede: string;
+    /** Giulia's verbatim scraped bio (EN in both) */
     bio: string;
     contact: string;
-    /** gloss for the 設計師 thread */
+    /** literal gloss of the 設計師 motif */
     designer: string;
-    /** one line on the China / eastern-cultures thread */
-    thread: string;
   };
   footer: {
     rights: string;
@@ -75,6 +77,16 @@ export interface Dictionary {
     linkedin: string;
   };
 }
+
+// ---- scraped, English-only content (reused by both locales) ----
+const SCRAPED = {
+  // Fotofolio series "Hand other stories" — the only text near the photographs.
+  fotofolioIntro:
+    "A collection of images that tells stories through the hand of people with different social backgrounds.",
+  // About — Giulia's bio, verbatim.
+  aboutBio:
+    "Giulia Breida, 2001, I am an italian graphic designer and photographer, with a passion for China and eastern cultures. Currently working in the marketing field, I create visual projects from ideas with a fresh, bold and colorful style.",
+} as const;
 
 const en: Dictionary = {
   nav: {
@@ -89,42 +101,33 @@ const en: Dictionary = {
     it: "Italian",
   },
   gate: {
-    eyebrow: "graphic designer & photographer · torino",
-    tagline: "fresh, bold and colorful",
+    choose: "scegli un'anima",
     enter: "enter",
-    doors: "choose a world",
+    doors: "choose a soul",
     info: "info",
     pivot: "設計師 — the designer",
   },
   grapholio: {
     aria: "Grapholio — graphic design",
     label: "graphic design",
-    intro:
-      "Graphic design with attitude — identity, packaging, editorial and wayfinding, each project carrying its own handwritten title.",
   },
   fotofolio: {
     aria: "Fotofolio — photography",
     label: "photography",
-    intro:
-      "Stories told through the hands of people from different social backgrounds. No captions, no titles — only the images.",
+    intro: SCRAPED.fotofolioIntro,
   },
   project: {
     back: "all projects",
-    year: "year",
-    role: "role",
-    brief: "the brief",
-    palette: "palette",
+    brief: "the project",
     soon: "spreads coming soon",
     next: "next project",
     prev: "previous project",
   },
   about: {
     label: "about",
-    lede: "Giulia Breida — graphic designer & photographer, born 2001 in Torino.",
-    bio: "Italian designer and photographer working fresh, bold and colorful, with a long-running fascination for China and eastern cultures. Two souls: Grapholio for graphic design, Fotofolio for photography.",
+    bio: SCRAPED.aboutBio,
     contact: "contact",
-    designer: "« the designer »",
-    thread: "A long thread runs east — toward China and its written signs.",
+    designer: "the designer",
   },
   footer: {
     rights: "all rights reserved",
@@ -146,42 +149,35 @@ const it: Dictionary = {
     it: "Italiano",
   },
   gate: {
-    eyebrow: "graphic designer & fotografa · torino",
-    tagline: "fresca, audace e colorata",
+    choose: "scegli un'anima",
     enter: "entra",
-    doors: "scegli un mondo",
+    doors: "scegli un'anima",
     info: "info",
     pivot: "設計師 — la designer",
   },
   grapholio: {
     aria: "Grapholio — progettazione grafica",
     label: "progettazione grafica",
-    intro:
-      "Progettazione grafica con attitudine — identità, packaging, editoria e segnaletica, ogni progetto con il suo titolo scritto a mano.",
   },
   fotofolio: {
     aria: "Fotofolio — fotografia",
     label: "fotografia",
-    intro:
-      "Storie raccontate attraverso le mani di persone di diversa estrazione sociale. Niente didascalie, niente titoli — solo le immagini.",
+    // IT falls back to the EN scraped copy until translated — never invented.
+    intro: SCRAPED.fotofolioIntro,
   },
   project: {
     back: "tutti i progetti",
-    year: "anno",
-    role: "ruolo",
     brief: "il progetto",
-    palette: "palette",
     soon: "tavole in arrivo",
     next: "progetto successivo",
     prev: "progetto precedente",
   },
   about: {
     label: "info",
-    lede: "Giulia Breida — graphic designer e fotografa, classe 2001, Torino.",
-    bio: "Designer e fotografa italiana dal segno fresco, audace e colorato, con una lunga passione per la Cina e le culture orientali. Due anime: Grapholio per la grafica, Fotofolio per la fotografia.",
+    // IT falls back to the EN scraped bio until translated — never invented.
+    bio: SCRAPED.aboutBio,
     contact: "contatti",
-    designer: "« la designer »",
-    thread: "Un filo lungo corre a est — verso la Cina e i suoi segni scritti.",
+    designer: "la designer",
   },
   footer: {
     rights: "tutti i diritti riservati",
@@ -219,7 +215,7 @@ export const CONTACT = {
   role: "graphic designer & photographer",
   location: "Torino, Italy",
   email: "giulia.breida@gmail.com",
-  phone: "+39 351 817 2634",
+  phone: "(+39) 3518172634",
   phoneHref: "tel:+393518172634",
   // TODO: confirm the real handles before launch.
   instagram: "https://www.instagram.com/",
