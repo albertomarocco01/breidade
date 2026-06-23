@@ -1,41 +1,43 @@
 // Fotofolio — Giulia Breida's photography soul. Quiet, neutral, image-forward.
 // HARD brand rule: the photography is shown with NO captions or titles, and NO
 // text on or around the images, ever. The series `title` is structural only
-// (routing / SEO / aria) and must NEVER be rendered as a visible caption.
+// (routing / SEO / aria) and must NEVER be rendered as a visible caption on a
+// photograph. The ONLY exception is the deliberate series COVER / entry tile and
+// page chrome (hero, scraped tagline, prev/next) — those are navigation, not a
+// caption sitting on a bare gallery photo.
 //
-// The only fotofolio copy is the series description, which lives in src/lib/i18n.ts
-// (scraped, EN) and is rendered as page chrome ABOVE the mosaic — never near a frame.
+// The only fotofolio narrative copy (the series description + tagline) lives in
+// src/lib/i18n.ts (scraped, EN) and is rendered as page chrome — never near a frame.
 
-// Local placeholder photos (src/assets) — text-free "developing" frames. Giulia's
-// real prints drop in by swapping these imports (or the files on disk).
-import h1 from "@/assets/fotofolio/hand-1.svg";
-import h2 from "@/assets/fotofolio/hand-2.svg";
-import h3 from "@/assets/fotofolio/hand-3.svg";
-import h4 from "@/assets/fotofolio/hand-4.svg";
-import h5 from "@/assets/fotofolio/hand-5.svg";
-import h6 from "@/assets/fotofolio/hand-6.svg";
-import h7 from "@/assets/fotofolio/hand-7.svg";
-import h8 from "@/assets/fotofolio/hand-8.svg";
-import h9 from "@/assets/fotofolio/hand-9.svg";
+import type { StaticImageData } from "next/image";
+
+// Giulia's real "Hand other stories" prints (B&W hand studies). They drop in by
+// swapping these imports (or the files on disk). next/image gets width/height +
+// a blur placeholder for free from the static import.
+import glass from "@/assets/fotofolio/story-glass.webp";
+import face from "@/assets/fotofolio/story-face.webp";
+import torso from "@/assets/fotofolio/story-torso.webp";
 
 /** Mosaic footprint hint — drives the asymmetric, art-directed photo wall. */
 export type FrameShape = "is-portrait" | "is-land" | "is-sq";
 
 export interface PhotoImage {
-  /** image source (local placeholder for now; real print drops in here) */
-  src: unknown;
-  /** mosaic footprint */
+  /** image source (real print, static import) */
+  src: StaticImageData;
+  /** mosaic footprint on the /fotofolio wall */
   shape: FrameShape;
 }
 
 export interface Series {
   /** stable key, also used for i18n lookups */
   id: string;
-  /** URL segment (reserved — no /fotofolio/[slug] route yet) */
+  /** URL segment under /fotofolio/<slug> */
   slug: string;
-  /** structural proper-noun title — routing / SEO / aria only, NEVER a caption */
+  /** structural proper-noun title — routing / SEO / aria + the cover/hero, NEVER a caption on a bare photo */
   title: string;
-  /** the photographs (text-free placeholders for now) */
+  /** the cover photograph for the entry tile (a deliberate portal, not a gallery frame) */
+  cover: StaticImageData;
+  /** the photographs (text-free, shown bare in the gallery) */
   images: PhotoImage[];
 }
 
@@ -44,18 +46,13 @@ export const SERIES: Series[] = [
     id: "hand-other-stories",
     slug: "hand-other-stories",
     // "Hand other stories" — stories through the hands of people from different
-    // social backgrounds. Structural title; the visible description is in i18n.
+    // social backgrounds. Structural title; the visible copy lives in i18n.
     title: "Hand other stories",
+    cover: torso,
     images: [
-      { src: h1, shape: "is-portrait" },
-      { src: h2, shape: "is-sq" },
-      { src: h3, shape: "is-portrait" },
-      { src: h4, shape: "is-land" },
-      { src: h5, shape: "is-portrait" },
-      { src: h6, shape: "is-sq" },
-      { src: h7, shape: "is-land" },
-      { src: h8, shape: "is-portrait" },
-      { src: h9, shape: "is-sq" },
+      { src: glass, shape: "is-land" },
+      { src: face, shape: "is-land" },
+      { src: torso, shape: "is-land" },
     ],
   },
 ];
@@ -63,7 +60,12 @@ export const SERIES: Series[] = [
 /** The primary series — the only one for now. */
 export const MAIN_SERIES = SERIES[0];
 
-/** Lookup a series by slug (reserved for future routing). */
+/** Lookup a series by slug (used by /fotofolio/[slug]). */
 export function getSeries(slug: string): Series | undefined {
   return SERIES.find((s) => s.slug === slug);
+}
+
+/** All slugs — feeds generateStaticParams for the series routes. */
+export function seriesSlugs(): string[] {
+  return SERIES.map((s) => s.slug);
 }
