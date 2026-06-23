@@ -31,6 +31,10 @@ export interface Dictionary {
     enter: string;
     /** aria-label for the two "doors" into the two souls */
     doors: string;
+    /** small "info / about" link inside the gate */
+    info: string;
+    /** accessible name + gloss for the 設計師 pivot on the seam */
+    pivot: string;
   };
   grapholio: {
     /** section landmark label */
@@ -43,11 +47,27 @@ export interface Dictionary {
     label: string;
     intro: string;
   };
+  /** grapholio case-study chrome */
+  project: {
+    back: string;
+    year: string;
+    role: string;
+    brief: string;
+    palette: string;
+    /** stand-in note where real spreads will go */
+    soon: string;
+    next: string;
+    prev: string;
+  };
   about: {
     label: string;
     lede: string;
     bio: string;
     contact: string;
+    /** gloss for the 設計師 thread */
+    designer: string;
+    /** one line on the China / eastern-cultures thread */
+    thread: string;
   };
   footer: {
     rights: string;
@@ -73,6 +93,8 @@ const en: Dictionary = {
     tagline: "fresh, bold and colorful",
     enter: "enter",
     doors: "choose a world",
+    info: "info",
+    pivot: "設計師 — the designer",
   },
   grapholio: {
     aria: "Grapholio — graphic design",
@@ -86,11 +108,23 @@ const en: Dictionary = {
     intro:
       "Stories told through the hands of people from different social backgrounds. No captions, no titles — only the images.",
   },
+  project: {
+    back: "all projects",
+    year: "year",
+    role: "role",
+    brief: "the brief",
+    palette: "palette",
+    soon: "spreads coming soon",
+    next: "next project",
+    prev: "previous project",
+  },
   about: {
     label: "about",
     lede: "Giulia Breida — graphic designer & photographer, born 2001 in Torino.",
     bio: "Italian designer and photographer working fresh, bold and colorful, with a long-running fascination for China and eastern cultures. Two souls: Grapholio for graphic design, Fotofolio for photography.",
     contact: "contact",
+    designer: "« the designer »",
+    thread: "A long thread runs east — toward China and its written signs.",
   },
   footer: {
     rights: "all rights reserved",
@@ -116,6 +150,8 @@ const it: Dictionary = {
     tagline: "fresca, audace e colorata",
     enter: "entra",
     doors: "scegli un mondo",
+    info: "info",
+    pivot: "設計師 — la designer",
   },
   grapholio: {
     aria: "Grapholio — progettazione grafica",
@@ -129,11 +165,23 @@ const it: Dictionary = {
     intro:
       "Storie raccontate attraverso le mani di persone di diversa estrazione sociale. Niente didascalie, niente titoli — solo le immagini.",
   },
+  project: {
+    back: "tutti i progetti",
+    year: "anno",
+    role: "ruolo",
+    brief: "il progetto",
+    palette: "palette",
+    soon: "tavole in arrivo",
+    next: "progetto successivo",
+    prev: "progetto precedente",
+  },
   about: {
     label: "info",
     lede: "Giulia Breida — graphic designer e fotografa, classe 2001, Torino.",
     bio: "Designer e fotografa italiana dal segno fresco, audace e colorato, con una lunga passione per la Cina e le culture orientali. Due anime: Grapholio per la grafica, Fotofolio per la fotografia.",
     contact: "contatti",
+    designer: "« la designer »",
+    thread: "Un filo lungo corre a est — verso la Cina e i suoi segni scritti.",
   },
   footer: {
     rights: "tutti i diritti riservati",

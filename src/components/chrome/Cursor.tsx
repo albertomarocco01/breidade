@@ -51,9 +51,7 @@ export function Cursor() {
 
     const hot = () => ring.classList.add("is-hot");
     const cool = () => ring.classList.remove("is-hot");
-    const interactive = document.querySelectorAll(
-      "a, button, .g-card, .door",
-    );
+    const interactive = document.querySelectorAll("a, button");
     interactive.forEach((el) => {
       el.addEventListener("mouseenter", hot);
       el.addEventListener("mouseleave", cool);

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Caveat } from "next/font/google";
+import { Syne, Space_Mono, Permanent_Marker } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -12,26 +12,40 @@ import { Shell } from "@/components/chrome/Shell";
 import { FieldMount } from "@/components/canvas/FieldMount";
 import { CONTACT, getDictionary, getLocale } from "@/lib/i18n";
 
-// --font-display — bold variable grotesk. Drives display headings & the topbar.
-const display = Space_Grotesk({
+// --font-display — Syne: the quirky, expanded display grotesk that reads as
+// "contemporary art portfolio". Drives oversized headlines, the wordmark, the
+// world names on the gate. Variable family (400–800).
+const display = Syne({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-display",
 });
 
-// --font-hand — handwriting. PLACEHOLDER: Giulia's real handwriting font
-// (breida-hand.woff2, via Calligraphr) does not exist yet, so we gracefully fall
-// back to the Caveat script Google font for now.
-const hand = Caveat({
+// --font-text — Space Mono: the technical, zine-spec voice for meta, labels,
+// nav, numbers and body. The cold counterweight to Syne's shout and the hand's
+// warmth. Not a variable font, so weights are explicit.
+const text = Space_Mono({
   subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-text",
+});
+
+// --font-hand — handwriting, the through-line of the grapholio world. PLACEHOLDER:
+// Permanent Marker — a loud, characterful marker hand (deliberately NOT Caveat).
+// It stands in for Giulia's own digitised handwriting, dropped in later via the
+// commented localFont seam below.
+const hand = Permanent_Marker({
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
   variable: "--font-hand",
 });
 
-/* TODO(Prompt 2): once src/assets/fonts/breida-hand.woff2 is supplied, replace
-   the Caveat placeholder above with the real local font. next/font/local reads
-   the file at BUILD time, so DO NOT enable this block until the woff2 exists or
-   the build will fail.
+/* SEAM — once src/assets/fonts/breida-hand.woff2 (Giulia's real hand) is supplied,
+   replace the Permanent Marker placeholder above with the local font. next/font/local
+   reads the file at BUILD time, so keep this commented until the woff2 exists or the
+   build will fail.
 
    import localFont from "next/font/local";
    const hand = localFont({
@@ -39,7 +53,7 @@ const hand = Caveat({
      variable: "--font-hand",
      display: "swap",
      weight: "400",
-     fallback: ["Caveat", "cursive"],
+     fallback: ["Permanent Marker", "cursive"],
      adjustFontFallback: "Arial", // 'Arial' | 'Times New Roman' | false
    });
 */
@@ -93,7 +107,7 @@ export const metadata: Metadata = {
 
 // Next 16: themeColor / colorScheme / scaling live on `viewport`, NOT `metadata`.
 export const viewport: Viewport = {
-  themeColor: "#f4f1ea",
+  themeColor: "#f3efe4",
   colorScheme: "light",
   width: "device-width",
   initialScale: 1,
@@ -105,7 +119,10 @@ export default async function RootLayout({
   const locale = await getLocale();
   const dict = getDictionary(locale);
   return (
-    <html lang={locale} className={`${display.variable} ${hand.variable}`}>
+    <html
+      lang={locale}
+      className={`${display.variable} ${text.variable} ${hand.variable}`}
+    >
       <body>
         <AppProvider>
           <Glow />

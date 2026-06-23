@@ -37,6 +37,8 @@ export function Shell({
 }) {
   const { entered, reducedMotion } = useApp();
   const pathname = usePathname();
+  // On the gate the two halves ARE the navigation, so the topbar nav is hidden.
+  const onGate = pathname === "/";
   const topbarRef = useRef<HTMLDivElement>(null);
   // Last applied tuck state, held in a ref so the scroll subscription can toggle
   // the class without ever calling setState in the hot loop.
@@ -103,11 +105,14 @@ export function Shell({
 
   return (
     <>
-      <a href="#main" className="sr-only">
+      <a href="#main" className="skip-link">
         {dict.nav.skip}
       </a>
 
-      <div ref={topbarRef} className={`topbar${entered ? " in" : ""}`}>
+      <div
+        ref={topbarRef}
+        className={`topbar${entered ? " in" : ""}${onGate ? " is-gate" : ""}`}
+      >
         <div className="topbar-left">
           <Link href="/" className="wordmark">
             giulia breida
