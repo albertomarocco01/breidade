@@ -141,7 +141,7 @@ const it: Dictionary = {
     skip: "vai al contenuto",
     grapholio: "grapholio",
     fotofolio: "fotofolio",
-    about: "info",
+    about: "about",
   },
   locale: {
     label: "lingua",
@@ -217,9 +217,8 @@ export const CONTACT = {
   email: "giulia.breida@gmail.com",
   phone: "(+39) 3518172634",
   phoneHref: "tel:+393518172634",
-  // TODO: confirm the real handles before launch.
-  instagram: "https://www.instagram.com/",
-  linkedin: "https://www.linkedin.com/",
+  instagram: "https://www.instagram.com/breidade/",
+  linkedin: "https://www.linkedin.com/in/giulia-breida/",
 } as const;
 
 /** Client components import this TYPE only (CONTACT is passed down as a prop) so
