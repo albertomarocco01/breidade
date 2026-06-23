@@ -1,4 +1,5 @@
 import { CONTACT, getDictionary, getLocale, HANZI } from "@/lib/i18n";
+import { InstagramIcon, LinkedInIcon } from "@/components/chrome/SocialIcons";
 
 // ABOUT (/about) — warm-paper world. Giulia's verbatim bio (the China / eastern-
 // cultures thread is foregrounded by an oversized 設計師 column and the motif
@@ -50,8 +51,10 @@ export default async function AboutPage() {
                   href={CONTACT.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="spec-social"
                 >
-                  {dict.footer.instagram} ↗
+                  <InstagramIcon className="spec-ic" />
+                  <span>{dict.footer.instagram}</span>
                 </a>
               </dd>
             </div>
@@ -62,8 +65,10 @@ export default async function AboutPage() {
                   href={CONTACT.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="spec-social"
                 >
-                  {dict.footer.linkedin} ↗
+                  <LinkedInIcon className="spec-ic" />
+                  <span>{dict.footer.linkedin}</span>
                 </a>
               </dd>
             </div>

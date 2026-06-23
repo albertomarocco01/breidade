@@ -26,11 +26,10 @@ export function Gate({ dict, contact }: { dict: Dictionary; contact: Contact }) 
   const gateRef = useRef<HTMLDivElement>(null);
   const graphRef = useRef<HTMLAnchorElement>(null);
   const fotoRef = useRef<HTMLAnchorElement>(null);
-  const pivotRef = useRef<HTMLDivElement>(null);
   const wipeRef = useRef<HTMLDivElement>(null);
 
-  // Entrance — the two portals fade/slide in, the pivot scales in, the labels
-  // rise. Skipped under reduced motion (everything is at rest, fully visible).
+  // Entrance — the two portals fade/slide in and the labels rise. Skipped under
+  // reduced motion (everything is at rest, fully visible).
   useGSAP(
     () => {
       if (!entered || reducedMotion) return;
@@ -48,11 +47,6 @@ export function Gate({ dict, contact }: { dict: Dictionary; contact: Contact }) 
           fotoRef.current,
           { [axis]: 8, autoAlpha: 0, duration: 1.1, ease: FIELD_EASE },
           0,
-        )
-        .from(
-          pivotRef.current,
-          { scale: 0.5, autoAlpha: 0, duration: 0.9, ease: FIELD_EASE },
-          0.3,
         )
         .from(
           ".gate-reveal",
@@ -105,9 +99,11 @@ export function Gate({ dict, contact }: { dict: Dictionary; contact: Contact }) 
             <span>Born {contact.born}</span>
           </p>
         </div>
-        <Link href="/about" className="gate-info">
-          <span>{dict.about.label}</span>
-          <span className="hand2">{dict.gate.info}</span>
+        <Link href="/about" className="gate-about">
+          <span>{dict.nav.about}</span>
+          <span className="arr" aria-hidden="true">
+            →
+          </span>
         </Link>
       </header>
 
@@ -150,14 +146,6 @@ export function Gate({ dict, contact }: { dict: Dictionary; contact: Contact }) 
           </span>
         </span>
       </Link>
-
-      {/* the seam pivot — ONE 設計師 motif + the "scegli un'anima" instruction */}
-      <div className="gate-pivot" ref={pivotRef} aria-hidden="true">
-        <span className="gate-pivot-mark" lang="zh">
-          設計師
-        </span>
-        <span className="gate-pivot-cta">{dict.gate.choose}</span>
-      </div>
 
       <div className="gate-wipe" ref={wipeRef} aria-hidden="true" />
     </div>

@@ -635,6 +635,32 @@ p {
   text-transform: none;
   letter-spacing: 0;
 }
+/* minimal top-right "about" link — reads over either soul via difference blend */
+.gate-about {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream);
+  mix-blend-mode: difference;
+  transition: gap 0.35s var(--ease);
+}
+.gate-about:hover,
+.gate-about:focus-visible {
+  gap: 0.7rem;
+}
+.gate-about .arr {
+  transition: transform 0.35s var(--ease);
+}
+.gate-about:hover .arr,
+.gate-about:focus-visible .arr {
+  transform: translateX(3px);
+}
 
 /* each half is a full "door" into a world */
 .gate-half {
@@ -768,8 +794,7 @@ p {
   flex-grow: 0.72;
 }
 
-/* the seam pivot — 設計師 + the instruction, mix-blend so they invert on both
-   souls. ONE 設計師 motif. "scegli un'anima" is the Claude Design label. */
+/* the seam pivot — 設計師, mix-blend so it inverts on both souls. ONE 設計師 motif. */
 .gate-pivot {
   position: absolute;
   z-index: 30;
@@ -791,16 +816,6 @@ p {
   color: var(--cream);
   mix-blend-mode: difference;
 }
-.gate-pivot-cta {
-  font-family: var(--stack-display);
-  font-weight: 800;
-  font-size: 0.72rem;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--cream);
-  mix-blend-mode: difference;
-}
-
 /* full-screen wipe used by the click → enter transition */
 .gate-wipe {
   position: fixed;
@@ -1314,6 +1329,15 @@ p {
 .about-spec-row a:focus-visible {
   color: var(--accent);
 }
+.spec-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.spec-ic {
+  font-size: 1.05rem;
+  flex: none;
+}
 .contact-meta {
   font-family: var(--stack-mono);
   font-size: 0.66rem;
@@ -1355,6 +1379,16 @@ p {
 }
 .foot .copy {
   color: var(--ink-ghost);
+}
+/* social links: glyph + label sit on one baseline-ish row */
+.foot-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.foot-ic {
+  font-size: 1.15rem;
+  flex: none;
 }
 
 /* ====================================================== ENHANCE (≥640) === */
@@ -1440,8 +1474,8 @@ p {
     justify-content: flex-end;
   }
   /* anchor each soul's name toward its OUTER edge so the growing half never
-     slides its name across the centre — the 設計師 + "scegli un'anima" pivot
-     stays clean and fixed at viewport centre on hover. */
+     slides its name across the centre — the 設計師 pivot stays clean and fixed
+     at viewport centre on hover. */
   .gate-half--graph .gate-half-inner {
     align-items: flex-start;
     text-align: left;

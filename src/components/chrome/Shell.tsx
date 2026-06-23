@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useApp } from "@/components/providers/AppProvider";
 import { LocaleToggle } from "@/components/chrome/LocaleToggle";
+import { InstagramIcon, LinkedInIcon } from "@/components/chrome/SocialIcons";
 import type { Contact, Dictionary, Locale } from "@/lib/i18n";
 import { registerGsap, FIELD_EASE, TOPBAR_REVEAL_TOP } from "@/lib/motion";
 
@@ -137,11 +138,23 @@ export function Shell({
       </main>
 
       <footer className="foot">
-        <a href={contact.instagram} target="_blank" rel="noopener noreferrer">
-          {dict.footer.instagram} ↗
+        <a
+          href={contact.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="foot-social"
+        >
+          <InstagramIcon className="foot-ic" />
+          <span>{dict.footer.instagram}</span>
         </a>
-        <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
-          {dict.footer.linkedin} ↗
+        <a
+          href={contact.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="foot-social"
+        >
+          <LinkedInIcon className="foot-ic" />
+          <span>{dict.footer.linkedin}</span>
         </a>
         <span className="spacer" />
         <span className="copy">

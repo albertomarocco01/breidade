@@ -9,8 +9,7 @@
 // invent Italian. Chrome / navigation / UI affordances stay IT-first.
 //
 // Proper nouns and brand tokens (Grapholio / Fotofolio, project titles, the email,
-// the phone number, "Instagram", "LinkedIn", 設計師, "scegli un'anima") stay
-// untranslated on purpose.
+// the phone number, "Instagram", "LinkedIn", 設計師) stay untranslated on purpose.
 
 import { cookies } from "next/headers";
 
@@ -32,15 +31,9 @@ export interface Dictionary {
     it: string;
   };
   gate: {
-    /** the fixed instruction label on the seam (Claude Design) — a signature */
-    choose: string;
     enter: string;
-    /** aria-label for the two "doors" into the two souls */
-    doors: string;
     /** small "info / about" affordance inside the gate */
     info: string;
-    /** accessible name for the 設計師 pivot on the seam */
-    pivot: string;
   };
   grapholio: {
     /** section landmark label */
@@ -101,11 +94,8 @@ const en: Dictionary = {
     it: "Italian",
   },
   gate: {
-    choose: "scegli un'anima",
     enter: "enter",
-    doors: "choose a soul",
     info: "info",
-    pivot: "設計師 — the designer",
   },
   grapholio: {
     aria: "Grapholio — graphic design",
@@ -149,11 +139,8 @@ const it: Dictionary = {
     it: "Italiano",
   },
   gate: {
-    choose: "scegli un'anima",
     enter: "entra",
-    doors: "scegli un'anima",
     info: "info",
-    pivot: "設計師 — la designer",
   },
   grapholio: {
     aria: "Grapholio — progettazione grafica",
