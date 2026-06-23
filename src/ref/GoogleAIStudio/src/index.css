@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=La+Belle+Aurore&family=Reenie+Beanie&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Syne", sans-serif;
+  --font-serif: "Italiana", serif;
+  --font-hand: "La Belle Aurore", cursive;
+  --font-hand2: "Reenie Beanie", cursive;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-cream: #FCFAF2;
+  --color-tomato: #FF3E2B;
+  --color-carbon: #121212;
+  --color-accent-blue: #0A369D;
+  --color-accent-green: #DFFF00;
+  --color-accent-teal: #0DCD9D;
+}
+
+/* Custom CSS Scrollbar and Hide utilities */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FCFAF2;
+}
+::-webkit-scrollbar-thumb {
+  background: #FF3E2B;
+  border-radius: 9999px;
+}
+
+/* Grain Noise Overlay effect for Raw look */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  content: "";
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Custom Cursor class */
+.custom-cursor {
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
+/* Custom selection styling */
+::selection {
+  background-color: #FF3E2B;
+  color: #FCFAF2;
+}
+
