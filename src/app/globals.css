@@ -1,0 +1,683 @@
+/*
+  Giulia Breida — design system (scaffold).
+  ONE coherent stylesheet. Mobile-first: base styles target ~380px and enhance
+  up. Per-section theming swaps the token set on [data-section="…"] (set by each
+  route layout). Fresh, bold, colourful — NOT dark/liminal. Prompt 2 builds the
+  real visuals (gate animation, galleries, handwritten titles, WebGL accents)
+  over these bones.
+*/
+
+/* ============================================================= TOKENS ==== */
+:root {
+  /* ---- type slots ---- */
+  /* --font-display / --font-hand are defined on <html> by next/font (Space
+     Grotesk + Caveat placeholder). We consume them with extra CSS fallbacks. */
+  --stack-display: var(--font-display, "Space Grotesk"), system-ui, sans-serif;
+  --stack-hand: var(--font-hand, "Caveat"), "Segoe Script", cursive;
+  --stack-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --stack-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+  /* ---- neutral paper canvas (gate / about) ---- */
+  --bg: #f4f1ea;
+  --bg-2: #ece7db;
+  --ink: #16140f;
+  --ink-dim: #6b675c;
+  --ink-ghost: #b7b1a3;
+  --line: rgba(22, 20, 15, 0.12);
+  --line-hot: rgba(22, 20, 15, 0.3);
+
+  /* ---- signature colourful accents ---- */
+  --accent: #ff2e63;
+  --accent-2: #1ca7ec;
+  /* per-project accent — overridden inline via style={{ "--card-accent": … }} */
+  --card-accent: var(--accent);
+
+  /* ---- ambient + texture ---- */
+  --glow-1: rgba(255, 46, 99, 0.12);
+  --glow-2: rgba(0, 229, 255, 0.1);
+  --grain-blend: multiply;
+  --grain-opacity: 0.05;
+
+  /* ---- motion + metrics ---- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --container: 1200px;
+  --pad: clamp(1.2rem, 5vw, 4rem);
+  --topbar-h: 3.4rem;
+}
+
+/* gate — neutral paper, both signature accents in the ambient wash */
+[data-section="gate"] {
+  --glow-1: rgba(255, 46, 99, 0.14);
+  --glow-2: rgba(0, 229, 255, 0.1);
+}
+
+/* about — neutral, calmer wash */
+[data-section="about"] {
+  --glow-1: rgba(28, 167, 236, 0.08);
+  --glow-2: rgba(255, 46, 99, 0.06);
+}
+
+/* grapholio — light/white canvas, high-energy bold palette, strong type */
+[data-section="grapholio"] {
+  --bg: #ffffff;
+  --bg-2: #f6f6f6;
+  --ink: #0a0a0a;
+  --ink-dim: #565656;
+  --ink-ghost: #cccccc;
+  --line: rgba(0, 0, 0, 0.12);
+  --line-hot: rgba(0, 0, 0, 0.32);
+  --accent: #ff2e63;
+  --accent-2: #2d5bff;
+  --glow-1: rgba(255, 46, 99, 0.12);
+  --glow-2: rgba(0, 229, 255, 0.1);
+  --grain-blend: multiply;
+  --grain-opacity: 0.045;
+}
+
+/* fotofolio — quiet neutral, image-forward, minimal chrome */
+[data-section="fotofolio"] {
+  --bg: #e7e4de;
+  --bg-2: #e0ddd6;
+  --ink: #1b1a17;
+  --ink-dim: #76736b;
+  --ink-ghost: #bdb9b0;
+  --line: rgba(27, 26, 23, 0.1);
+  --line-hot: rgba(27, 26, 23, 0.22);
+  --accent: #76736b; /* muted: minimal chrome, no loud colour over photos */
+  --accent-2: #76736b;
+  --glow-1: rgba(0, 0, 0, 0.04);
+  --glow-2: rgba(0, 0, 0, 0.03);
+  --grain-blend: multiply;
+  --grain-opacity: 0.035;
+}
+
+/* ============================================================== BASE ===== */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  /* Reserve the scrollbar space at all times so the layout never shifts. */
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--stack-sans);
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  cursor: none;
+}
+@media (hover: none) {
+  body {
+    cursor: auto;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 700;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* type-slot utilities */
+.display {
+  font-family: var(--stack-display);
+}
+.hand {
+  font-family: var(--stack-hand);
+}
+
+/* visually-hidden but available to assistive tech */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =========================================================== CHROME ===== */
+.glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% -10%, var(--glow-1), transparent 55%),
+    radial-gradient(90% 60% at 50% 120%, var(--glow-2), transparent 60%);
+}
+
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+}
+
+/* ---- custom cursor ---- */
+.cur-dot,
+.cur-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 95;
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+.cur-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--ink);
+}
+.cur-ring {
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--line-hot);
+  opacity: 0.8;
+  transition:
+    width 0.45s var(--ease),
+    height 0.45s var(--ease),
+    border-color 0.45s var(--ease),
+    opacity 0.45s var(--ease);
+}
+.cur-ring.is-hot {
+  width: 58px;
+  height: 58px;
+  border-color: var(--accent);
+  opacity: 1;
+}
+@media (hover: none) {
+  .cur-dot,
+  .cur-ring {
+    display: none;
+  }
+}
+
+/* ---- topbar ---- */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 70;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem var(--pad);
+  font-family: var(--stack-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--ink-dim);
+  opacity: 0; /* eased in by GSAP; `.in` is the final / no-motion state */
+  transition: transform 0.5s var(--ease);
+  will-change: transform;
+}
+.topbar.in {
+  opacity: 1;
+}
+.topbar.is-tucked {
+  transform: translateY(-100%);
+}
+.topbar-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+.topbar .wordmark {
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+.topbar nav {
+  display: flex;
+  gap: 1.1rem;
+}
+.topbar a {
+  color: var(--ink-dim);
+  transition: color 0.4s var(--ease);
+}
+.topbar a:hover,
+.topbar a:focus-visible,
+.topbar a[aria-current="page"] {
+  color: var(--ink);
+}
+
+/* EN/IT switch */
+.locale-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.locale-opt {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: lowercase;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: none;
+  color: var(--ink-dim);
+  transition: color 0.4s var(--ease);
+}
+.locale-opt[aria-pressed="true"],
+.locale-opt:hover,
+.locale-opt:focus-visible {
+  color: var(--ink);
+}
+@media (hover: none) {
+  .locale-opt {
+    cursor: pointer;
+  }
+}
+
+/* =========================================================== LAYOUT ===== */
+.main {
+  position: relative;
+  z-index: 2;
+}
+
+/* each route layout paints its own full-bleed section canvas */
+.section {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: calc(var(--topbar-h) + 2.4rem) var(--pad) 4rem;
+}
+
+/* shared section header */
+.sect-kicker {
+  display: block;
+  font-family: var(--stack-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: lowercase;
+  color: var(--ink-dim);
+}
+.sect-head {
+  margin-bottom: 2.4rem;
+}
+.sect-title {
+  margin-top: 0.6rem;
+  font-family: var(--stack-display);
+  font-size: clamp(2.2rem, 9vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+}
+.sect-intro {
+  max-width: 46ch;
+  margin-top: 1.2rem;
+  color: var(--ink-dim);
+  font-size: clamp(1rem, 2.4vw, 1.15rem);
+}
+
+/* ============================================================== GATE ===== */
+.gate-inner {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.eyebrow {
+  font-family: var(--stack-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: lowercase;
+  color: var(--ink-dim);
+  margin: 0;
+}
+.gate-title {
+  margin: 0.8rem 0 0;
+  font-size: clamp(2.8rem, 13vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+}
+.gate-tagline {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.6rem, 6vw, 2.8rem);
+  color: var(--accent);
+  line-height: 1.1;
+}
+.gate-hanzi {
+  margin: 0.6rem 0 0;
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  letter-spacing: 0.3em;
+  color: var(--ink-ghost);
+}
+.gate-doors {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 2.6rem;
+}
+.door {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--bg-2);
+  transition:
+    border-color 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+.door:hover,
+.door:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.door-name {
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  line-height: 1;
+  text-transform: lowercase;
+}
+.door-sub {
+  font-family: var(--stack-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  color: var(--ink-dim);
+}
+
+/* ========================================================= GRAPHOLIO ===== */
+.g-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+.g-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 9rem;
+  padding: 1.3rem 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--bg-2);
+  border-left: 4px solid var(--card-accent);
+  transition:
+    border-color 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+.g-card:hover,
+.g-card:focus-visible {
+  border-color: var(--line-hot);
+  border-left-color: var(--card-accent);
+  transform: translateY(-2px);
+}
+.g-card-title {
+  font-size: clamp(1.7rem, 6vw, 2.4rem);
+  line-height: 1;
+  color: var(--ink);
+}
+.g-card-cat {
+  font-family: var(--stack-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/* single project */
+.project {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.back-link {
+  align-self: flex-start;
+  font-family: var(--stack-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--ink-dim);
+  margin-bottom: 1.4rem;
+}
+.back-link:hover,
+.back-link:focus-visible {
+  color: var(--ink);
+}
+.project-title {
+  font-size: clamp(2.6rem, 12vw, 6rem);
+  line-height: 0.95;
+  color: var(--ink);
+}
+.project-cat {
+  font-family: var(--stack-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--card-accent);
+  margin: 0;
+}
+.project-todo {
+  margin-top: 2rem;
+  color: var(--ink-ghost);
+  font-family: var(--stack-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+}
+
+/* ========================================================= FOTOFOLIO ===== */
+.foto-head {
+  margin-bottom: 2rem;
+}
+.foto-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+.foto-cell {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+}
+.foto-empty {
+  grid-column: 1 / -1;
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-ghost);
+  border: 1px dashed var(--line);
+  border-radius: 4px;
+}
+
+/* ============================================================= ABOUT ===== */
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 60ch;
+}
+.about-lede {
+  font-family: var(--stack-display);
+  font-size: clamp(1.5rem, 5vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0.8rem 0 0;
+}
+.about-bio {
+  font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+  color: var(--ink-dim);
+  margin: 0;
+}
+.about-hanzi {
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  letter-spacing: 0.3em;
+  color: var(--ink-ghost);
+  margin: 0.4rem 0;
+}
+.about-contact {
+  margin-top: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.contact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+}
+.contact-list a:hover,
+.contact-list a:focus-visible {
+  color: var(--accent);
+}
+.contact-meta {
+  font-family: var(--stack-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--ink-dim);
+  margin: 0;
+}
+
+/* ============================================================ FOOTER ===== */
+.foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.8rem 1.6rem;
+  padding: 2.4rem var(--pad) 2.8rem;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink-dim);
+  font-family: var(--stack-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+}
+.foot a {
+  color: var(--ink-dim);
+  transition: color 0.4s var(--ease);
+}
+.foot a:hover,
+.foot a:focus-visible {
+  color: var(--ink);
+}
+.foot .spacer {
+  flex: 1 1 auto;
+}
+.foot .copy {
+  color: var(--ink-ghost);
+}
+
+/* ====================================================== ENHANCE (≥640) === */
+@media (min-width: 640px) {
+  .gate-doors {
+    grid-template-columns: 1fr 1fr;
+  }
+  .g-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .foto-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ===================================================== ENHANCE (≥1024) === */
+@media (min-width: 1024px) {
+  .g-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .foto-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ====================================================== ENTRANCE HOOK ==== */
+/* Shell adds `.entering` to <html> during the auto-played opening. Subtle one-
+   shot ambient bloom; `both` holds the resting value so removal is seamless. */
+html.entering .glow {
+  animation: glow-bloom 1.6s var(--ease) both;
+}
+@keyframes glow-bloom {
+  0% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ================================================= REDUCED MOTION ======== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  /* no custom cursor */
+  .cur-dot,
+  .cur-ring {
+    display: none;
+  }
+  body {
+    cursor: auto;
+  }
+  /* content shown instantly; no entrance */
+  .topbar {
+    opacity: 1;
+  }
+  /* no future shader / WebGL field */
+}
