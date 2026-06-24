@@ -42,4 +42,18 @@
   font-size: 1.15rem;
   flex: none;
 }
+/* about link inherits the mono / lowercase footer styling (.foot a). On phones it
+   sits right after the socials, filling the empty space on that row; from ≥640 it
+   reorders to the very end, landing after the copyright on the far right. */
+@media (min-width: 640px) {
+  .foot .spacer {
+    order: 1;
+  }
+  .foot .copy {
+    order: 2;
+  }
+  .foot-about {
+    order: 3;
+  }
+}
 

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { InstagramIcon, LinkedInIcon } from "@/components/chrome/SocialIcons";
 import type { Contact, Dictionary } from "@/lib/i18n";
 
@@ -36,6 +37,11 @@ export function Footer({
         <LinkedInIcon className="foot-ic" />
         <span>{dict.footer.linkedin}</span>
       </a>
+      {/* about: fills the empty space beside the socials on phones, and reorders
+         to the far right (after the copyright) on wider screens — see footer.css */}
+      <Link href="/about" className="foot-about">
+        {dict.nav.about}
+      </Link>
       <span className="spacer" />
       <span className="copy">
         © {year} {contact.name} · {dict.footer.rights}
