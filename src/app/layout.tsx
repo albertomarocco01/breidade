@@ -53,6 +53,12 @@ const hand = La_Belle_Aurore({
   weight: "400",
   display: "swap",
   variable: "--font-hand",
+  // PERF: the hand fonts are NOT used on the gate (home) — La Belle Aurore only
+  // appears on grapholio/about project titles. Skipping preload keeps them off the
+  // home's critical path; with preload:false a font is fetched only when an element
+  // actually renders it (a brief swap on the secondary pages, which is acceptable
+  // for decorative titles), instead of competing for bandwidth on first paint.
+  preload: false,
 });
 
 // --font-hand2 — Reenie Beanie: the secondary hand for looser annotations / glosses.
@@ -61,6 +67,9 @@ const hand2 = Reenie_Beanie({
   weight: "400",
   display: "swap",
   variable: "--font-hand2",
+  // PERF: currently no rendered element uses .hand2, so with preload:false this
+  // font is never downloaded at all (kept declared as the documented seam).
+  preload: false,
 });
 
 /* SEAM — once src/assets/fonts/breida-hand.woff2 (Giulia's real hand) is supplied,
