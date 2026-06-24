@@ -202,6 +202,41 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
+
+/* idle FLOAT on the hero words — keeps GRAPHOLIO / FOTOFOLIO gently in motion,
+   on mobile too (transform-only, runs on the compositor, not hover-gated). It
+   lives on an inner wrapper so it never fights the GSAP entrance, which animates
+   the outer .gate-reveal/.gate-world. The two souls bob on slightly different
+   rhythms (and out of phase) so they never move in lockstep. Auto-disabled under
+   prefers-reduced-motion via the global block in motion.css. */
+.gate-float {
+  display: inline-block;
+  will-change: transform;
+}
+.gate-half--graph .gate-float {
+  animation: gate-bob-a 4.2s ease-in-out 0.5s infinite;
+}
+.gate-half--foto .gate-float {
+  animation: gate-bob-b 5.6s ease-in-out 0.9s infinite;
+}
+@keyframes gate-bob-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -0.5rem, 0) rotate(-0.8deg);
+  }
+}
+@keyframes gate-bob-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -0.42rem, 0) rotate(0.7deg);
+  }
+}
 .gate-enter {
   display: inline-flex;
   align-items: center;

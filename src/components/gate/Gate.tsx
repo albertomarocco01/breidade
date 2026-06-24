@@ -120,7 +120,9 @@ export function Gate({ dict, contact }: { dict: Dictionary; contact: Contact }) 
         </span>
         <span className="gate-half-inner">
           <span className="gate-disc gate-reveal">{dict.grapholio.label}</span>
-          <span className="gate-world gate-reveal">Grapholio</span>
+          <span className="gate-world gate-reveal">
+            <span className="gate-float">Grapholio</span>
+          </span>
           <span className="gate-enter gate-reveal">
             {dict.gate.enter} <span className="arr">→</span>
           </span>
@@ -140,7 +142,9 @@ export function Gate({ dict, contact }: { dict: Dictionary; contact: Contact }) 
         </span>
         <span className="gate-half-inner">
           <span className="gate-disc gate-reveal">{dict.fotofolio.label}</span>
-          <span className="gate-world serif gate-reveal">Fotofolio</span>
+          <span className="gate-world serif gate-reveal">
+            <span className="gate-float">Fotofolio</span>
+          </span>
           <span className="gate-enter gate-reveal">
             {dict.gate.enter} <span className="arr">→</span>
           </span>
