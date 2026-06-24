@@ -93,9 +93,6 @@
   text-transform: uppercase;
   color: var(--cream);
   mix-blend-mode: difference;
-  /* TRIAL: water-shimmer / heat-haze (filter def in HeatHaze.tsx). Disabled under
-     reduced motion (motion.css). */
-  filter: url(#heat-haze);
   transition: gap 0.35s var(--ease);
 }
 .gate-about:hover,
@@ -215,12 +212,39 @@
 .gate-float {
   display: inline-block;
   will-change: transform;
+  /* "sunlight gliding over a wet surface": a soft bright band sweeps through the
+     cream letters. Pure clip-text gradient (only background-position animates) —
+     no SVG displacement, so it can never read as glitch. Coexists with the bob
+     below since transform and background-position are independent. */
+  background-image: linear-gradient(
+    100deg,
+    var(--cream) 0%,
+    var(--cream) 42%,
+    rgba(252, 250, 242, 0.5) 47%,
+    #ffffff 50%,
+    rgba(252, 250, 242, 0.5) 53%,
+    var(--cream) 58%,
+    var(--cream) 100%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  background-position: 120% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--cream);
 }
+/* bob + sheen MUST share ONE shorthand (a second animation-name would cancel the
+   bob); each soul gets its own tempo + phase so they never move together. */
 .gate-half--graph .gate-float {
-  animation: gate-bob-a 4.2s ease-in-out 0.5s infinite;
+  animation:
+    gate-bob-a 4.2s ease-in-out 0.5s infinite,
+    gate-sheen 7.5s cubic-bezier(0.45, 0, 0.2, 1) 1.2s infinite;
 }
 .gate-half--foto .gate-float {
-  animation: gate-bob-b 5.6s ease-in-out 0.9s infinite;
+  animation:
+    gate-bob-b 5.6s ease-in-out 0.9s infinite,
+    gate-sheen 9s cubic-bezier(0.45, 0, 0.2, 1) 3s infinite;
 }
 @keyframes gate-bob-a {
   0%,
@@ -238,6 +262,27 @@
   }
   50% {
     transform: translate3d(0, -0.42rem, 0) rotate(0.7deg);
+  }
+}
+@keyframes gate-sheen {
+  0% {
+    background-position: 120% 0;
+  }
+  /* the glint crosses in the first third, then rests off-screen until the next */
+  35% {
+    background-position: -40% 0;
+  }
+  100% {
+    background-position: -40% 0;
+  }
+}
+/* reduced motion: drop the moving fill back to a flat cream (belt-and-braces on
+   top of the global animation freeze in motion.css) */
+@media (prefers-reduced-motion: reduce) {
+  .gate-float {
+    background-image: none;
+    -webkit-text-fill-color: var(--cream);
+    color: var(--cream);
   }
 }
 .gate-enter {

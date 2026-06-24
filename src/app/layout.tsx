@@ -13,7 +13,6 @@ import { AppProvider } from "@/components/providers/AppProvider";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Glow } from "@/components/chrome/Glow";
 import { Grain } from "@/components/chrome/Grain";
-import { HeatHaze } from "@/components/chrome/HeatHaze";
 import { Cursor } from "@/components/chrome/Cursor";
 import { Shell } from "@/components/chrome/Shell";
 import { FieldMount } from "@/components/canvas/FieldMount";
@@ -157,8 +156,6 @@ export default async function RootLayout({
       <body>
         <AppProvider>
           <Glow />
-          {/* SVG filter defs for the gate-header water-shimmer (filter: url(#heat-haze)) */}
-          <HeatHaze />
           {/* Prompt 2 seam — renders null for now. */}
           <FieldMount />
           <SmoothScroll>

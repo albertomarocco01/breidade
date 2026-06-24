@@ -35,12 +35,6 @@ html.entering .glow {
   .topbar {
     opacity: 1;
   }
-  /* drop the gate-header water-shimmer (the SMIL filter ignores this query on its
-     own, so remove the displacement entirely for a clean, still header) */
-  .topbar-left,
-  .gate-about {
-    filter: none !important;
-  }
   /* the gate halves never grow/shrink under reduced motion */
   .gate:has(.gate-half:hover) .gate-half,
   .gate:has(.gate-half:focus-visible) .gate-half {
