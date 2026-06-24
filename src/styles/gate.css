@@ -1,0 +1,274 @@
+/* ============================================================== GATE ===== */
+.gate {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--cream);
+  user-select: none;
+}
+
+/* floating brand header — serif name in tomato, mix-blend so it reads on both */
+.gate-head {
+  position: absolute;
+  z-index: 40;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: clamp(1.2rem, 4vw, 2.6rem) var(--pad);
+  pointer-events: none;
+}
+.gate-name {
+  font-family: var(--stack-serif);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 6vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--tomato);
+  mix-blend-mode: difference;
+}
+.gate-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  margin-top: 0.55rem;
+  font-family: var(--stack-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tomato);
+  mix-blend-mode: difference;
+}
+.gate-meta .dot {
+  opacity: 0.4;
+}
+.gate-info {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.05rem;
+  border-radius: 999px;
+  background: var(--tomato);
+  color: var(--cream);
+  border: 2px solid var(--carbon);
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition:
+    background 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    color 0.35s var(--ease);
+}
+/* invert on hover so it stays legible over BOTH the tomato and carbon souls */
+.gate-info:hover,
+.gate-info:focus-visible {
+  background: var(--cream);
+  border-color: var(--carbon);
+  color: var(--carbon);
+}
+.gate-info .hand2 {
+  font-size: 1.15rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+/* minimal top-right "about" link — reads over either soul via difference blend */
+.gate-about {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream);
+  mix-blend-mode: difference;
+  transition: gap 0.35s var(--ease);
+}
+.gate-about:hover,
+.gate-about:focus-visible {
+  gap: 0.7rem;
+}
+.gate-about .arr {
+  transition: transform 0.35s var(--ease);
+}
+.gate-about:hover .arr,
+.gate-about:focus-visible .arr {
+  transform: translateX(3px);
+}
+
+/* each half is a full "door" into a world */
+.gate-half {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+  transition: flex-grow 0.7s var(--ease);
+}
+.gate-half--graph {
+  background: var(--tomato);
+  color: var(--cream);
+  border-bottom: 1px solid var(--cream);
+}
+.gate-half--foto {
+  background: var(--carbon);
+  color: var(--cream);
+}
+
+/* the massive hanzi watermark behind each portal: 設計 / 攝影 */
+.gate-han {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 0;
+  pointer-events: none;
+  font-family: var(--stack-display);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-size: 25vh;
+  color: var(--cream);
+  transition: transform 0.7s var(--ease);
+}
+.gate-half--graph .gate-han {
+  opacity: 0.1;
+}
+.gate-half--foto .gate-han {
+  opacity: 0.06;
+}
+
+.gate-half-inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2.4rem var(--pad);
+}
+.gate-disc {
+  align-self: center;
+  margin-bottom: 0.3rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  font-family: var(--stack-mono);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.gate-half--graph .gate-disc {
+  color: var(--lime);
+  border: 1px solid var(--lime);
+}
+.gate-half--foto .gate-disc {
+  color: rgba(252, 250, 242, 0.65);
+  border: 1px solid rgba(252, 250, 242, 0.3);
+}
+.gate-world {
+  margin: 0;
+  line-height: 0.9;
+}
+.gate-half--graph .gate-world {
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: clamp(2.8rem, 11vw, 7rem);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+.gate-half--foto .gate-world {
+  font-family: var(--stack-serif);
+  font-weight: 400;
+  font-size: clamp(2.8rem, 11vw, 7rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.gate-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  font-family: var(--stack-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  opacity: 0.85;
+}
+.gate-enter .arr {
+  transition: transform 0.4s var(--ease);
+}
+
+/* hover/focus: the touched world breathes open, the other recedes (flex-grow) */
+@media (hover: hover) {
+  .gate:has(.gate-half--graph:hover) .gate-half--graph,
+  .gate:has(.gate-half--foto:hover) .gate-half--foto {
+    flex-grow: 1.4;
+  }
+  .gate:has(.gate-half--graph:hover) .gate-half--foto,
+  .gate:has(.gate-half--foto:hover) .gate-half--graph {
+    flex-grow: 0.72;
+  }
+  .gate-half:hover .gate-han {
+    transform: scale(1.08);
+  }
+  .gate-half:hover .gate-enter .arr {
+    transform: translateX(0.45rem);
+  }
+}
+.gate:has(.gate-half--graph:focus-visible) .gate-half--graph,
+.gate:has(.gate-half--foto:focus-visible) .gate-half--foto {
+  flex-grow: 1.4;
+}
+.gate:has(.gate-half--graph:focus-visible) .gate-half--foto,
+.gate:has(.gate-half--foto:focus-visible) .gate-half--graph {
+  flex-grow: 0.72;
+}
+
+/* the seam pivot — 設計師, mix-blend so it inverts on both souls. ONE 設計師 motif. */
+.gate-pivot {
+  position: absolute;
+  z-index: 30;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+  text-align: center;
+}
+.gate-pivot-mark {
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  letter-spacing: 0.06em;
+  color: var(--cream);
+  mix-blend-mode: difference;
+}
+/* full-screen wipe used by the click → enter transition */
+.gate-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  pointer-events: none;
+  background: var(--tomato);
+}
+

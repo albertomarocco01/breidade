@@ -1,0 +1,56 @@
+/* =========================================================== LAYOUT ===== */
+.main {
+  position: relative;
+  z-index: 2;
+}
+.section {
+  position: relative;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink);
+}
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: calc(var(--topbar-h) + 2.6rem) var(--pad) 5rem;
+}
+
+/* shared section header */
+.sect-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--stack-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+.sect-kicker::before {
+  content: "";
+  width: 1.6rem;
+  height: 1px;
+  background: currentColor;
+}
+.sect-head {
+  margin-bottom: clamp(2rem, 6vw, 4rem);
+}
+.sect-title {
+  margin-top: 1rem;
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 12vw, 6.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+}
+.sect-intro {
+  max-width: 46ch;
+  margin-top: 1.4rem;
+  color: var(--ink-dim);
+  font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+  line-height: 1.7;
+}
+

@@ -1,0 +1,180 @@
+/* ========================================================= FOTOFOLIO ===== */
+.foto {
+  position: relative;
+}
+.foto-manifesto {
+  max-width: 42ch;
+  margin-bottom: clamp(2.6rem, 8vw, 5rem);
+}
+.foto-manifesto .sect-kicker {
+  color: var(--ink-dim);
+}
+.foto-intro {
+  margin-top: 1.4rem;
+  font-family: var(--stack-serif);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 4.5vw, 2.2rem);
+  line-height: 1.4;
+  color: var(--ink);
+}
+/* the China thread, kept alive quietly — never a caption on the images */
+.foto-thread {
+  position: absolute;
+  top: 26%;
+  right: 0.2rem;
+  writing-mode: vertical-rl;
+  font-family: var(--stack-display);
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  letter-spacing: 0.4em;
+  color: var(--ink);
+  opacity: 0.06;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* asymmetric photo mosaic — strictly text-free */
+.foto-wall {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.4rem, 5vw, 3rem);
+}
+.foto-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+}
+.foto-frame.is-portrait {
+  aspect-ratio: 4 / 5;
+}
+.foto-frame.is-land {
+  aspect-ratio: 3 / 2;
+}
+.foto-frame.is-sq {
+  aspect-ratio: 1 / 1;
+}
+.foto-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(1) contrast(1.05) brightness(0.95);
+  transition:
+    filter 1.2s var(--ease),
+    transform 1.2s var(--ease);
+}
+@media (hover: hover) {
+  .foto-frame:hover img {
+    filter: grayscale(0) contrast(1.05);
+    transform: scale(1.04);
+  }
+}
+.foto-coda {
+  margin-top: clamp(3rem, 9vw, 6rem);
+  text-align: center;
+}
+.foto-coda .rule {
+  width: 3rem;
+  height: 1px;
+  margin: 0 auto;
+  background: var(--line-hot);
+}
+
+/* the cover / portal tile — the ONLY labelled tile on the wall, a deliberate
+   doorway into the full series (never a bare photo). */
+.foto-entry {
+  display: block;
+  aspect-ratio: 4 / 5;
+  color: var(--ink);
+}
+.foto-entry-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 18, 0.2) 0%,
+    rgba(18, 18, 18, 0.74) 64%,
+    rgba(18, 18, 18, 0.92) 100%
+  );
+  transition: background 0.8s var(--ease);
+}
+.foto-entry-han {
+  position: absolute;
+  z-index: 1;
+  right: 0.08em;
+  bottom: -0.14em;
+  writing-mode: vertical-rl;
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: clamp(4rem, 24vw, 9rem);
+  line-height: 1;
+  color: var(--ink);
+  opacity: 0.08;
+  pointer-events: none;
+  user-select: none;
+}
+.foto-entry-inner {
+  position: absolute;
+  z-index: 2;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: clamp(1.4rem, 4vw, 2.6rem);
+}
+.foto-entry-kicker {
+  font-family: var(--stack-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.foto-entry-title {
+  font-family: var(--stack-hand);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 12vw, 5.4rem);
+  line-height: 0.88;
+  color: var(--ink);
+}
+.foto-entry-go {
+  position: relative;
+  align-self: flex-start;
+  margin-top: 0.2rem;
+  font-family: var(--stack-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  color: var(--ink);
+  opacity: 0.82;
+  transition:
+    opacity 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+/* stretched hit-area — the whole tile is the link */
+.foto-entry-go::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+.foto-entry-go:focus-visible {
+  outline: 2px solid var(--line-hot);
+  outline-offset: 6px;
+}
+@media (hover: hover) {
+  .foto-entry:hover .foto-entry-veil {
+    background: linear-gradient(
+      180deg,
+      rgba(18, 18, 18, 0.12) 0%,
+      rgba(18, 18, 18, 0.58) 64%,
+      rgba(18, 18, 18, 0.84) 100%
+    );
+  }
+  .foto-entry:hover .foto-entry-go {
+    opacity: 1;
+    transform: translateX(0.35rem);
+  }
+}
+

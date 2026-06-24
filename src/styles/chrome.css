@@ -1,0 +1,81 @@
+/* =========================================================== CHROME ===== */
+.glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% -10%, var(--glow-1), transparent 55%),
+    radial-gradient(90% 60% at 50% 120%, var(--glow-2), transparent 60%);
+  transition: opacity 0.6s var(--ease);
+}
+
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+}
+/* PERF (mobile): a full-screen feTurbulence + mix-blend-mode layer forces the GPU
+   to re-blend the WHOLE viewport against the scrolling page on every frame — the
+   dominant cause of scroll jank on phones, where the 5% grain is imperceptible
+   anyway. Drop it on touch / coarse-pointer devices; desktop is left untouched.
+   (To bring grain back to mobile cheaply, pre-render the noise to a small tiled
+   PNG used as a fixed background-image with NO blend mode.) */
+@media (hover: none) {
+  .grain {
+    display: none;
+  }
+}
+
+/* ---- custom cursor — colour driven by the active zone's --cursor token ---- */
+.cur-dot,
+.cur-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 95;
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+.cur-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--cursor);
+  transition: background 0.45s var(--ease);
+}
+.cur-ring {
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--cursor);
+  opacity: 0.8;
+  transition:
+    width 0.45s var(--ease),
+    height 0.45s var(--ease),
+    border-color 0.45s var(--ease),
+    opacity 0.45s var(--ease);
+}
+.cur-ring.is-hot {
+  width: 58px;
+  height: 58px;
+  border-color: var(--cursor-hot);
+  opacity: 1;
+}
+/* on the gate the cursor inverts over tomato vs carbon (Claude Design) */
+:root:has([data-section="gate"]) .cur-dot,
+:root:has([data-section="gate"]) .cur-ring {
+  mix-blend-mode: difference;
+}
+@media (hover: none) {
+  .cur-dot,
+  .cur-ring {
+    display: none;
+  }
+}
+

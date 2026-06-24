@@ -1,0 +1,115 @@
+/* ============================================================= TOKENS ==== */
+:root {
+  /* ---- the protagonists ---- */
+  --cream: #fcfaf2;
+  --tomato: #ff3e2b;
+  --carbon: #121212;
+  --blue: #0a369d;
+  --lime: #dfff00;
+  --teal: #0dcd9d;
+
+  /* ---- type stacks (font vars are set on <html> by next/font) ---- */
+  --stack-display: var(--font-display), "Syne", system-ui, sans-serif;
+  --stack-serif: var(--font-serif), "Italiana", Georgia, "Times New Roman", serif;
+  --stack-mono: var(--font-mono), "JetBrains Mono", ui-monospace, "SF Mono", Menlo,
+    monospace;
+  --stack-hand: var(--font-hand), "La Belle Aurore", "Segoe Script", cursive;
+  --stack-hand2: var(--font-hand2), "Reenie Beanie", "Segoe Script", cursive;
+  /* chrome (header/footer/topbar/locale) was authored against these names */
+  --stack-text: var(--stack-mono);
+  --stack-sans: var(--stack-display);
+
+  /* ---- cream paper canvas (gate frame / about) ---- */
+  --bg: var(--cream);
+  --bg-2: #f1ecdc;
+  --ink: var(--carbon);
+  --ink-dim: #5c574b;
+  --ink-ghost: #b4ab94;
+  --line: rgba(18, 18, 18, 0.14);
+  --line-hot: rgba(18, 18, 18, 0.42);
+
+  /* ---- accents ---- */
+  --accent: var(--tomato);
+  --accent-2: var(--blue);
+  /* per-project — overridden inline via style={{ "--card-bg": …, "--card-fg": … }} */
+  --card-bg: var(--tomato);
+  --card-fg: var(--cream);
+
+  /* ---- colour-adaptive cursor (Claude Design): per-zone via --cursor ---- */
+  --cursor: var(--carbon);
+  --cursor-hot: var(--tomato);
+
+  /* ---- ambient + texture ---- */
+  --glow-1: rgba(255, 62, 43, 0.1);
+  --glow-2: rgba(10, 54, 157, 0.06);
+  --grain-blend: multiply;
+  --grain-opacity: 0.05;
+
+  /* ---- motion + metrics ---- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --container: 1280px;
+  --pad: clamp(1.1rem, 5vw, 4rem);
+  --topbar-h: 3.4rem;
+}
+
+/* gate — cream frame; the two portals carry tomato / carbon. The cursor flips to
+   mix-blend-difference here so it inverts over both souls (see CHROME). */
+[data-section="gate"],
+:root:has([data-section="gate"]) {
+  --bg: var(--cream);
+  --ink: var(--carbon);
+  --cursor: #ffffff;
+  --cursor-hot: #ffffff;
+  --glow-1: rgba(255, 62, 43, 0.08);
+  --glow-2: rgba(18, 18, 18, 0.05);
+}
+
+/* about — cream paper, calm tomato accent */
+[data-section="about"],
+:root:has([data-section="about"]) {
+  --cursor: var(--tomato);
+  --cursor-hot: var(--tomato);
+  --glow-1: rgba(255, 62, 43, 0.08);
+  --glow-2: rgba(13, 205, 157, 0.05);
+}
+
+/* grapholio — loud cream world, tomato accent, lime cursor pop */
+[data-section="grapholio"],
+:root:has([data-section="grapholio"]) {
+  --bg: var(--cream);
+  --bg-2: #f1ecdc;
+  --ink: var(--carbon);
+  --ink-dim: #5c574b;
+  --ink-ghost: #c4bca8;
+  --line: rgba(18, 18, 18, 0.16);
+  --line-hot: rgba(18, 18, 18, 0.55);
+  --accent: var(--tomato);
+  --accent-2: var(--blue);
+  --cursor: var(--tomato);
+  --cursor-hot: var(--lime);
+  --glow-1: rgba(255, 62, 43, 0.12);
+  --glow-2: rgba(13, 205, 157, 0.08);
+  --grain-blend: multiply;
+  --grain-opacity: 0.05;
+}
+
+/* fotofolio — quiet carbon darkroom, monochrome, image-forward, cream cursor */
+[data-section="fotofolio"],
+:root:has([data-section="fotofolio"]) {
+  --bg: var(--carbon);
+  --bg-2: #1b1b1c;
+  --ink: var(--cream);
+  --ink-dim: #8d8a82;
+  --ink-ghost: #46453f;
+  --line: rgba(252, 250, 242, 0.16);
+  --line-hot: rgba(252, 250, 242, 0.4);
+  --accent: var(--cream); /* monochrome: no colour over photographs */
+  --accent-2: #8d8a82;
+  --cursor: var(--cream);
+  --cursor-hot: var(--cream);
+  --glow-1: rgba(255, 255, 255, 0.04);
+  --glow-2: rgba(255, 255, 255, 0.02);
+  --grain-blend: screen;
+  --grain-opacity: 0.05;
+}
+

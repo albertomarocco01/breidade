@@ -1,0 +1,147 @@
+/* ====================================================== ENHANCE (≥640) === */
+@media (min-width: 640px) {
+  .g-wall {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.4rem, 3vw, 2.4rem);
+    align-items: start;
+  }
+  .g-card {
+    margin: 0 !important;
+  }
+  /* hand-composed vertical offsets */
+  .g-card:nth-child(3n + 2) {
+    margin-top: clamp(2rem, 5vw, 4rem) !important;
+  }
+  .g-card:nth-child(3n) {
+    margin-top: clamp(1rem, 2.5vw, 2rem) !important;
+  }
+
+  .foto-wall {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.6rem, 4vw, 3.4rem);
+    align-items: center;
+  }
+  .foto-frame:nth-child(3n + 2) {
+    transform: translateY(clamp(1.4rem, 4vw, 3rem));
+  }
+  .foto-frame:nth-child(3n) {
+    transform: translateY(clamp(-1.4rem, -4vw, -0.6rem));
+  }
+  /* the cover tile becomes a full-width portal banner under the prints */
+  .foto-entry {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 6.5;
+    transform: none;
+  }
+  /* the story reel becomes an art-directed, alternating vertical rhythm */
+  .story-photo:nth-child(odd) {
+    width: 84%;
+  }
+  .story-photo:nth-child(even) {
+    width: 84%;
+    margin-left: auto;
+  }
+
+  .project-body {
+    grid-template-columns: 1.3fr 1fr;
+    align-items: start;
+  }
+  .project-brief {
+    grid-column: 1 / -1;
+  }
+  .project-plates {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1fr;
+  }
+  .plate.is-wide {
+    grid-column: 1 / -1;
+  }
+
+  .project-nav {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .about {
+    grid-template-columns: 1.5fr 1fr;
+    align-items: start;
+  }
+  .about-hanzi-col {
+    grid-row: span 2;
+    grid-column: 2;
+    align-self: start;
+    text-align: right;
+  }
+  .about-intro {
+    grid-column: 1;
+  }
+  .about-contact {
+    grid-column: 1;
+  }
+}
+
+/* ===================================================== ENHANCE (≥1024) === */
+@media (min-width: 1024px) {
+  /* the split gate becomes a true vertical seam, side by side */
+  .gate {
+    flex-direction: row;
+  }
+  .gate-half--graph {
+    border-bottom: 0;
+    border-right: 1px solid var(--cream);
+    justify-content: flex-start;
+  }
+  .gate-half--foto {
+    justify-content: flex-end;
+  }
+  /* anchor each soul's name toward its OUTER edge so the growing half never
+     slides its name across the centre — the 設計師 pivot stays clean and fixed
+     at viewport centre on hover. */
+  .gate-half--graph .gate-half-inner {
+    align-items: flex-start;
+    text-align: left;
+    padding-inline: clamp(1.6rem, 4vw, 4rem);
+  }
+  .gate-half--foto .gate-half-inner {
+    align-items: flex-end;
+    text-align: right;
+    padding-inline: clamp(1.6rem, 4vw, 4rem);
+  }
+  .gate-han {
+    font-size: 50vh;
+  }
+
+  .g-wall {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .g-card:nth-child(3n + 2) {
+    margin-top: clamp(2.4rem, 6vw, 5rem) !important;
+  }
+  .g-card:nth-child(3n) {
+    margin-top: clamp(4rem, 10vw, 8rem) !important;
+  }
+
+  .foto-wall {
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  .foto-frame:nth-child(4n) {
+    transform: translateY(clamp(2rem, 6vw, 4rem));
+  }
+  .foto-frame:nth-child(4n + 1) {
+    transform: translateY(clamp(-2rem, -6vw, -1rem));
+  }
+  /* keep the cover tile a flat, full-width banner (override the 4n offset) */
+  .foto-entry {
+    aspect-ratio: 16 / 5.5;
+    transform: none !important;
+  }
+  .story-photo:nth-child(odd) {
+    width: 70%;
+  }
+  .story-photo:nth-child(even) {
+    width: 62%;
+    margin-left: auto;
+  }
+}
+

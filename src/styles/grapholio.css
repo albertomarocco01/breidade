@@ -1,0 +1,128 @@
+/* ========================================================= GRAPHOLIO ===== */
+.g-head {
+  margin-bottom: clamp(1.8rem, 5vw, 3.2rem);
+}
+.g-head .sect-title {
+  font-family: var(--stack-hand);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: clamp(3.2rem, 17vw, 8.5rem);
+  line-height: 0.9;
+  color: var(--tomato);
+}
+
+/* the asymmetric, hand-composed wall of vivid colour cards */
+.g-wall {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.6rem, 5vw, 2.6rem);
+}
+.g-card {
+  position: relative;
+  transform: rotate(var(--rot, 0deg));
+  transition: transform 0.5s var(--ease);
+}
+.g-card-link {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(0.9rem, 3vw, 1.3rem);
+  background: var(--card-bg);
+  color: var(--card-fg);
+  border: 3px solid var(--carbon);
+  border-radius: 18px;
+  box-shadow: 8px 8px 0 var(--carbon);
+  isolation: isolate;
+  transition:
+    box-shadow 0.45s var(--ease),
+    transform 0.45s var(--ease);
+}
+.g-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid currentColor;
+  font-family: var(--stack-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.g-card-cat {
+  font-weight: 700;
+}
+.g-card-year {
+  opacity: 0.7;
+}
+/* cover slot — a local placeholder sized for Giulia's real covers (16:10) */
+.g-card-cover {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 2px solid var(--carbon);
+  border-radius: 10px;
+  background: var(--carbon);
+}
+.g-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s var(--ease);
+}
+.g-card-num {
+  position: absolute;
+  z-index: 2;
+  left: 0.7rem;
+  top: 0.6rem;
+  font-family: var(--stack-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--cream);
+  mix-blend-mode: difference;
+}
+/* handwritten project title — the through-line of this soul */
+.g-card-title {
+  font-family: var(--stack-hand);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 10vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+.g-card-desc {
+  font-family: var(--stack-mono);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  opacity: 0.92;
+}
+/* hand-placed rhythm on mobile */
+.g-card:nth-child(odd) {
+  margin-right: 6%;
+}
+.g-card:nth-child(even) {
+  margin-left: 6%;
+}
+@media (hover: hover) {
+  .g-card:hover {
+    transform: rotate(0deg);
+    z-index: 2;
+  }
+  .g-card:hover .g-card-link {
+    box-shadow: 12px 12px 0 var(--carbon);
+    transform: translate(-2px, -2px);
+  }
+  .g-card:hover .g-card-cover img {
+    transform: scale(1.05);
+  }
+}
+.g-card-link:focus-visible {
+  outline: 2px solid var(--carbon);
+  outline-offset: 4px;
+}
+

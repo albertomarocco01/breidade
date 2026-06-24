@@ -1,0 +1,50 @@
+/* ====================================================== ENTRANCE HOOK ==== */
+html.entering .glow {
+  animation: glow-bloom 1.6s var(--ease) both;
+}
+@keyframes glow-bloom {
+  0% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ================================================= REDUCED MOTION ======== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  .cur-dot,
+  .cur-ring,
+  .grain {
+    display: none;
+  }
+  body {
+    cursor: auto;
+  }
+  .topbar {
+    opacity: 1;
+  }
+  /* the gate halves never grow/shrink under reduced motion */
+  .gate:has(.gate-half:hover) .gate-half,
+  .gate:has(.gate-half:focus-visible) .gate-half {
+    flex-grow: 1 !important;
+  }
+  /* art-directed offsets collapse to a clean stack */
+  .g-card,
+  .foto-frame {
+    transform: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}

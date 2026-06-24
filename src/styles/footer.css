@@ -1,0 +1,45 @@
+/* ============================================================ FOOTER ===== */
+.foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.8rem 1.6rem;
+  padding: 2.4rem var(--pad) 2.8rem;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink-dim);
+  font-family: var(--stack-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  transition:
+    background 0.6s var(--ease),
+    color 0.6s var(--ease);
+}
+.foot a {
+  color: var(--ink-dim);
+  transition: color 0.4s var(--ease);
+}
+.foot a:hover,
+.foot a:focus-visible {
+  color: var(--accent);
+}
+.foot .spacer {
+  flex: 1 1 auto;
+}
+.foot .copy {
+  color: var(--ink-ghost);
+}
+/* social links: glyph + label sit on one baseline-ish row */
+.foot-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.foot-ic {
+  font-size: 1.15rem;
+  flex: none;
+}
+
