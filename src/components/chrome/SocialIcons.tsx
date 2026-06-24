@@ -27,6 +27,29 @@ export function InstagramIcon({ className }: IconProps) {
   );
 }
 
+// Vertical "go" arrow (points up) — a link cue beside the footer about link.
+// Inherits currentColor and sizes to 1em like the social glyphs.
+export function ArrowUpIcon({ className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      width="1em"
+      height="1em"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M12 19V6" />
+      <path d="M6.5 11.5 12 6l5.5 5.5" />
+    </svg>
+  );
+}
+
 // LinkedIn — the "in" bug (dot + stem + n), filled.
 export function LinkedInIcon({ className }: IconProps) {
   return (
