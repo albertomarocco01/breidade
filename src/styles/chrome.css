@@ -1,4 +1,14 @@
 /* =========================================================== CHROME ===== */
+/* off-screen holder for reusable SVG filter defs (#heat-haze). NOT display:none,
+   so the filter id stays resolvable from CSS `filter: url(...)`. */
+.svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .glow {
   position: fixed;
   inset: 0;

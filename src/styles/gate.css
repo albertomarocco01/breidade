@@ -93,6 +93,9 @@
   text-transform: uppercase;
   color: var(--cream);
   mix-blend-mode: difference;
+  /* TRIAL: water-shimmer / heat-haze (filter def in HeatHaze.tsx). Disabled under
+     reduced motion (motion.css). */
+  filter: url(#heat-haze);
   transition: gap 0.35s var(--ease);
 }
 .gate-about:hover,

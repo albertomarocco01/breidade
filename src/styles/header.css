@@ -43,6 +43,11 @@
 .topbar.is-gate .topbar-left {
   pointer-events: auto;
 }
+/* TRIAL: water-shimmer / heat-haze on the gate header (wordmark + IT/EN toggle).
+   The ABOUT link gets it too (in gate.css). Disabled under reduced motion (motion.css). */
+.topbar.is-gate .topbar-left {
+  filter: url(#heat-haze);
+}
 .topbar-left {
   display: inline-flex;
   align-items: center;
