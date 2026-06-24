@@ -1236,6 +1236,335 @@ p {
   background: var(--line-hot);
 }
 
+/* the cover / portal tile — the ONLY labelled tile on the wall, a deliberate
+   doorway into the full series (never a bare photo). */
+.foto-entry {
+  display: block;
+  aspect-ratio: 4 / 5;
+  color: var(--ink);
+}
+.foto-entry-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 18, 0.2) 0%,
+    rgba(18, 18, 18, 0.74) 64%,
+    rgba(18, 18, 18, 0.92) 100%
+  );
+  transition: background 0.8s var(--ease);
+}
+.foto-entry-han {
+  position: absolute;
+  z-index: 1;
+  right: 0.08em;
+  bottom: -0.14em;
+  writing-mode: vertical-rl;
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: clamp(4rem, 24vw, 9rem);
+  line-height: 1;
+  color: var(--ink);
+  opacity: 0.08;
+  pointer-events: none;
+  user-select: none;
+}
+.foto-entry-inner {
+  position: absolute;
+  z-index: 2;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: clamp(1.4rem, 4vw, 2.6rem);
+}
+.foto-entry-kicker {
+  font-family: var(--stack-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.foto-entry-title {
+  font-family: var(--stack-hand);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 12vw, 5.4rem);
+  line-height: 0.88;
+  color: var(--ink);
+}
+.foto-entry-go {
+  position: relative;
+  align-self: flex-start;
+  margin-top: 0.2rem;
+  font-family: var(--stack-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  color: var(--ink);
+  opacity: 0.82;
+  transition:
+    opacity 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+/* stretched hit-area — the whole tile is the link */
+.foto-entry-go::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+.foto-entry-go:focus-visible {
+  outline: 2px solid var(--line-hot);
+  outline-offset: 6px;
+}
+@media (hover: hover) {
+  .foto-entry:hover .foto-entry-veil {
+    background: linear-gradient(
+      180deg,
+      rgba(18, 18, 18, 0.12) 0%,
+      rgba(18, 18, 18, 0.58) 64%,
+      rgba(18, 18, 18, 0.84) 100%
+    );
+  }
+  .foto-entry:hover .foto-entry-go {
+    opacity: 1;
+    transform: translateX(0.35rem);
+  }
+}
+
+/* ===================================================== FOTOFOLIO STORY ==== */
+.story {
+  position: relative;
+}
+.story-hero {
+  position: relative;
+  min-height: 78vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg);
+  padding: calc(var(--topbar-h) + 2.4rem) var(--pad) clamp(2rem, 6vw, 4rem);
+}
+.story-hero-han {
+  position: absolute;
+  z-index: 0;
+  right: -3vw;
+  bottom: -8vh;
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: 56vh;
+  line-height: 1;
+  color: var(--ink);
+  opacity: 0.05;
+  pointer-events: none;
+  user-select: none;
+}
+.story-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+}
+.story-overline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+  margin-top: 1.2rem;
+  font-family: var(--stack-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.story-title {
+  font-family: var(--stack-hand);
+  font-weight: 400;
+  font-size: clamp(3rem, 16vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  margin: 0.4rem 0 0;
+  color: var(--ink);
+}
+.story-tagline {
+  margin-top: clamp(1.4rem, 4vw, 2.2rem);
+  font-family: var(--stack-serif);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 4.2vw, 2.1rem);
+  line-height: 1.38;
+  max-width: 22ch;
+  color: var(--ink);
+}
+.story-tagline-emph {
+  display: block;
+  margin: 0.12em 0;
+  font-style: italic;
+  color: var(--ink-dim);
+}
+
+/* the prints — a single full-bleed, art-directed vertical reel */
+.story-reel {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: clamp(3rem, 9vw, 6rem) var(--pad) clamp(2rem, 6vw, 4rem);
+  display: grid;
+  gap: clamp(3rem, 10vw, 8rem);
+}
+.story-photo {
+  position: relative;
+  margin: 0;
+}
+.story-photo-btn {
+  display: block;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg-2);
+  cursor: pointer;
+}
+.story-photo-btn img {
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05) brightness(0.95);
+  transition:
+    filter 1.2s var(--ease),
+    transform 1.2s var(--ease);
+}
+@media (hover: hover) {
+  .story-photo-btn:hover img {
+    filter: grayscale(0) contrast(1.05);
+    transform: scale(1.03);
+  }
+}
+.story-photo-btn:focus-visible {
+  outline: 2px solid var(--line-hot);
+  outline-offset: 5px;
+}
+
+.story-coda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  padding: clamp(2rem, 6vw, 4rem) var(--pad) clamp(4rem, 10vw, 7rem);
+}
+.story-coda .rule {
+  width: 3rem;
+  height: 1px;
+  background: var(--line-hot);
+}
+.story-back-foot {
+  font-family: var(--stack-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  color: var(--ink-dim);
+  transition: color 0.4s var(--ease);
+}
+.story-back-foot:hover {
+  color: var(--ink);
+}
+
+/* fullscreen lightbox — edge UI only, never a caption on the photograph */
+html.is-lightbox {
+  overflow: hidden;
+}
+.story-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: rgba(10, 10, 11, 0.94);
+  backdrop-filter: blur(8px);
+  animation: lb-fade 0.4s var(--ease) both;
+}
+@keyframes lb-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.story-lightbox-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: clamp(0.6rem, 2vh, 1.4rem);
+}
+.story-lightbox-count {
+  font-family: var(--stack-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  color: var(--ink-dim);
+}
+.story-lightbox-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(0.6rem, 2.5vw, 2rem);
+}
+.story-lightbox-stage {
+  position: relative;
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 1180px;
+}
+.story-lightbox-img {
+  object-fit: contain;
+}
+.story-lightbox-close,
+.story-lightbox-nav {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background 0.3s var(--ease),
+    color 0.3s var(--ease),
+    border-color 0.3s var(--ease);
+}
+.story-lightbox-close {
+  width: 2.6rem;
+  height: 2.6rem;
+  font-size: 0.9rem;
+}
+.story-lightbox-nav {
+  align-self: center;
+  width: clamp(2.6rem, 6vw, 3.4rem);
+  height: clamp(2.6rem, 6vw, 3.4rem);
+  font-size: 1.1rem;
+}
+.story-lightbox-close:hover,
+.story-lightbox-nav:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+.story-lightbox-close:focus-visible,
+.story-lightbox-nav:focus-visible {
+  outline: 2px solid var(--line-hot);
+  outline-offset: 3px;
+}
+
 /* ============================================================= ABOUT ===== */
 .about {
   position: relative;
@@ -1421,6 +1750,20 @@ p {
   .foto-frame:nth-child(3n) {
     transform: translateY(clamp(-1.4rem, -4vw, -0.6rem));
   }
+  /* the cover tile becomes a full-width portal banner under the prints */
+  .foto-entry {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 6.5;
+    transform: none;
+  }
+  /* the story reel becomes an art-directed, alternating vertical rhythm */
+  .story-photo:nth-child(odd) {
+    width: 84%;
+  }
+  .story-photo:nth-child(even) {
+    width: 84%;
+    margin-left: auto;
+  }
 
   .project-body {
     grid-template-columns: 1.3fr 1fr;
@@ -1509,6 +1852,18 @@ p {
   }
   .foto-frame:nth-child(4n + 1) {
     transform: translateY(clamp(-2rem, -6vw, -1rem));
+  }
+  /* keep the cover tile a flat, full-width banner (override the 4n offset) */
+  .foto-entry {
+    aspect-ratio: 16 / 5.5;
+    transform: none !important;
+  }
+  .story-photo:nth-child(odd) {
+    width: 70%;
+  }
+  .story-photo:nth-child(even) {
+    width: 62%;
+    margin-left: auto;
   }
 }
 

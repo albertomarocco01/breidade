@@ -46,6 +46,22 @@ export interface Dictionary {
     label: string;
     /** the scraped series description — the ONLY fotofolio copy (EN in both) */
     intro: string;
+    /** the series tagline, split for the "yet exposed" line-break emphasis (chrome) */
+    tagline: { lead: string; emph: string; tail: string };
+    /** affordance on the series cover/entry tile (UI chrome, IT-first) */
+    enter: string;
+  };
+  /** fotofolio series ("story") page chrome — never captions on the photographs */
+  story: {
+    /** back to the photo wall */
+    back: string;
+    /** lightbox close */
+    close: string;
+    /** lightbox previous / next frame (spoken labels) */
+    prev: string;
+    next: string;
+    /** spoken label for opening a photo full-frame */
+    zoom: string;
   };
   /** grapholio case-study chrome */
   project: {
@@ -76,6 +92,14 @@ const SCRAPED = {
   // Fotofolio series "Hand other stories" — the only text near the photographs.
   fotofolioIntro:
     "A collection of images that tells stories through the hand of people with different social backgrounds.",
+  // The series' own tagline (Giulia's copy). Shown only as page chrome on the
+  // story page — never as a caption on a photo. Split so "yet exposed" can be
+  // isolated on its own line for emphasis, exactly as on the source site.
+  fotofolioTagline: {
+    lead: "Visual project about the most intimate,",
+    emph: "yet exposed",
+    tail: "part of our body: the Hands.",
+  },
   // About — Giulia's bio, verbatim.
   aboutBio:
     "Giulia Breida, 2001, I am an italian graphic designer and photographer, with a passion for China and eastern cultures. Currently working in the marketing field, I create visual projects from ideas with a fresh, bold and colorful style.",
@@ -105,6 +129,15 @@ const en: Dictionary = {
     aria: "Fotofolio — photography",
     label: "photography",
     intro: SCRAPED.fotofolioIntro,
+    tagline: SCRAPED.fotofolioTagline,
+    enter: "view the series",
+  },
+  story: {
+    back: "all photographs",
+    close: "close",
+    prev: "previous",
+    next: "next",
+    zoom: "view full frame",
   },
   project: {
     back: "all projects",
@@ -151,6 +184,16 @@ const it: Dictionary = {
     label: "fotografia",
     // IT falls back to the EN scraped copy until translated — never invented.
     intro: SCRAPED.fotofolioIntro,
+    // Scraped tagline reused verbatim (proper copy) — chrome only, never invented.
+    tagline: SCRAPED.fotofolioTagline,
+    enter: "guarda la serie",
+  },
+  story: {
+    back: "tutte le foto",
+    close: "chiudi",
+    prev: "precedente",
+    next: "successiva",
+    zoom: "guarda a tutto schermo",
   },
   project: {
     back: "tutti i progetti",

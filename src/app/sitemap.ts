@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { projectSlugs } from "@/lib/grapholio";
+import { seriesSlugs } from "@/lib/fotofolio";
 
 const SITE = "https://breidade.com";
 
@@ -35,5 +36,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...projectRoutes];
+  const seriesRoutes: MetadataRoute.Sitemap = seriesSlugs().map((slug) => ({
+    url: `${SITE}/fotofolio/${slug}`,
+    lastModified: now,
+    changeFrequency: "yearly",
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...projectRoutes, ...seriesRoutes];
 }
