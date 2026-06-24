@@ -282,6 +282,17 @@ p {
   opacity: var(--grain-opacity);
   mix-blend-mode: var(--grain-blend);
 }
+/* PERF (mobile): a full-screen feTurbulence + mix-blend-mode layer forces the GPU
+   to re-blend the WHOLE viewport against the scrolling page on every frame — the
+   dominant cause of scroll jank on phones, where the 5% grain is imperceptible
+   anyway. Drop it on touch / coarse-pointer devices; desktop is left untouched.
+   (To bring grain back to mobile cheaply, pre-render the noise to a small tiled
+   PNG used as a fixed background-image with NO blend mode.) */
+@media (hover: none) {
+  .grain {
+    display: none;
+  }
+}
 
 /* ---- custom cursor — colour driven by the active zone's --cursor token ---- */
 .cur-dot,
@@ -499,9 +510,12 @@ p {
    keyframe replays — the AI Studio scale (grapholio) / brightness (fotofolio) /
    slide (about) page changes, with no faked SPA routing. transform resolves to
    none at rest, so no fixed-positioning containing block lingers. */
-.route {
-  will-change: transform, opacity, filter;
-}
+/* No persistent `will-change` on .route: these are ONE-SHOT mount animations, so a
+   standing will-change (especially `filter`) would needlessly keep the entire page
+   on its own GPU layer for the whole session — wasted memory/compositing on mobile —
+   and would turn .route into a containing block for its fixed descendants (the story
+   lightbox, the gate wipe), which the route transitions deliberately avoid. The
+   browser promotes a layer for the brief animation on its own. */
 .route[data-route="gate"] {
   animation: route-fade 0.6s var(--ease) both;
 }
@@ -513,6 +527,15 @@ p {
 }
 .route[data-route="about"] {
   animation: route-slide 0.6s var(--ease) both;
+}
+/* PERF (mobile): the fotofolio entrance animates `filter: brightness` across the
+   WHOLE page — a full-viewport repaint every frame, the one genuinely expensive
+   route transition. On touch, fall back to the opacity-only fade (the carbon page
+   still reads as "emerging from black"); the transform-based routes stay as-is. */
+@media (hover: none) {
+  .route[data-route="fotofolio"] {
+    animation-name: route-fade;
+  }
 }
 @keyframes route-fade {
   from {
