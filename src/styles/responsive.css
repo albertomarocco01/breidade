@@ -107,6 +107,12 @@
     text-align: right;
     padding-inline: clamp(1.6rem, 4vw, 4rem);
   }
+  /* restore the full-scale hero size on the side-by-side desktop layout
+     (the base rule shrinks it for the stacked mobile/tablet column) */
+  .gate-half--graph .gate-world,
+  .gate-half--foto .gate-world {
+    font-size: clamp(2.8rem, 11vw, 7rem);
+  }
   .gate-han {
     font-size: 50vh;
   }

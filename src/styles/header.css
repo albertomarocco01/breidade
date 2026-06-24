@@ -32,6 +32,17 @@
 .topbar.is-gate nav {
   display: none;
 }
+/* On the gate the bar's hidden right half still spans the full width and would
+   intercept taps meant for the ABOUT link (which lives lower, in .gate-head, at a
+   smaller z-index). Let pointer events fall THROUGH the bar to ABOUT, but keep the
+   interactive left cluster (wordmark + IT/EN toggle) clickable. Fixes the mobile
+   bug where ABOUT could not be tapped. */
+.topbar.is-gate {
+  pointer-events: none;
+}
+.topbar.is-gate .topbar-left {
+  pointer-events: auto;
+}
 .topbar-left {
   display: inline-flex;
   align-items: center;
