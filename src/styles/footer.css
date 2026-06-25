@@ -4,7 +4,9 @@
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  /* vertical centering knob: `center` keeps icons + text + copyright on one
+     line; use `baseline` to align by text baseline instead */
+  align-items: center;
   gap: 0.8rem 1.6rem;
   padding: 2.4rem var(--pad) 2.8rem;
   border-top: 1px solid var(--line);

@@ -15,14 +15,6 @@ export default async function AboutPage() {
         <div className="about-intro">
           <span className="sect-kicker">{dict.about.label}</span>
           <p className="about-bio">{dict.about.bio}</p>
-          <p className="about-motif">
-            <b lang="zh" aria-hidden="true">
-              {HANZI}
-            </b>
-            <span>
-              {HANZI} · {dict.about.designer}
-            </span>
-          </p>
         </div>
 
         <div className="about-hanzi-col" aria-hidden="true" lang="zh">

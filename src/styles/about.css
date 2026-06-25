@@ -23,36 +23,19 @@
   margin: 0;
   max-width: 22ch;
 }
+.about-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
 .about-bio {
   font-family: var(--stack-serif);
   font-size: clamp(1.15rem, 3vw, 1.5rem);
   line-height: 1.6;
   color: var(--ink);
   max-width: 46ch;
-}
-.about-motif {
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.8rem 1.3rem;
-  align-self: flex-start;
-  background: var(--tomato);
-  color: var(--cream);
-  border: 2px solid var(--carbon);
-  border-radius: 14px;
-  box-shadow: 6px 6px 0 var(--carbon);
-}
-.about-motif b {
-  font-family: var(--stack-display);
-  font-weight: 800;
-  font-size: 2rem;
-  color: var(--lime);
-}
-.about-motif span {
-  font-family: var(--stack-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
 }
 .about-contact {
   display: flex;
