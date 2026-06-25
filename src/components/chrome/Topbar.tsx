@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useLenis } from "lenis/react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useApp } from "@/components/providers/AppProvider";
@@ -69,21 +68,36 @@ export function Topbar({
 
   // Auto-hide the transparent topbar so it never collides with page titles: tuck
   // it away on scroll down, reveal on scroll up, always show near the top. Driven
-  // off the shared Lenis instance and applied as a single class toggle through
-  // topbarRef — no setState on the scroll tick. Skipped under reduced motion.
-  useLenis(
-    (instance) => {
-      if (reducedMotion) return;
-      const bar = topbarRef.current;
-      if (!bar) return;
-      const tucked =
-        instance.scroll > TOPBAR_REVEAL_TOP && instance.direction === 1;
-      if (tucked === tuckedRef.current) return;
-      tuckedRef.current = tucked;
-      bar.classList.toggle("is-tucked", tucked);
-    },
-    [reducedMotion],
-  );
+  // off window.scrollY (NOT Lenis direction): Lenis runs with syncTouch:false, so
+  // on mobile touch scroll its direction signal never updates and the bar would
+  // never tuck — leaving the fixed header permanently overlapping page content.
+  // Lenis scrolls the window in root mode, so window.scrollY is correct on every
+  // device. rAF-throttled, single class toggle through topbarRef (no setState in
+  // the scroll loop). Skipped under reduced motion.
+  useEffect(() => {
+    if (reducedMotion) return;
+    const bar = topbarRef.current;
+    if (!bar) return;
+    let last = window.scrollY;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const y = window.scrollY;
+        const tucked = y > TOPBAR_REVEAL_TOP && y > last;
+        last = y;
+        if (tucked === tuckedRef.current) return;
+        tuckedRef.current = tucked;
+        bar.classList.toggle("is-tucked", tucked);
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [reducedMotion]);
 
   // Keyboard access: if focus moves into the topbar while it's tucked, reveal it
   // so every nav link stays reachable. `focusin` bubbles, so one listener covers

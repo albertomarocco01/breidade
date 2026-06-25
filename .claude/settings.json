@@ -1,0 +1,26 @@
+{
+  "defaultMode": "bypassPermissions",
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "PowerShell(*)",
+      "MultiEdit(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "LS(*)",
+      "TodoWrite(*)",
+      "TodoRead(*)",
+      "Task(*)",
+      "mcp__*(*)"
+    ],
+    "additionalDirectories": [
+      "\\tmp",
+      "C:\\Users\\sinog\\.claude"
+    ]
+  }
+}

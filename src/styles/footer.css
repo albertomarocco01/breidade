@@ -57,3 +57,9 @@
   }
 }
 
+/* about already carries the full contact block (email/tel/insta/linkedin) as a
+   spec sheet, so the site footer is redundant there — hide it on that route. */
+:root:has([data-section="about"]) .foot {
+  display: none;
+}
+
