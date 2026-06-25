@@ -7,6 +7,15 @@
   overflow: hidden;
   background: var(--cream);
   user-select: none;
+  /* Stable isolation boundary for the mix-blend-difference header (.gate-name /
+     .gate-meta / .gate-about). The route fade (route-fade in routes.css) animates
+     opacity on the .route wrapper, which transiently creates then destroys a
+     stacking context; without a fixed boundary the blend's backdrop reference
+     flips mid-animation and Blink/WebKit leave a stale composite of the brand
+     text — the ghost "trail" seen when returning to the gate. Isolating here pins
+     the blend group to the gate's own content (both souls live inside .gate), so
+     the look is unchanged and the ghost can't form. */
+  isolation: isolate;
 }
 
 /* floating brand header — serif name in tomato, mix-blend so it reads on both */
