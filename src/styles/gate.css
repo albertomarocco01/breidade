@@ -234,48 +234,60 @@
   text-transform: uppercase;
 }
 
-/* idle FLOAT on the hero words — keeps GRAPHOLIO / FOTOFOLIO gently in motion,
-   on mobile too (transform-only, runs on the compositor, not hover-gated). It
-   lives on an inner wrapper so it never fights the GSAP entrance, which animates
-   the outer .gate-reveal/.gate-world. The two souls bob on slightly different
-   rhythms (and out of phase) so they never move in lockstep. Auto-disabled under
-   prefers-reduced-motion via the global block in motion.css. */
+/* The hero words — GRAPHOLIO / FOTOFOLIO — are DEAD STILL at rest: flat cream, no
+   transform, no moving fill, so the ENTIRE word always reads. All motion (bob +
+   sheen) is hover/focus ONLY (block below). The float lives on an inner wrapper so
+   its hover transform never fights the GSAP entrance, which animates the outer
+   .gate-reveal/.gate-world. */
 .gate-float {
   display: inline-block;
   will-change: transform;
-  /* "sunlight gliding over a wet surface": a soft bright band sweeps through the
-     cream letters. Pure clip-text gradient (only background-position animates) —
-     no SVG displacement, so it can never read as glitch. Coexists with the bob
-     below since transform and background-position are independent. */
-  background-image: linear-gradient(
-    100deg,
-    var(--cream) 0%,
-    var(--cream) 42%,
-    rgba(252, 250, 242, 0.5) 47%,
-    #ffffff 50%,
-    rgba(252, 250, 242, 0.5) 53%,
-    var(--cream) 58%,
-    var(--cream) 100%
-  );
-  background-size: 220% 100%;
-  background-repeat: no-repeat;
-  background-position: 120% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
   color: var(--cream);
+  -webkit-text-fill-color: var(--cream);
 }
-/* bob + sheen MUST share ONE shorthand (a second animation-name would cancel the
-   bob); each soul gets its own tempo + phase so they never move together. */
-.gate-half--graph .gate-float {
-  animation:
-    gate-bob-a 4.2s ease-in-out 0.5s infinite,
-    gate-sheen 7.5s cubic-bezier(0.45, 0, 0.2, 1) 1.2s infinite;
-}
-.gate-half--foto .gate-float {
-  animation:
-    gate-bob-b 5.6s ease-in-out 0.9s infinite,
-    gate-sheen 9s cubic-bezier(0.45, 0, 0.2, 1) 3s infinite;
+
+/* Hover / focus ONLY: the touched soul breathes (bob) while a soft specular band
+   glides through its letters (sheen — "sunlight on a wet surface"). The sheen paints
+   the cream glyphs through a clip-text gradient; `background-repeat: repeat-x` tiles
+   the cream so it covers EVERY glyph at EVERY keyframe position. The old `no-repeat`
+   left whatever part of the word fell outside the 220%-wide image painted transparent
+   (invisible) — THAT was the apparent "clipping", not a geometric overflow. bob +
+   sheen share ONE `animation` shorthand (a second `animation-name` would cancel the
+   bob); each soul keeps a distinct tempo so the two souls never move in lockstep. The
+   whole block is gated to (prefers-reduced-motion: no-preference) so reduced-motion
+   users keep the flat-cream rest with zero animation. */
+@media (prefers-reduced-motion: no-preference) {
+  .gate-half:hover .gate-float,
+  .gate-half:focus-visible .gate-float {
+    background-image: linear-gradient(
+      100deg,
+      var(--cream) 0%,
+      var(--cream) 42%,
+      rgba(252, 250, 242, 0.5) 47%,
+      #ffffff 50%,
+      rgba(252, 250, 242, 0.5) 53%,
+      var(--cream) 58%,
+      var(--cream) 100%
+    );
+    background-size: 220% 100%;
+    background-repeat: repeat-x;
+    background-position: 120% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .gate-half--graph:hover .gate-float,
+  .gate-half--graph:focus-visible .gate-float {
+    animation:
+      gate-bob-a 4.2s ease-in-out infinite,
+      gate-sheen 7.5s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  }
+  .gate-half--foto:hover .gate-float,
+  .gate-half--foto:focus-visible .gate-float {
+    animation:
+      gate-bob-b 5.6s ease-in-out infinite,
+      gate-sheen 9s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  }
 }
 @keyframes gate-bob-a {
   0%,
@@ -331,15 +343,19 @@
   transition: transform 0.4s var(--ease);
 }
 
-/* hover/focus: the touched world breathes open, the other recedes (flex-grow) */
+/* hover/focus: the touched world breathes open, the other recedes (flex-grow). The
+   recede is deliberately gentle (1.18 vs 0.86 → the receding half holds ~42vw): it
+   keeps the ONE fixed hero size (responsive.css) inside even the narrowed half, so the
+   widest word (GRAPHOLIO) never overruns it. A more dramatic recede would force a
+   smaller hero or a per-state shrink — neither wanted. */
 @media (hover: hover) {
   .gate:has(.gate-half--graph:hover) .gate-half--graph,
   .gate:has(.gate-half--foto:hover) .gate-half--foto {
-    flex-grow: 1.4;
+    flex-grow: 1.18;
   }
   .gate:has(.gate-half--graph:hover) .gate-half--foto,
   .gate:has(.gate-half--foto:hover) .gate-half--graph {
-    flex-grow: 0.72;
+    flex-grow: 0.86;
   }
   .gate-half:hover .gate-han {
     transform: scale(1.08);
@@ -350,11 +366,11 @@
 }
 .gate:has(.gate-half--graph:focus-visible) .gate-half--graph,
 .gate:has(.gate-half--foto:focus-visible) .gate-half--foto {
-  flex-grow: 1.4;
+  flex-grow: 1.18;
 }
 .gate:has(.gate-half--graph:focus-visible) .gate-half--foto,
 .gate:has(.gate-half--foto:focus-visible) .gate-half--graph {
-  flex-grow: 0.72;
+  flex-grow: 0.86;
 }
 
 /* the seam pivot — 設計師, mix-blend so it inverts on both souls. ONE 設計師 motif. */
