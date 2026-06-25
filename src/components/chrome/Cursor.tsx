@@ -28,6 +28,15 @@ export function Cursor() {
     let ry = my;
     let raf = 0;
 
+    // Park both at the entry point (screen centre) and only THEN go live. They
+    // must never paint at their CSS-default origin (0,0) — that is the faint
+    // top-left "ghost" ring seen during the load/hydration window before this
+    // effect runs. .cursor-live (read by chrome.css) keeps them at opacity:0
+    // until exactly here, so the reveal happens already positioned.
+    dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+    ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+    document.documentElement.classList.add("cursor-live");
+
     const onMove = (e: PointerEvent) => {
       mx = e.clientX;
       my = e.clientY;
@@ -63,6 +72,7 @@ export function Cursor() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
+      document.documentElement.classList.remove("cursor-live");
       interactive.forEach((el) => {
         el.removeEventListener("mouseenter", hot);
         el.removeEventListener("mouseleave", cool);

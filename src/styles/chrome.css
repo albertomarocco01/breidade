@@ -32,7 +32,14 @@
   }
 }
 
-/* ---- custom cursor — colour driven by the active zone's --cursor token ---- */
+/* ---- custom cursor — colour driven by the active zone's --cursor token ----
+   The dot/ring default to opacity:0 and are revealed only once the Cursor effect
+   has parked them at the pointer (it adds .cursor-live to <html>). Without this
+   they paint at their CSS-default origin — position:fixed top/left 0 plus the
+   centring translate sits them ON the (0,0) corner — for the whole SSR→hydration
+   window: the faint top-left "ghost" ring, most visible on the gate through the
+   difference blend. (Reduced motion + touch hide them outright — motion.css and
+   the @media (hover: none) block below.) */
 .cur-dot,
 .cur-ring {
   position: fixed;
@@ -43,18 +50,20 @@
   border-radius: 50%;
   transform: translate(-50%, -50%);
   will-change: transform;
+  opacity: 0;
 }
 .cur-dot {
   width: 6px;
   height: 6px;
   background: var(--cursor);
-  transition: background 0.45s var(--ease);
+  transition:
+    background 0.45s var(--ease),
+    opacity 0.45s var(--ease);
 }
 .cur-ring {
   width: 30px;
   height: 30px;
   border: 1.5px solid var(--cursor);
-  opacity: 0.8;
   transition:
     width 0.45s var(--ease),
     height 0.45s var(--ease),
@@ -65,6 +74,17 @@
   width: 58px;
   height: 58px;
   border-color: var(--cursor-hot);
+}
+/* live only after JS has positioned the cursor. Hot is scoped under .cursor-live
+   too, so its opacity:1 (0,3,0) always beats .cursor-live .cur-ring (0,2,0)
+   regardless of source order. */
+.cursor-live .cur-dot {
+  opacity: 1;
+}
+.cursor-live .cur-ring {
+  opacity: 0.8;
+}
+.cursor-live .cur-ring.is-hot {
   opacity: 1;
 }
 /* on the gate the cursor inverts over tomato vs carbon (Claude Design) */
