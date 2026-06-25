@@ -104,8 +104,6 @@
   mix-blend-mode: difference;
   will-change: transform;
   transition: gap 0.35s var(--ease);
-  /* idle float — keyframes gate-about-bob below */
-  animation: gate-about-bob 6.4s ease-in-out 0.7s infinite;
 }
 .gate-about:hover,
 .gate-about:focus-visible {
@@ -118,15 +116,19 @@
 .gate-about:focus-visible .arr {
   transform: translateX(3px);
 }
-/* Idle float on the whole ABOUT cluster — same bob vocabulary as the hero words
-   (gate-bob-a/b) and the wordmark, kept low-amplitude for small text. It rides on
-   .gate-about itself so text + arrow drift together as one: the hover behaviour is
-   safe because that animates `gap` — a flex property, not transform — while the
-   arrow's own hover translateX composes UNDER this parent transform, so neither
-   fights the float. mix-blend-mode:difference is preserved (legible over both souls);
-   transforming a blended element just moves it, the blend follows. A longer period +
-   opposite rotate + a start delay vs. the wordmark keep the two out of phase. Frozen
-   under prefers-reduced-motion by motion.css; the guard below is belt-and-braces. */
+/* Idle = DEAD STILL. The whole ABOUT cluster (text + arrow) bobs only WHILE hovered
+   or focused — same low-amplitude bob vocabulary as the hero words, kept small for
+   chrome text. It rides on .gate-about itself so text + arrow drift as one; the hover
+   `gap` change is a flex property (not transform) and the arrow's hover translateX
+   composes UNDER this parent transform, so neither fights the bob. mix-blend-mode:
+   difference is preserved (legible over both souls). Gated to no-preference so
+   reduced-motion users get zero animation in every state. */
+@media (prefers-reduced-motion: no-preference) {
+  .gate-about:hover,
+  .gate-about:focus-visible {
+    animation: gate-about-bob 6.4s ease-in-out infinite;
+  }
+}
 @keyframes gate-about-bob {
   0%,
   100% {
@@ -134,11 +136,6 @@
   }
   50% {
     transform: translate3d(0, -0.16rem, 0) rotate(0.6deg);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .gate-about {
-    animation: none;
   }
 }
 
@@ -199,8 +196,11 @@
   padding: 2.4rem clamp(0.9rem, 4vw, 2rem);
 }
 .gate-disc {
-  align-self: center;
-  margin-bottom: 0.3rem;
+  /* follow the column's align-items: centered when stacked, snapped to the soul's
+     outer edge (left/right) at >=1024 — so badge, word and "enter" share one edge.
+     (Was align-self:center, which hard-centered the badge over the edge-anchored word;
+     margin-bottom dropped so the container gap is the single badge->word spacing.) */
+  align-self: auto;
   padding: 0.3rem 0.85rem;
   border-radius: 999px;
   font-family: var(--stack-mono);
@@ -341,7 +341,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.9rem;
+  margin-top: 0.55rem;
   font-family: var(--stack-mono);
   font-size: 0.66rem;
   letter-spacing: 0.22em;

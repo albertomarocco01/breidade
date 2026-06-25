@@ -56,20 +56,21 @@
   text-transform: lowercase;
   color: var(--ink);
 }
-/* Idle float on the brand wordmark — mirrors the hero words' bob (gate-bob-a/b in
-   gate.css: a little translateY + a hair of rotate, ease-in-out, infinite) at a far
-   lower amplitude, since this is small chrome text. SCOPED TO THE GATE
-   (.topbar.is-gate): the landing already breathes with motion, so a gently floating
-   wordmark belongs there; on inner pages the bar is quiet utility chrome that tucks
-   out of the way, where a perpetual wobble would only distract. The transform lives
-   on .wordmark (a flex item, hence transformable) and NEVER on .topbar, whose own
-   transform is owned by the scroll tuck + GSAP entrance. A different period from the
-   gate's ABOUT float keeps the two from ever moving in lockstep. motion.css freezes
-   all animation under prefers-reduced-motion (this one ends at rest); the guard below
-   is belt-and-braces. */
+/* The brand wordmark is STILL at rest — it bobs only WHILE hovered/focused, the same
+   hover-only model as the hero words. Same low-amplitude vocabulary (a little translateY
+   + a hair of rotate), scoped to the gate (.topbar.is-gate) so inner-page chrome stays
+   quiet. The transform lives on .wordmark (a flex item, hence transformable) and NEVER
+   on .topbar, whose own transform is owned by the scroll tuck + GSAP entrance. A
+   different period from the gate's ABOUT bob keeps the two from moving in lockstep.
+   Gated to no-preference so reduced-motion users get zero animation in every state. */
 .topbar.is-gate .wordmark {
   will-change: transform;
-  animation: wordmark-bob 5.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .topbar.is-gate .wordmark:hover,
+  .topbar.is-gate .wordmark:focus-visible {
+    animation: wordmark-bob 5.2s ease-in-out infinite;
+  }
 }
 @keyframes wordmark-bob {
   0%,
@@ -78,11 +79,6 @@
   }
   50% {
     transform: translate3d(0, -0.13rem, 0) rotate(-0.5deg);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .topbar.is-gate .wordmark {
-    animation: none;
   }
 }
 .topbar nav {
