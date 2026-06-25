@@ -55,30 +55,16 @@
   letter-spacing: 0.02em;
   text-transform: lowercase;
   color: var(--ink);
+  /* anchored at the left so it grows toward the nav, never shifting the logo */
+  transform-origin: left center;
+  transition: transform 0.4s var(--ease);
 }
-/* The brand wordmark is STILL at rest — it bobs only WHILE hovered/focused, the same
-   hover-only model as the hero words. Same low-amplitude vocabulary (a little translateY
-   + a hair of rotate), scoped to the gate (.topbar.is-gate) so inner-page chrome stays
-   quiet. The transform lives on .wordmark (a flex item, hence transformable) and NEVER
-   on .topbar, whose own transform is owned by the scroll tuck + GSAP entrance. A
-   different period from the gate's ABOUT bob keeps the two from moving in lockstep.
-   Gated to no-preference so reduced-motion users get zero animation in every state. */
-.topbar.is-gate .wordmark {
-  will-change: transform;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .topbar.is-gate .wordmark:hover,
-  .topbar.is-gate .wordmark:focus-visible {
-    animation: wordmark-bob 5.2s ease-in-out infinite;
-  }
-}
-@keyframes wordmark-bob {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate3d(0, -0.13rem, 0) rotate(-0.5deg);
+/* brand hover — a slight scale-up only. Gated to hover so a touch tap doesn't
+   leave it stuck enlarged; reduced-motion keeps it still. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .topbar .wordmark:hover,
+  .topbar .wordmark:focus-visible {
+    transform: scale(1.08);
   }
 }
 .topbar nav {

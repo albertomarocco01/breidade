@@ -19,7 +19,7 @@ import type { Contact, Dictionary } from "@/lib/i18n";
 const TOMATO = "#FF3E2B";
 const CARBON = "#121212";
 
-export function Gate({ dict, contact }: { dict: Dictionary; contact: Contact }) {
+export function Gate({ dict }: { dict: Dictionary; contact: Contact }) {
   const { entered, reducedMotion } = useApp();
   const router = useRouter();
 
@@ -91,16 +91,8 @@ export function Gate({ dict, contact }: { dict: Dictionary; contact: Contact }) 
     <div className="section gate" data-section="gate" ref={gateRef}>
       {/* floating brand header — serif name + meta, mix-blend over both souls */}
       <header className="gate-head">
-        <div>
-          <p className="gate-name serif">{contact.name}</p>
-          <p className="gate-meta">
-            <span>Torino, IT</span>
-            <span className="dot">•</span>
-            <span>
-              {dict.gate.born} {contact.born}
-            </span>
-          </p>
-        </div>
+        {/* empty left slot — keeps ABOUT pinned right via space-between (brand text removed) */}
+        <div aria-hidden="true" />
         <Link href="/about" className="gate-about">
           <span>{dict.nav.about}</span>
           <span className="arr" aria-hidden="true">
