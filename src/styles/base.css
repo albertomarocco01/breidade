@@ -30,6 +30,26 @@ body {
   }
 }
 
+/* ---- pointer over interactive elements — single source of truth ----------
+   body{cursor:none} does NOT override the UA stylesheet's cursor:pointer on
+   a/button, so the native hand leaks through on every link/button. Kill it
+   here (desktop hover + motion) so the custom dot/ring (chrome.css) is the only
+   pointer. On touch (hover:none) and under reduced motion the native cursor
+   stays — the custom one is hidden in those cases. Keep these selectors as the
+   ONLY place interactive cursors are set; per-element rules were removed. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  a, button, [role="button"], input[type="button"], input[type="submit"],
+  input[type="reset"], label[for], summary, select { cursor: none; }
+}
+@media (hover: none) {
+  a, button, [role="button"], input[type="button"], input[type="submit"],
+  input[type="reset"], label[for], summary, select { cursor: pointer; }
+}
+@media (prefers-reduced-motion: reduce) {
+  a, button, [role="button"], input[type="button"], input[type="submit"],
+  input[type="reset"], label[for], summary, select { cursor: auto; }
+}
+
 /* custom scrollbar (ported from the AI Studio look) */
 ::-webkit-scrollbar {
   width: 6px;
