@@ -27,9 +27,11 @@ export function InstagramIcon({ className }: IconProps) {
   );
 }
 
-// Vertical "go" arrow (points up) — a link cue beside the footer about link.
-// Inherits currentColor and sizes to 1em like the social glyphs.
-export function ArrowUpIcon({ className }: IconProps) {
+// Diagonal "go" arrow (points up-right, ↗) — a link cue beside the footer about
+// link. Shaft runs corner-to-corner with a two-stroke head at the top-right;
+// optically centred in the 24-box so it reads as deliberate as the social glyphs.
+// Inherits currentColor and sizes to 1em like the other icons.
+export function ArrowUpRightIcon({ className }: IconProps) {
   return (
     <svg
       className={className}
@@ -44,8 +46,8 @@ export function ArrowUpIcon({ className }: IconProps) {
       aria-hidden="true"
       focusable="false"
     >
-      <path d="M12 19V6" />
-      <path d="M6.5 11.5 12 6l5.5 5.5" />
+      <path d="M7 17 17 7" />
+      <path d="M9 7h8v8" />
     </svg>
   );
 }

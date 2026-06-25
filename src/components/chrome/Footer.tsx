@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {
-  ArrowUpIcon,
+  ArrowUpRightIcon,
   InstagramIcon,
   LinkedInIcon,
 } from "@/components/chrome/SocialIcons";
@@ -41,13 +41,12 @@ export function Footer({
         <LinkedInIcon className="foot-ic" />
         <span>{dict.footer.linkedin}</span>
       </a>
-      {/* about: same inline-flex baseline as the socials (so it aligns), with a
-         vertical "go" arrow at its right. Fills the empty space beside the socials
-         on phones, and reorders to the far right (after the copyright) on wider
-         screens — see footer.css */}
+      {/* about: same inline-flex baseline as the socials, sitting right beside
+         them as one cluster, with a diagonal up-right "go" arrow at its right.
+         The spacer/copyright follow it on both phone and desktop — see footer.css */}
       <Link href="/about" className="foot-social foot-about">
         <span>{dict.nav.about}</span>
-        <ArrowUpIcon className="foot-ic" />
+        <ArrowUpRightIcon className="foot-ic" />
       </Link>
       <span className="spacer" />
       <span className="copy">
