@@ -18,14 +18,16 @@ import gsap from "gsap";
 import { useApp } from "@/components/providers/AppProvider";
 import { registerGsap, FIELD_EASE } from "@/lib/motion";
 import type { Project } from "@/lib/grapholio";
-import type { Dictionary } from "@/lib/i18n";
+import type { Dictionary, Locale } from "@/lib/i18n";
 
 export function Gallery({
   projects,
   dict,
+  locale,
 }: {
   projects: Project[];
   dict: Dictionary;
+  locale: Locale;
 }) {
   const { entered, reducedMotion } = useApp();
   const rootRef = useRef<HTMLElement>(null);
@@ -98,10 +100,10 @@ export function Gallery({
               <Link
                 href={`/grapholio/${project.slug}`}
                 className="g-card-link"
-                aria-label={`${project.title} — ${project.category}`}
+                aria-label={`${project.title} — ${project.category[locale]}`}
               >
                 <span className="g-card-top">
-                  <span className="g-card-cat">{project.category}</span>
+                  <span className="g-card-cat">{project.category[locale]}</span>
                   <span className="g-card-year">
                     {num}/{total}
                   </span>
@@ -117,7 +119,7 @@ export function Gallery({
                   />
                 </span>
                 <span className="g-card-title hand">{project.title}</span>
-                <span className="g-card-desc">{project.description}</span>
+                <span className="g-card-desc">{project.description[locale]}</span>
               </Link>
             </li>
           );

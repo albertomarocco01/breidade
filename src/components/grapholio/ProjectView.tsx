@@ -14,7 +14,7 @@ import gsap from "gsap";
 import { useApp } from "@/components/providers/AppProvider";
 import { registerGsap, FIELD_EASE } from "@/lib/motion";
 import { PROJECTS, type Project } from "@/lib/grapholio";
-import type { Dictionary } from "@/lib/i18n";
+import type { Dictionary, Locale } from "@/lib/i18n";
 
 const PLATES = ["is-wide", "is-tall", "is-sq", "is-sq", "is-wide"] as const;
 const TOTAL = String(PROJECTS.length).padStart(2, "0");
@@ -25,12 +25,14 @@ export function ProjectView({
   next,
   number,
   dict,
+  locale,
 }: {
   project: Project;
   prev: Project;
   next: Project;
   number: number;
   dict: Dictionary;
+  locale: Locale;
 }) {
   const { entered, reducedMotion } = useApp();
   const rootRef = useRef<HTMLElement>(null);
@@ -96,21 +98,21 @@ export function ProjectView({
             <span className="project-num">
               {num} / {TOTAL}
             </span>
-            <span>{project.category}</span>
+            <span>{project.category[locale]}</span>
           </p>
           <h1 className="project-title hand">{project.title}</h1>
         </div>
       </header>
 
       <div className="project-body">
-        <p className="project-brief">{project.description}</p>
+        <p className="project-brief">{project.description[locale]}</p>
 
         <div>
           <p className="project-meta-head">{dict.project.brief}</p>
           <dl className="project-spec">
             <div className="project-spec-row">
               <dt>{dict.grapholio.label}</dt>
-              <dd>{project.category}</dd>
+              <dd>{project.category[locale]}</dd>
             </div>
             <div className="project-spec-row">
               <dt>nº</dt>

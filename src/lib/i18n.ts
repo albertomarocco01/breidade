@@ -3,10 +3,11 @@
 // (defaulting to Italian, the canonical language for this brand) and the matching
 // dictionary is threaded to components as a prop.
 //
-// HARD CONTENT RULE: the only narrative copy on this site is Giulia's own scraped
-// text. It is stored in ENGLISH (the form it was supplied in). Italian falls back
-// to the English copy for content that has not been translated yet — we never
-// invent Italian. Chrome / navigation / UI affordances stay IT-first.
+// CONTENT: Giulia's narrative copy (bio, the fotofolio series description +
+// tagline, project briefs) was supplied in ENGLISH. The Italian strings below are
+// FAITHFUL TRANSLATIONS of that source — added so the IT/EN toggle switches the
+// WHOLE site, not invented marketing copy. Chrome / navigation / UI affordances are
+// authored per locale.
 //
 // Proper nouns and brand tokens (Grapholio / Fotofolio, project titles, the email,
 // the phone number, "Instagram", "LinkedIn", 設計師) stay untranslated on purpose.
@@ -34,6 +35,8 @@ export interface Dictionary {
     enter: string;
     /** small "info / about" affordance inside the gate */
     info: string;
+    /** "Born" label preceding the birth year in the gate header */
+    born: string;
   };
   grapholio: {
     /** section landmark label */
@@ -87,7 +90,7 @@ export interface Dictionary {
   };
 }
 
-// ---- scraped, English-only content (reused by both locales) ----
+// ---- English source copy (the Italian translations live in the `it` dictionary) ----
 const SCRAPED = {
   // Fotofolio series "Hand other stories" — the only text near the photographs.
   fotofolioIntro:
@@ -120,6 +123,7 @@ const en: Dictionary = {
   gate: {
     enter: "enter",
     info: "info",
+    born: "Born",
   },
   grapholio: {
     aria: "Grapholio — graphic design",
@@ -174,6 +178,7 @@ const it: Dictionary = {
   gate: {
     enter: "entra",
     info: "info",
+    born: "Classe",
   },
   grapholio: {
     aria: "Grapholio — progettazione grafica",
@@ -182,10 +187,16 @@ const it: Dictionary = {
   fotofolio: {
     aria: "Fotofolio — fotografia",
     label: "fotografia",
-    // IT falls back to the EN scraped copy until translated — never invented.
-    intro: SCRAPED.fotofolioIntro,
-    // Scraped tagline reused verbatim (proper copy) — chrome only, never invented.
-    tagline: SCRAPED.fotofolioTagline,
+    // Italian translation of the scraped series description.
+    intro:
+      "Una raccolta di immagini che racconta storie attraverso le mani di persone con background sociali differenti.",
+    // Italian translation of the series tagline — chrome only, never a caption.
+    // Split so "ma esposta" can sit isolated on its own line for emphasis.
+    tagline: {
+      lead: "Progetto visivo sulla parte più intima",
+      emph: "ma esposta",
+      tail: "del nostro corpo: le Mani.",
+    },
     enter: "guarda la serie",
   },
   story: {
@@ -204,8 +215,8 @@ const it: Dictionary = {
   },
   about: {
     label: "info",
-    // IT falls back to the EN scraped bio until translated — never invented.
-    bio: SCRAPED.aboutBio,
+    // Italian translation of Giulia's scraped bio.
+    bio: "Giulia Breida, 2001. Sono una graphic designer e fotografa italiana, con la passione per la Cina e le culture orientali. Attualmente lavoro nel marketing e do forma alle idee creando progetti visivi dallo stile fresco, audace e colorato.",
     contact: "contatti",
     designer: "la designer",
   },

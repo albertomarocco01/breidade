@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!project) return {};
   return {
     title: project.title,
-    description: `${project.title} — ${project.category}. Grapholio · Giulia Breida.`,
+    description: `${project.title} — ${project.category.en}. Grapholio · Giulia Breida.`,
   };
 }
 
@@ -48,6 +48,7 @@ export default async function ProjectPage({ params }: Props) {
       next={next}
       number={number}
       dict={dict}
+      locale={locale}
     />
   );
 }

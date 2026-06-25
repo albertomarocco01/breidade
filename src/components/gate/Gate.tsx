@@ -96,7 +96,9 @@ export function Gate({ dict, contact }: { dict: Dictionary; contact: Contact }) 
           <p className="gate-meta">
             <span>Torino, IT</span>
             <span className="dot">•</span>
-            <span>Born {contact.born}</span>
+            <span>
+              {dict.gate.born} {contact.born}
+            </span>
           </p>
         </div>
         <Link href="/about" className="gate-about">
