@@ -25,13 +25,13 @@ export default async function AboutPage() {
           <span className="sect-kicker">{dict.about.contact}</span>
           <dl className="about-spec">
             <div className="about-spec-row">
-              <dt>email</dt>
+              <dt>{dict.about.spec.email}</dt>
               <dd>
                 <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
               </dd>
             </div>
             <div className="about-spec-row">
-              <dt>tel</dt>
+              <dt>{dict.about.spec.tel}</dt>
               <dd>
                 <a href={CONTACT.phoneHref}>{CONTACT.phone}</a>
               </dd>

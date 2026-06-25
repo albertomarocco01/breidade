@@ -115,7 +115,7 @@ export function ProjectView({
               <dd>{project.category[locale]}</dd>
             </div>
             <div className="project-spec-row">
-              <dt>nº</dt>
+              <dt>{dict.project.numLabel}</dt>
               <dd>
                 {num} / {TOTAL}
               </dd>
@@ -127,7 +127,8 @@ export function ProjectView({
           {PLATES.map((shape, i) => (
             <div key={i} className={`plate ${shape}`} aria-hidden="true">
               <span className="plate-num">
-                pl.{String(i + 1).padStart(2, "0")}
+                {dict.project.plateLabel}
+                {String(i + 1).padStart(2, "0")}
               </span>
             </div>
           ))}

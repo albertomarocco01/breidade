@@ -1,7 +1,7 @@
 // Hand-rolled IT/EN localization. No i18n library, no [lang] routing, no
 // middleware: the active locale is read from a `locale` cookie on the server
-// (defaulting to Italian, the canonical language for this brand) and the matching
-// dictionary is threaded to components as a prop.
+// (defaulting to English, the source language Giulia's copy was authored in) and
+// the matching dictionary is threaded to components as a prop.
 //
 // CONTENT: Giulia's narrative copy (bio, the fotofolio series description +
 // tagline, project briefs) was supplied in ENGLISH. The Italian strings below are
@@ -13,9 +13,10 @@
 // the phone number, "Instagram", "LinkedIn", 設計師) stay untranslated on purpose.
 
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 
 export type Locale = "en" | "it";
-export const DEFAULT_LOCALE: Locale = "it";
+export const DEFAULT_LOCALE: Locale = "en";
 
 export interface Dictionary {
   nav: {
@@ -74,6 +75,10 @@ export interface Dictionary {
     soon: string;
     next: string;
     prev: string;
+    /** abbreviation before the project ordinal (en "nº" / it "n.") */
+    numLabel: string;
+    /** abbreviation on each generative plate tile (en "pl." / it "tav.") */
+    plateLabel: string;
   };
   about: {
     label: string;
@@ -82,6 +87,8 @@ export interface Dictionary {
     contact: string;
     /** literal gloss of the 設計師 motif */
     designer: string;
+    /** spec-sheet row labels (lowercase technical voice) */
+    spec: { email: string; tel: string };
   };
   footer: {
     rights: string;
@@ -149,12 +156,15 @@ const en: Dictionary = {
     soon: "spreads coming soon",
     next: "next project",
     prev: "previous project",
+    numLabel: "nº",
+    plateLabel: "pl.",
   },
   about: {
     label: "about",
     bio: SCRAPED.aboutBio,
     contact: "contact",
     designer: "the designer",
+    spec: { email: "email", tel: "tel" },
   },
   footer: {
     rights: "all rights reserved",
@@ -212,6 +222,8 @@ const it: Dictionary = {
     soon: "tavole in arrivo",
     next: "progetto successivo",
     prev: "progetto precedente",
+    numLabel: "n.",
+    plateLabel: "tav.",
   },
   about: {
     label: "info",
@@ -219,6 +231,7 @@ const it: Dictionary = {
     bio: "Giulia Breida, 2001. Sono una graphic designer e fotografa italiana, con la passione per la Cina e le culture orientali. Attualmente lavoro nel marketing e do forma alle idee creando progetti visivi dallo stile fresco, audace e colorato.",
     contact: "contatti",
     designer: "la designer",
+    spec: { email: "email", tel: "tel" },
   },
   footer: {
     rights: "tutti i diritti riservati",
@@ -239,10 +252,18 @@ function isLocale(value: string | undefined): value is Locale {
 
 /**
  * Read the active locale from the `locale` cookie, validated against the
- * supported set and falling back to {@link DEFAULT_LOCALE}. Awaiting `cookies()`
- * (async in Next 16) opts the route into dynamic rendering — expected here.
+ * supported set and falling back to {@link DEFAULT_LOCALE}.
+ *
+ * `await connection()` (next/server) halts prerendering here, making this the
+ * single chokepoint that forces every locale-dependent route into true
+ * per-request dynamic rendering. Awaiting `cookies()` alone is not enough in this
+ * build: Next fills it with build-time values during prerender and serves a
+ * fixed-locale snapshot regardless of the real cookie. `connection()` — the
+ * documented successor to `unstable_noStore` — stops that prerender so the cookie
+ * is read against the actual request on every hit.
  */
 export async function getLocale(): Promise<Locale> {
+  await connection();
   const store = await cookies();
   const value = store.get("locale")?.value;
   return isLocale(value) ? value : DEFAULT_LOCALE;
