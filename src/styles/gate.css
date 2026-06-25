@@ -212,19 +212,24 @@
   margin: 0;
   line-height: 0.9;
 }
+/* Hero word size — STACKED (mobile/tablet) layout, where each half is the full
+   viewport width. GRAPHOLIO in Syne ExtraBold is the limiting word: it measures
+   ~9.94em wide (FOTOFOLIO in Italiana is only ~5.17em), so 8.5vw keeps even that
+   inside the column with healthy slack down to ~320px while staying a bold hero.
+   Both souls share ONE size so their cap heights match. The ≥1024 row layout halves
+   the available width and re-sizes this down (responsive.css). The 1.6rem floor is
+   deliberately below 8.5vw at ~320px so the longest word never gets floored into a clip. */
 .gate-half--graph .gate-world {
   font-family: var(--stack-display);
   font-weight: 800;
-  /* stacked layout: scale down enough that the wide Syne caps never overflow the
-     column on phones (the ≥1024 row layout restores the large size, responsive.css) */
-  font-size: clamp(2rem, 8.5vw, 7rem);
+  font-size: clamp(1.6rem, 8.5vw, 7rem);
   letter-spacing: -0.03em;
   text-transform: uppercase;
 }
 .gate-half--foto .gate-world {
   font-family: var(--stack-serif);
   font-weight: 400;
-  font-size: clamp(2rem, 8.5vw, 7rem);
+  font-size: clamp(1.6rem, 8.5vw, 7rem);
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }

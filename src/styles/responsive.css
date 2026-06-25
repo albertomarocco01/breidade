@@ -107,11 +107,16 @@
     text-align: right;
     padding-inline: clamp(1.6rem, 4vw, 4rem);
   }
-  /* restore the full-scale hero size on the side-by-side desktop layout
-     (the base rule shrinks it for the stacked mobile/tablet column) */
+  /* Hero word size — ROW (side-by-side) layout. Each half is only ~50vw now, so the
+     hero is sized so the limiting word (GRAPHOLIO, ~9.94em in Syne ExtraBold) fits
+     the resting half: at 3.7vw it occupies ~36.8vw of the ~42vw usable width (after
+     the clamp(1.6rem,4vw,4rem) inline padding either side), ~12% slack across the
+     whole ≥1024 range; FOTOFOLIO (~5.17em) sits comfortably at the same cap height.
+     Plain vw (not container units) — resolves identically in layout and paint, so
+     there is no chance of a first-paint clip. */
   .gate-half--graph .gate-world,
   .gate-half--foto .gate-world {
-    font-size: clamp(2.8rem, 11vw, 7rem);
+    font-size: clamp(1.5rem, 3.7vw, 7rem);
   }
   .gate-han {
     font-size: 50vh;
@@ -148,6 +153,34 @@
   .story-photo:nth-child(even) {
     width: 62%;
     margin-left: auto;
+  }
+}
+
+/* Gate hero "breathe" — ROW layout, motion allowed only. The touched half grows
+   (flex-grow, gate.css) and its word scales UP; the receding half shrinks its word
+   so the wide GRAPHOLIO can never overrun the narrowed ~34vw half. font-size is the
+   safe channel: the GSAP entrance and the .gate-float bob animate only transform /
+   opacity, so a font-size transition here composes with both and fights neither.
+   Gated to (prefers-reduced-motion: no-preference) because under reduced motion the
+   halves stay frozen at 50/50 (motion.css) — bumping the word to the grown-half size
+   over an un-grown half would clip it. Sizes: hovered ~66vw → 4.8vw (~18% slack),
+   receding ~34vw → 2.4vw (~8% slack on GRAPHOLIO, its worst case). */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .gate-half--graph .gate-world,
+  .gate-half--foto .gate-world {
+    transition: font-size 0.7s var(--ease);
+  }
+  .gate:has(.gate-half--graph:hover) .gate-half--graph .gate-world,
+  .gate:has(.gate-half--foto:hover) .gate-half--foto .gate-world,
+  .gate:has(.gate-half--graph:focus-visible) .gate-half--graph .gate-world,
+  .gate:has(.gate-half--foto:focus-visible) .gate-half--foto .gate-world {
+    font-size: clamp(1.5rem, 4.8vw, 7rem);
+  }
+  .gate:has(.gate-half--graph:hover) .gate-half--foto .gate-world,
+  .gate:has(.gate-half--foto:hover) .gate-half--graph .gate-world,
+  .gate:has(.gate-half--graph:focus-visible) .gate-half--foto .gate-world,
+  .gate:has(.gate-half--foto:focus-visible) .gate-half--graph .gate-world {
+    font-size: clamp(1.3rem, 2.4vw, 7rem);
   }
 }
 
