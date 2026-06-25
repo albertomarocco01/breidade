@@ -107,7 +107,7 @@ export function Topbar({
     >
       <div className="topbar-left">
         <Link href="/" className="wordmark">
-          giulia breida
+          Breidade
         </Link>
         <LocaleToggle locale={locale} labels={dict.locale} />
       </div>
