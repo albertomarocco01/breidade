@@ -58,13 +58,27 @@ export function Cursor() {
       raf = requestAnimationFrame(loop);
     };
 
-    const hot = () => ring.classList.add("is-hot");
-    const cool = () => ring.classList.remove("is-hot");
-    const interactive = document.querySelectorAll("a, button");
-    interactive.forEach((el) => {
-      el.addEventListener("mouseenter", hot);
-      el.addEventListener("mouseleave", cool);
-    });
+    // Grow the ring over interactive elements via EVENT DELEGATION on the
+    // document. pointerover/pointerout BUBBLE (mouseenter/leave do not), so one
+    // pair of listeners also covers elements added AFTER mount — links on
+    // client-side-navigated pages and the lightbox buttons — which the old
+    // query-once-at-mount approach silently missed.
+    const SEL =
+      "a, button, [role='button'], input, select, textarea, label[for], summary";
+    const closestInteractive = (t: EventTarget | null) =>
+      t instanceof Element ? t.closest(SEL) : null;
+    const onOver = (e: PointerEvent) => {
+      if (closestInteractive(e.target)) ring.classList.add("is-hot");
+    };
+    const onOut = (e: PointerEvent) => {
+      // Cool only when actually leaving an interactive element for a
+      // non-interactive one (relatedTarget = where the pointer is heading);
+      // moves between a link and its own children must NOT flicker the ring.
+      if (closestInteractive(e.target) && !closestInteractive(e.relatedTarget))
+        ring.classList.remove("is-hot");
+    };
+    document.addEventListener("pointerover", onOver);
+    document.addEventListener("pointerout", onOut);
 
     window.addEventListener("pointermove", onMove, { passive: true });
     raf = requestAnimationFrame(loop);
@@ -72,11 +86,9 @@ export function Cursor() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerover", onOver);
+      document.removeEventListener("pointerout", onOut);
       document.documentElement.classList.remove("cursor-live");
-      interactive.forEach((el) => {
-        el.removeEventListener("mouseenter", hot);
-        el.removeEventListener("mouseleave", cool);
-      });
     };
   }, [reducedMotion]);
 

@@ -8,9 +8,12 @@ import type { Dictionary, Locale } from "@/lib/i18n";
 const LOCALES: Locale[] = ["en", "it"];
 
 // Persist the choice for a year. Kept at module scope so the cookie write (a
-// side effect on the global `document`) stays out of the component body.
+// side effect on the global `document`) stays out of the component body. `Secure`
+// is added only on HTTPS so the cookie still sets during local dev over plain
+// http (Secure cookies are dropped on http origins other than localhost).
 function persistLocale(locale: Locale) {
-  document.cookie = `locale=${locale}; path=/; max-age=31536000; samesite=lax`;
+  const secure = location.protocol === "https:" ? "; secure" : "";
+  document.cookie = `locale=${locale}; path=/; max-age=31536000; samesite=lax${secure}`;
 }
 
 /**

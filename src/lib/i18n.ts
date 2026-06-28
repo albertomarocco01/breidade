@@ -34,10 +34,6 @@ export interface Dictionary {
   };
   gate: {
     enter: string;
-    /** small "info / about" affordance inside the gate */
-    info: string;
-    /** "Born" label preceding the birth year in the gate header */
-    born: string;
   };
   grapholio: {
     /** section landmark label */
@@ -95,6 +91,15 @@ export interface Dictionary {
     instagram: string;
     linkedin: string;
   };
+  /** 404 page chrome (also covers any unmatched URL) */
+  notFound: {
+    /** the big "404" mark */
+    code: string;
+    title: string;
+    body: string;
+    /** back-to-home affordance */
+    home: string;
+  };
 }
 
 // ---- English source copy (the Italian translations live in the `it` dictionary) ----
@@ -129,8 +134,6 @@ const en: Dictionary = {
   },
   gate: {
     enter: "enter",
-    info: "info",
-    born: "Born",
   },
   grapholio: {
     aria: "Grapholio — graphic design",
@@ -171,6 +174,12 @@ const en: Dictionary = {
     instagram: "Instagram",
     linkedin: "LinkedIn",
   },
+  notFound: {
+    code: "404",
+    title: "Page not found",
+    body: "The page you're looking for doesn't exist or has moved.",
+    home: "back to home",
+  },
 };
 
 const it: Dictionary = {
@@ -187,8 +196,6 @@ const it: Dictionary = {
   },
   gate: {
     enter: "entra",
-    info: "info",
-    born: "Classe",
   },
   grapholio: {
     aria: "Grapholio — progettazione grafica",
@@ -237,6 +244,12 @@ const it: Dictionary = {
     rights: "tutti i diritti riservati",
     instagram: "Instagram",
     linkedin: "LinkedIn",
+  },
+  notFound: {
+    code: "404",
+    title: "Pagina non trovata",
+    body: "La pagina che cerchi non esiste o è stata spostata.",
+    home: "torna alla home",
   },
 };
 

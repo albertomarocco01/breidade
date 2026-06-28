@@ -7,8 +7,8 @@
   overflow: hidden;
   background: var(--cream);
   user-select: none;
-  /* Stable isolation boundary for the mix-blend-difference header (.gate-name /
-     .gate-meta / .gate-about). The route fade (route-fade in routes.css) animates
+  /* Stable isolation boundary for the mix-blend-difference header (.gate-about).
+     The route fade (route-fade in routes.css) animates
      opacity on the .route wrapper, which transiently creates then destroys a
      stacking context; without a fixed boundary the blend's backdrop reference
      flips mid-animation and Blink/WebKit leave a stale composite of the brand
@@ -18,7 +18,10 @@
   isolation: isolate;
 }
 
-/* floating brand header — serif name in tomato, mix-blend so it reads on both */
+/* floating top-right ABOUT — aligned to the topbar's line (same 1rem top inset +
+   centred items) so it reads as one header row: wordmark + EN/IT on the left (in
+   .topbar), ABOUT on the right here. The serif brand name that used to sit on the
+   left was removed; mix-blend on .gate-about keeps it legible over both souls. */
 .gate-head {
   position: absolute;
   z-index: 40;
@@ -27,67 +30,10 @@
   right: 0;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
-  padding: clamp(1.2rem, 4vw, 2.6rem) var(--pad);
+  padding: 1rem var(--pad);
   pointer-events: none;
-}
-.gate-name {
-  font-family: var(--stack-serif);
-  font-weight: 400;
-  font-size: clamp(1.8rem, 6vw, 3.2rem);
-  line-height: 1;
-  letter-spacing: 0.01em;
-  color: var(--tomato);
-  mix-blend-mode: difference;
-}
-.gate-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem 0.55rem;
-  margin-top: 0.55rem;
-  font-family: var(--stack-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--tomato);
-  mix-blend-mode: difference;
-}
-.gate-meta .dot {
-  opacity: 0.4;
-}
-.gate-info {
-  pointer-events: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 1.05rem;
-  border-radius: 999px;
-  background: var(--tomato);
-  color: var(--cream);
-  border: 2px solid var(--carbon);
-  font-family: var(--stack-display);
-  font-weight: 800;
-  font-size: 0.66rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  transition:
-    background 0.35s var(--ease),
-    border-color 0.35s var(--ease),
-    color 0.35s var(--ease);
-}
-/* invert on hover so it stays legible over BOTH the tomato and carbon souls */
-.gate-info:hover,
-.gate-info:focus-visible {
-  background: var(--cream);
-  border-color: var(--carbon);
-  color: var(--carbon);
-}
-.gate-info .hand2 {
-  font-size: 1.15rem;
-  text-transform: none;
-  letter-spacing: 0;
 }
 /* minimal top-right "about" link — reads over either soul via difference blend */
 .gate-about {
@@ -382,28 +328,6 @@
   flex-grow: 0.86;
 }
 
-/* the seam pivot — 設計師, mix-blend so it inverts on both souls. ONE 設計師 motif. */
-.gate-pivot {
-  position: absolute;
-  z-index: 30;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  pointer-events: none;
-  text-align: center;
-}
-.gate-pivot-mark {
-  font-family: var(--stack-display);
-  font-weight: 800;
-  font-size: clamp(1.6rem, 6vw, 2.4rem);
-  letter-spacing: 0.06em;
-  color: var(--cream);
-  mix-blend-mode: difference;
-}
 /* full-screen wipe used by the click → enter transition */
 .gate-wipe {
   position: fixed;

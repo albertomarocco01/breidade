@@ -14,12 +14,12 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useApp } from "@/components/providers/AppProvider";
 import { registerGsap, FIELD_EASE } from "@/lib/motion";
-import type { Contact, Dictionary } from "@/lib/i18n";
+import type { Dictionary } from "@/lib/i18n";
 
 const TOMATO = "#FF3E2B";
 const CARBON = "#121212";
 
-export function Gate({ dict }: { dict: Dictionary; contact: Contact }) {
+export function Gate({ dict }: { dict: Dictionary }) {
   const { entered, reducedMotion } = useApp();
   const router = useRouter();
 

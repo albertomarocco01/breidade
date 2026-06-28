@@ -36,6 +36,7 @@
      story      · fotofolio series page (reel + lightbox)
      about      · about page
      footer     · site footer
+     states     · 404 / error pages + route loading fallback
      responsive · ≥640 / ≥1024 enhancements (overrides — keep after sections)
      motion     · entrance hook + prefers-reduced-motion (keep last)
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -52,5 +53,6 @@
 @import "../styles/story.css";
 @import "../styles/about.css";
 @import "../styles/footer.css";
+@import "../styles/states.css";
 @import "../styles/responsive.css";
 @import "../styles/motion.css";

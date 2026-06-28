@@ -1,0 +1,106 @@
+/* ============================================================ STATES ===== */
+/* Shared shell for the 404 / error pages + the route loading fallback. They reuse
+   .section + .container and are mounted under data-section="about", so they
+   inherit the warm cream/tomato palette and the per-section cursor/glow tokens. */
+.state {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.state-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 46ch;
+}
+/* the oversized faint glyph behind the copy — same watermark vocabulary as the
+   per-section hanzi (設計 / 攝影) */
+.state-code {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: clamp(-1rem, 1vw, 2rem);
+  transform: translateY(-50%);
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: clamp(8rem, 34vw, 22rem);
+  line-height: 0.8;
+  color: var(--accent);
+  opacity: 0.1;
+  pointer-events: none;
+  user-select: none;
+}
+.state-title {
+  margin-top: 1rem;
+  font-family: var(--stack-hand);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 9vw, 5rem);
+  line-height: 1;
+}
+.state-body {
+  margin-top: 1.2rem;
+  max-width: 42ch;
+  color: var(--ink-dim);
+  font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+  line-height: 1.7;
+}
+.state-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  align-items: center;
+}
+/* shared back-home / retry affordance — a quiet mono link, also used as a bare
+   <button> on the error page (hence the button resets) */
+.state-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.8rem;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-family: var(--stack-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--ink);
+  transition: color 0.4s var(--ease);
+}
+.state-home:hover,
+.state-home:focus-visible {
+  color: var(--accent);
+}
+
+/* route loading fallback — a quiet centred brand mark */
+.state-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+}
+.state-loading-mark {
+  font-family: var(--stack-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  opacity: 0.5;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .state-loading-mark {
+    animation: state-pulse 1.4s ease-in-out infinite;
+  }
+}
+@keyframes state-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}

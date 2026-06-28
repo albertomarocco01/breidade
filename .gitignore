@@ -44,8 +44,10 @@ next-env.d.ts
 .idea/
 *.swp
 
-# Claude Code local settings (machine-specific, not for the repo)
+# Claude Code settings — machine-specific, keep OUT of the repo. settings.json was
+# committed by mistake (bypassPermissions + a foreign user path); now untracked.
 .claude/settings.local.json
+.claude/settings.json
 
 # local scratch
 .devlog*
