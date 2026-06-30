@@ -11,7 +11,9 @@ import { ShaderField } from "@/components/canvas/ShaderField";
  */
 export default function LabPage() {
   return (
-    <main
+    // <div> not <main>: the root Shell already renders <main id="main">, so a
+    // <main> here would nest/duplicate the landmark.
+    <div
       data-section="grapholio"
       style={{
         position: "fixed",
@@ -40,6 +42,6 @@ export default function LabPage() {
       >
         /lab · shaderfield · il tuo GLSL, live
       </p>
-    </main>
+    </div>
   );
 }

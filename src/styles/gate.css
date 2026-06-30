@@ -48,7 +48,6 @@
   text-transform: uppercase;
   color: var(--cream);
   mix-blend-mode: difference;
-  will-change: transform;
   transition: gap 0.35s var(--ease);
 }
 .gate-about:hover,
@@ -196,7 +195,6 @@
    .gate-reveal/.gate-world. */
 .gate-float {
   display: inline-block;
-  will-change: transform;
   color: var(--cream);
   -webkit-text-fill-color: var(--cream);
 }

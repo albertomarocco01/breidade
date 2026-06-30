@@ -1,6 +1,9 @@
 /* ========================================================= GRAPHOLIO ===== */
 .g-head {
   margin-bottom: clamp(1.8rem, 5vw, 3.2rem);
+  /* promoted to its own layer: the Lenis parallax rewrites transform every scroll
+     frame (Gallery.tsx), so the big hand font composites instead of repainting. */
+  will-change: transform;
 }
 .g-head .sect-title {
   font-family: var(--stack-hand);

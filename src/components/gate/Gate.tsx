@@ -70,6 +70,9 @@ export function Gate({ dict }: { dict: Dictionary }) {
     href: string,
     color: string,
   ) => {
+    // Let the native <Link> handle modified / non-primary clicks (open-in-new-tab,
+    // background tab, etc.) — only a plain left-click runs the wipe navigation.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
     if (reducedMotion) return;
     e.preventDefault();
     registerGsap();

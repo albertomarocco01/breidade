@@ -9,10 +9,11 @@
 // parallax on the handwritten heading. Hover (straighten + lift) is pure CSS. All
 // of it is off under reduced motion.
 
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useLenis } from "lenis/react";
+import type Lenis from "lenis";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useApp } from "@/components/providers/AppProvider";
@@ -62,16 +63,25 @@ export function Gallery({
     { dependencies: [entered, reducedMotion], scope: rootRef },
   );
 
-  // Gentle parallax on the handwritten heading as you scroll.
-  useLenis(
-    (lenis) => {
-      if (reducedMotion) return;
+  // Gentle parallax on the handwritten heading as you scroll. Stable callback
+  // (useCallback) so useLenis only re-subscribes when reducedMotion actually
+  // changes — not on every render. translate3d promotes the heading to its own
+  // compositor layer (paired with will-change in grapholio.css) so the per-frame
+  // write composites instead of repainting the big hand font. On the reduced-motion
+  // branch the inline transform is cleared so no stale offset is left behind.
+  const onScroll = useCallback(
+    (lenis: Lenis) => {
       const el = headRef.current;
       if (!el) return;
-      el.style.transform = `translateY(${lenis.scroll * 0.1}px)`;
+      if (reducedMotion) {
+        el.style.transform = "";
+        return;
+      }
+      el.style.transform = `translate3d(0, ${lenis.scroll * 0.1}px, 0)`;
     },
     [reducedMotion],
   );
+  useLenis(onScroll, [reducedMotion]);
 
   const total = String(projects.length).padStart(2, "0");
 

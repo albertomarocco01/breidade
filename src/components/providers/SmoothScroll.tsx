@@ -23,6 +23,10 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     gsap.ticker.lagSmoothing(0);
     return () => {
       gsap.ticker.remove(update);
+      // Restore GSAP's default lag smoothing — lagSmoothing(0) is a process-global
+      // toggle, so leaving it off would disable lag compensation for every other
+      // GSAP animation if this effect tears down (e.g. reduced-motion flips on).
+      gsap.ticker.lagSmoothing(500, 33);
     };
   }, [reducedMotion]);
 

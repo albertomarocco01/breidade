@@ -68,8 +68,11 @@ function FieldPlane({
   colorC: string;
 }) {
   const mat = useRef<THREE.ShaderMaterial>(null);
-  // THREE.Color uniforms are managed (sRGB → linear), so the output round-trips
-  // back to the intended hex once three encodes to the canvas. Built once.
+  // THREE.Color converts each sRGB hex uniform to linear (ColorManagement on). The
+  // shader output is then ACES-tone-mapped + sRGB-encoded to the canvas (R3F
+  // defaults: toneMapping=ACESFilmic, material.toneMapped=true), so the on-screen
+  // colours are intentionally softened/shifted from the raw hex — the established
+  // look. Built once.
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
@@ -92,7 +95,10 @@ function FieldPlane({
   });
 
   return (
-    <mesh>
+    // frustumCulled={false}: the vertex shader writes clip space directly and
+    // ignores the camera, so the geometry's bounding-sphere cull test is
+    // meaningless here — disabling it guarantees the full-screen quad always draws.
+    <mesh frustumCulled={false}>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
         ref={mat}
@@ -115,7 +121,9 @@ export default function ShaderFieldCanvas({
 }) {
   return (
     <Canvas
-      gl={{ antialias: true, alpha: true }}
+      // No antialias: a full-clip-space quad has no internal hard edges to alias
+      // (its only edges are the canvas border), so MSAA is wasted fill.
+      gl={{ alpha: true }}
       dpr={[1, 1.75]}
       camera={{ position: [0, 0, 1] }}
       style={{ position: "absolute", inset: 0 }}
