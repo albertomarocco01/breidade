@@ -122,8 +122,10 @@ export default function ShaderFieldCanvas({
   return (
     <Canvas
       // No antialias: a full-clip-space quad has no internal hard edges to alias
-      // (its only edges are the canvas border), so MSAA is wasted fill.
-      gl={{ alpha: true }}
+      // (its only edges are the canvas border), so MSAA is wasted fill. Must be set
+      // explicitly to false — R3F's default gl props (antialias: true) only get
+      // overridden by keys actually present in this object.
+      gl={{ antialias: false, alpha: true }}
       dpr={[1, 1.75]}
       camera={{ position: [0, 0, 1] }}
       style={{ position: "absolute", inset: 0 }}
