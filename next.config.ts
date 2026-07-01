@@ -28,6 +28,13 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
+  // A Sanity Studio chunk shared with the (server) config graph imports `swr`'s
+  // default export. Turbopack resolves that import through swr's "react-server"
+  // condition, which has no default export, and crashes. Externalizing just
+  // `swr` routes it through plain Node `require` instead, avoiding that
+  // condition — without externalizing all of `sanity` (which caused a second
+  // React copy to load and broke Studio's hooks).
+  serverExternalPackages: ["swr"],
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

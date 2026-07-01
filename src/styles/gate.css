@@ -94,12 +94,14 @@
   justify-content: center;
   overflow: hidden;
   text-align: center;
-  transition: flex-grow 0.7s var(--ease);
+  transition:
+    flex-grow 0.7s var(--ease),
+    filter 0.5s var(--ease);
 }
 .gate-half--graph {
-  background: var(--tomato);
-  color: var(--cream);
-  border-bottom: 1px solid var(--cream);
+  background: var(--grapholio);
+  color: var(--grapholio-paper);
+  border-bottom: 1px solid var(--grapholio-paper);
 }
 .gate-half--foto {
   background: var(--carbon);
@@ -155,8 +157,8 @@
   text-transform: uppercase;
 }
 .gate-half--graph .gate-disc {
-  color: var(--lime);
-  border: 1px solid var(--lime);
+  color: var(--grapholio-paper);
+  border: 1px solid var(--grapholio-paper);
 }
 .gate-half--foto .gate-disc {
   color: rgba(252, 250, 242, 0.65);
@@ -174,7 +176,7 @@
    the available width and re-sizes this down (responsive.css). The 1.6rem floor is
    deliberately below 8.5vw at ~320px so the longest word never gets floored into a clip. */
 .gate-half--graph .gate-world {
-  font-family: var(--stack-display);
+  font-family: var(--stack-geo);
   font-weight: 800;
   font-size: clamp(1.6rem, 8.5vw, 7rem);
   letter-spacing: -0.03em;
@@ -306,9 +308,11 @@
   .gate:has(.gate-half--foto:hover) .gate-half--foto {
     flex-grow: 1.18;
   }
+  /* the un-touched soul recedes AND dims, so the active half is spotlit */
   .gate:has(.gate-half--graph:hover) .gate-half--foto,
   .gate:has(.gate-half--foto:hover) .gate-half--graph {
     flex-grow: 0.86;
+    filter: brightness(0.7);
   }
   .gate-half:hover .gate-han {
     transform: scale(1.08);
@@ -324,6 +328,7 @@
 .gate:has(.gate-half--graph:focus-visible) .gate-half--foto,
 .gate:has(.gate-half--foto:focus-visible) .gate-half--graph {
   flex-grow: 0.86;
+  filter: brightness(0.7);
 }
 
 /* full-screen wipe used by the click → enter transition */

@@ -16,7 +16,8 @@ import { useApp } from "@/components/providers/AppProvider";
 import { registerGsap, FIELD_EASE } from "@/lib/motion";
 import type { Dictionary } from "@/lib/i18n";
 
-const TOMATO = "#FF3E2B";
+// GRAPHOLIO wipe = the brand red (#ef4223, see --grapholio); FOTOFOLIO = carbon.
+const TOMATO = "#EF4223";
 const CARBON = "#121212";
 
 export function Gate({ dict }: { dict: Dictionary }) {

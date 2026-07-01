@@ -5,6 +5,7 @@ import {
   JetBrains_Mono,
   La_Belle_Aurore,
   Reenie_Beanie,
+  Jost,
 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
@@ -25,6 +26,16 @@ const display = Syne({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-display",
+});
+
+// --font-geo — Jost: the classic GEOMETRIC brand voice for GRAPHOLIO (a free,
+// metrically close stand-in for Futura). Carries the Grapholio wordmark + section
+// headings; scoped to the grapholio world via --stack-geo (tokens.css). Variable
+// family, so weight 800 (the wordmark) needs no extra request.
+const geo = Jost({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-geo",
 });
 
 // --font-serif — Italiana: the high-contrast editorial serif. The quiet,
@@ -151,7 +162,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${display.variable} ${serif.variable} ${mono.variable} ${hand.variable} ${hand2.variable}`}
+      className={`${display.variable} ${geo.variable} ${serif.variable} ${mono.variable} ${hand.variable} ${hand2.variable}`}
     >
       <body>
         <AppProvider>

@@ -8,8 +8,14 @@
   --lime: #dfff00;
   --teal: #0dcd9d;
 
+  /* ---- GRAPHOLIO brand (two colours, strictly alternated, nothing else) ---- */
+  --grapholio: #ef4223; /* red-orange */
+  --grapholio-paper: #f8f8dd; /* cream */
+
   /* ---- type stacks (font vars are set on <html> by next/font) ---- */
   --stack-display: var(--font-display), "Syne", system-ui, sans-serif;
+  --stack-geo: var(--font-geo), "Jost", "Futura", "Futura PT", "Century Gothic",
+    system-ui, sans-serif;
   --stack-serif: var(--font-serif), "Italiana", Georgia, "Times New Roman", serif;
   --stack-mono: var(--font-mono), "JetBrains Mono", ui-monospace, "SF Mono", Menlo,
     monospace;
@@ -73,24 +79,31 @@
   --glow-2: rgba(13, 205, 157, 0.05);
 }
 
-/* grapholio — loud cream world, tomato accent, lime cursor pop */
+/* grapholio — the brand world: ONLY --grapholio (red) + --grapholio-paper (cream),
+   alternated. Every ink / line / accent / cursor is a tonal mix of those two, so no
+   third hue can leak in. Type: the classic geometric wordmark (Jost/Futura). */
 [data-section="grapholio"],
 :root:has([data-section="grapholio"]) {
-  --bg: var(--cream);
-  --bg-2: #f1ecdc;
-  --ink: var(--carbon);
-  --ink-dim: #5c574b;
-  --ink-ghost: #c4bca8;
-  --line: rgba(18, 18, 18, 0.16);
-  --line-hot: rgba(18, 18, 18, 0.55);
-  --accent: var(--tomato);
-  --accent-2: var(--blue);
-  --cursor: var(--tomato);
-  --cursor-hot: var(--lime);
-  --glow-1: rgba(255, 62, 43, 0.12);
-  --glow-2: rgba(13, 205, 157, 0.08);
+  --bg: var(--grapholio-paper);
+  --bg-2: var(--grapholio-paper);
+  --ink: var(--grapholio);
+  --ink-dim: color-mix(in oklab, var(--grapholio) 82%, var(--grapholio-paper));
+  --ink-ghost: color-mix(in oklab, var(--grapholio) 42%, var(--grapholio-paper));
+  --line: color-mix(in oklab, var(--grapholio) 22%, transparent);
+  --line-hot: color-mix(in oklab, var(--grapholio) 55%, transparent);
+  --accent: var(--grapholio);
+  --accent-2: var(--grapholio);
+  --cursor: var(--grapholio);
+  --cursor-hot: var(--grapholio-paper); /* cream cursor pops over the red surfaces */
+  --card-bg: var(--grapholio);
+  --card-fg: var(--grapholio-paper);
+  --glow-1: rgba(239, 66, 35, 0.12);
+  --glow-2: rgba(239, 66, 35, 0.06);
   --grain-blend: multiply;
   --grain-opacity: 0.05;
+
+  /* GRAPHOLIO wears the geometric brand face everywhere it uses display type */
+  --stack-display: var(--stack-geo);
 }
 
 /* fotofolio — quiet carbon darkroom, monochrome, image-forward, cream cursor */

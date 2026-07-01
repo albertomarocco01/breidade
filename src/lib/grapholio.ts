@@ -47,23 +47,20 @@ export interface Project {
   gallery?: unknown[];
 }
 
-const TOMATO = "#FF3E2B";
-const CARBON = "#121212";
-const BLUE = "#0A369D";
-const LIME = "#DFFF00";
-const TEAL = "#0DCD9D";
-const CREAM = "#FCFAF2";
+// GRAPHOLIO brand palette — TWO colours only, strictly alternated card-to-card
+// (red, cream, red, cream, …). No third hue anywhere in the brand system.
+const RED = "#EF4223";
+const CREAM = "#F8F8DD";
 
-// Display order matches the brief (1 → 9). Colours per the art direction:
-// boem tomato · ancona blue · flashback teal · notala lime · durex tomato ·
-// sanbaudia cream · kombat carbon · kappa-futur tomato · kappa-433 teal.
+// Display order matches the brief (1 → 9). The two brand colours simply alternate,
+// so bg/fg flip every card: red-on-cream, then cream-on-red, and so on.
 export const PROJECTS: Project[] = [
   {
     id: "boem",
     slug: "boem",
     title: "Boem",
     category: { en: "Pack design", it: "Packaging" },
-    bg: TOMATO,
+    bg: RED,
     fg: CREAM,
     description: {
       en: "The BOEM packaging design challenge: talking from the shelves to the toughest generation of all: Gen Z. Its packaging doesn't whisper—it demands attention, exploding with color, energy, and attitude.",
@@ -77,8 +74,8 @@ export const PROJECTS: Project[] = [
     slug: "ancona",
     title: "Ancora, Ancona",
     category: { en: "City Brand Design", it: "Branding di città" },
-    bg: BLUE,
-    fg: CREAM,
+    bg: CREAM,
+    fg: RED,
     description: {
       en: "The Ancona City Branding project redefines the city's identity, highlighting its deep connection to the sea. It celebrates the slow rhythm of life along the waterfront, creating a memorable and immersive brand experience.",
       it: "Il progetto di city branding per Ancona ridefinisce l'identità della città, mettendone in risalto il legame profondo con il mare. Celebra il ritmo lento della vita sul lungomare, dando vita a un'esperienza di marca memorabile e immersiva.",
@@ -91,8 +88,8 @@ export const PROJECTS: Project[] = [
     slug: "flashback",
     title: "Flashback",
     category: { en: "Signal System Design", it: "Sistema segnaletico" },
-    bg: TEAL,
-    fg: CARBON,
+    bg: RED,
+    fg: CREAM,
     description: {
       en: "From an orphanage to a multipurpose cultural space, from which a brand identity and a visual system are born that will guide the visitor in a new way of conceiving art.",
       it: "Da orfanotrofio a spazio culturale polifunzionale, da cui nascono un'identità di marca e un sistema visivo che guidano il visitatore verso un nuovo modo di concepire l'arte.",
@@ -105,8 +102,8 @@ export const PROJECTS: Project[] = [
     slug: "notala",
     title: "NotaLa",
     category: { en: "Brand Design", it: "Identità di marca" },
-    bg: LIME,
-    fg: CARBON,
+    bg: CREAM,
+    fg: RED,
     description: {
       en: "A project transforming abandoned phone booths into small artistic spaces. An urban regeneration initiative bringing installations, sound, and visual art into daily life.",
       it: "Un progetto che trasforma le cabine telefoniche abbandonate in piccoli spazi artistici. Un'iniziativa di rigenerazione urbana che porta installazioni, suono e arte visiva nella vita di tutti i giorni.",
@@ -119,7 +116,7 @@ export const PROJECTS: Project[] = [
     slug: "durex",
     title: "Durex",
     category: { en: "ADV Design", it: "Pubblicità" },
-    bg: TOMATO,
+    bg: RED,
     fg: CREAM,
     description: {
       en: "Advertising idea following Durex' ironic TOV for print advertising.",
@@ -134,7 +131,7 @@ export const PROJECTS: Project[] = [
     title: "Sanbaudia",
     category: { en: "Editorial Design", it: "Design editoriale" },
     bg: CREAM,
-    fg: CARBON,
+    fg: RED,
     description: {
       en: "Editorial Design with a pop style for a new local magazine showing around the churches and holy places of Torino and surroundings, explaining the history of catholicism from a different perspective.",
       it: "Progetto editoriale in stile pop per una nuova rivista locale che accompagna tra le chiese e i luoghi sacri di Torino e dintorni, raccontando la storia del cattolicesimo da una prospettiva diversa.",
@@ -147,7 +144,7 @@ export const PROJECTS: Project[] = [
     slug: "kombat-xxv",
     title: "Kombat XXV",
     category: { en: "Graphic Design", it: "Progettazione grafica" },
-    bg: CARBON,
+    bg: RED,
     fg: CREAM,
     description: {
       en: "Celebrating XXVth anniversary of Kombat with a special project signed by Kappa.",
@@ -161,8 +158,8 @@ export const PROJECTS: Project[] = [
     slug: "kappa-futur",
     title: "Kappa Futur",
     category: { en: "Graphic Design", it: "Progettazione grafica" },
-    bg: TOMATO,
-    fg: CREAM,
+    bg: CREAM,
+    fg: RED,
     description: {
       en: "The futur is in Torino: Save the date for the most iconic techno festival in Europe.",
       it: "Il futuro è a Torino: segna la data del festival techno più iconico d'Europa.",
@@ -175,8 +172,8 @@ export const PROJECTS: Project[] = [
     slug: "kappa-433",
     title: "Kappa x 433",
     category: { en: "Pack Design", it: "Packaging" },
-    bg: TEAL,
-    fg: CARBON,
+    bg: RED,
+    fg: CREAM,
     description: {
       en: "Together for the beautiful game: what happens when omini brand Kappa meets 433.",
       it: "Insieme per il gioco più bello: cosa succede quando il brand degli Omini, Kappa, incontra 433.",

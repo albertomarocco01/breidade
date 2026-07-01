@@ -6,13 +6,13 @@
   will-change: transform;
 }
 .g-head .sect-title {
-  font-family: var(--stack-hand);
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: 0;
+  font-family: var(--stack-geo);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
   font-size: clamp(3.2rem, 17vw, 8.5rem);
   line-height: 0.9;
-  color: var(--tomato);
+  color: var(--accent);
 }
 
 /* the asymmetric, hand-composed wall of vivid colour cards */
@@ -27,7 +27,9 @@
 .g-card {
   position: relative;
   transform: rotate(var(--rot, 0deg));
-  transition: transform 0.5s var(--ease);
+  transition:
+    transform 0.5s var(--ease),
+    filter 0.4s var(--ease);
 }
 .g-card-link {
   display: flex;
@@ -36,9 +38,11 @@
   padding: clamp(0.9rem, 3vw, 1.3rem);
   background: var(--card-bg);
   color: var(--card-fg);
-  border: 3px solid var(--carbon);
+  /* structure in the brand red only — a single ink for edge + neo-brutalist shadow
+     so even a cream card keeps a crisp outline on the cream page (two colours only) */
+  border: 3px solid var(--grapholio);
   border-radius: 18px;
-  box-shadow: 8px 8px 0 var(--carbon);
+  box-shadow: 8px 8px 0 var(--grapholio);
   isolation: isolate;
   transition:
     box-shadow 0.45s var(--ease),
@@ -67,9 +71,9 @@
   position: relative;
   aspect-ratio: 16 / 10;
   overflow: hidden;
-  border: 2px solid var(--carbon);
+  border: 2px solid var(--card-fg);
   border-radius: 10px;
-  background: var(--carbon);
+  background: var(--card-fg);
 }
 .g-card-cover img {
   width: 100%;
@@ -117,15 +121,25 @@
     z-index: 2;
   }
   .g-card:hover .g-card-link {
-    box-shadow: 12px 12px 0 var(--carbon);
+    box-shadow: 12px 12px 0 var(--grapholio);
     transform: translate(-2px, -2px);
   }
   .g-card:hover .g-card-cover img {
     transform: scale(1.05);
   }
+  /* spotlight — the pointed folder LIGHTS UP (straighten + lift above + brighten),
+     every OTHER folder clearly dims. Keyed on :has(.g-card:hover), not .g-wall:hover,
+     so hovering empty wall space leaves every card at full brightness. filter (not
+     opacity) so it doesn't fight the GSAP reveal, which writes inline opacity on .g-card. */
+  .g-wall:has(.g-card:hover) .g-card:not(:hover) {
+    filter: brightness(0.62) saturate(0.85);
+  }
+  .g-card:hover {
+    filter: brightness(1.08);
+  }
 }
 .g-card-link:focus-visible {
-  outline: 2px solid var(--carbon);
+  outline: 2px solid var(--grapholio);
   outline-offset: 4px;
 }
 
