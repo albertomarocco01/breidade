@@ -13,14 +13,17 @@
   --grapholio-paper: #f8f8dd; /* cream */
 
   /* ---- type stacks (font vars are set on <html> by next/font) ---- */
-  --stack-display: var(--font-display), "Syne", system-ui, sans-serif;
-  --stack-geo: var(--font-geo), "Jost", "Futura", "Futura PT", "Century Gothic",
+  /* FUTURA EVERYWHERE: real Futura when installed on the visitor's system,
+     Jost (next/font, always shipped) as the geometric stand-in for everyone else.
+     Every stack aliases this one so the whole project speaks a single voice. */
+  --stack-futura: "Futura", "Futura PT", var(--font-geo), "Jost", "Century Gothic",
     system-ui, sans-serif;
-  --stack-serif: var(--font-serif), "Italiana", Georgia, "Times New Roman", serif;
-  --stack-mono: var(--font-mono), "JetBrains Mono", ui-monospace, "SF Mono", Menlo,
-    monospace;
-  --stack-hand: var(--font-hand), "La Belle Aurore", "Segoe Script", cursive;
-  --stack-hand2: var(--font-hand2), "Reenie Beanie", "Segoe Script", cursive;
+  --stack-display: var(--stack-futura);
+  --stack-geo: var(--stack-futura);
+  --stack-serif: var(--stack-futura);
+  --stack-mono: var(--stack-futura);
+  --stack-hand: var(--stack-futura);
+  --stack-hand2: var(--stack-futura);
   /* chrome (header/footer/topbar/locale) was authored against these names */
   --stack-text: var(--stack-mono);
   --stack-sans: var(--stack-display);
